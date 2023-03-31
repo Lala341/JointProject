@@ -1,109 +1,107 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer } from 'expo-sensors';
-import { Gyroscope } from 'expo-sensors';
+import { Text, View, Button } from 'react-native';
+import { Gyroscope, Accelerometer } from 'expo-sensors';
+import Constants from 'expo-constants';
+import * as FileSystem from 'expo-file-system';
 
 export default function App() {
-  const [{ x, y, z }, setData] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
+  const [sensorData, setSensorData] = useState({
+    xAccelerometer: 0,
+    yAccelerometer: 0,
+    zAccelerometer: 0,
+    xGyroscope: 0,
+    yGyroscope: 0,
+    zGyroscope: 0,
   });
-  const [ data, setDataG] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
-  const [subscription, setSubscription] = useState(null);
-  const [subscriptionG, setSubscriptionG] = useState(null);
-
-  const _slow = () => {Accelerometer.setUpdateInterval(1000); Gyroscope.setUpdateInterval(1000)}
-  const _fast = () => {Accelerometer.setUpdateInterval(16); Gyroscope.setUpdateInterval(16)}
-
-  const _subscribe = () => {
-    setSubscription(
-      Accelerometer.addListener(setData)
-    );
-  };
-
-  const _subscribeG = () => {
-    setSubscriptionG(
-      Gyroscope.addListener(gyroscopeData  => {
-        setDataG(gyroscopeData );
-      })
-    );
-  };
-  const _unsubscribe = () => {
-    subscription && subscription.remove();
-    setSubscription(null);
-  };
-  const _unsubscribeG = () => {
-    subscriptionG && subscriptionG.remove();
-    setSubscriptionG(null);
-  };
+  const [fileUri, setFileUri] = useState(null);
+  const [isWriting, setIsWriting] = useState(false);
 
   useEffect(() => {
-    _subscribe();
-    _subscribeG();
-    return () => {_unsubscribe();_unsubscribeG();}
+    const subscriptionAccelerometer = Accelerometer.addListener(
+      (accelerometerData) => {
+        setSensorData((prevData) => ({
+          ...prevData,
+          xAccelerometer: accelerometerData.x,
+          yAccelerometer: accelerometerData.y,
+          zAccelerometer: accelerometerData.z,
+        }));
+      }
+    );
+
+    const subscriptionGyroscope = Gyroscope.addListener((gyroscopeData) => {
+      setSensorData((prevData) => ({
+        ...prevData,
+        xGyroscope: gyroscopeData.x,
+        yGyroscope: gyroscopeData.y,
+        zGyroscope: gyroscopeData.z,
+      }));
+    });
+
+    return () => {
+      subscriptionAccelerometer.remove();
+      subscriptionGyroscope.remove();
+    };
   }, []);
 
+  useEffect(() => {
+    if (!isWriting) {
+      setIsWriting(true);
+
+      const writeToFile = async () => {
+        const now = new Date();
+        const deviceId = Constants.installationId;
+        const filename = `/sensor-data-${now.getFullYear()}-${
+          now.getMonth() + 1
+        }-${now.getDate()}.txt`;
+
+        const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}`;
+
+        console.log(`Data written to file: ${newFileContent}`);
+
+        const fileUri = FileSystem.documentDirectory + filename;
+        await FileSystem.writeAsStringAsync(
+          fileUri,
+          newFileContent,
+          { encoding: FileSystem.EncodingType.UTF8 }
+        );
+        setFileUri(fileUri);
+        setIsWriting(false);
+      };
+
+      writeToFile();
+    }
+  }, [sensorData, isWriting]);
+
+  const sendFileToServer = async () => {
+    if (fileUri) {
+      const response = await fetch('https://jzqa8esvt7.execute-api.us-east-1.amazonaws.com/default/serverInfomationInwealth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.UTF8 })
+      });
+
+      if (response.ok) {
+        console.log('File sent to server');
+        setFileUri(null);
+      } else {
+        console.error('Failed to send file to server');
+      }
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Accelerometer: (in gs where 1g = 9.81 m/s^2)</Text>
-      <Text style={styles.text}>x: {x}</Text>
-      <Text style={styles.text}>y: {y}</Text>
-      <Text style={styles.text}>z: {z}</Text>
-      <Text style={styles.text}>Gyroscope: </Text>
-      <Text style={styles.text}>x: {data.x}</Text>
-      <Text style={styles.text}>y: {data.y}</Text>
-      <Text style={styles.text}>z: {data.z}</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={subscription ?()=>{ _unsubscribe(); }: ()=>{_subscribe();}} style={styles.button}>
-          <Text>{subscription ? 'On' : 'Off'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={subscriptionG ?()=>{  _unsubscribeG(); }: ()=>{ _subscribeG();}} style={styles.button}>
-          <Text>{subscriptionG ? 'On' : 'Off'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={_slow} style={[styles.button, styles.middleButton]}>
-          <Text>Slow</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={_fast} style={styles.button}>
-          <Text>Fast</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Accelerometer Data:</Text>
+      <Text>X: {sensorData.xAccelerometer.toFixed(2)}</Text>
+      <Text>Y: {sensorData.yAccelerometer.toFixed(2)}</Text>
+      <Text>Z: {sensorData.zAccelerometer.toFixed(2)}</Text>
+      <Text>Gyroscope Data:</Text>
+      <Text>X: {sensorData.xGyroscope.toFixed(2)}</Text>
+      <Text>Y: {sensorData.yGyroscope.toFixed(2)}</Text>
+      <Text>Z: {sensorData.zGyroscope.toFixed(2)}</Text>
+      <Button title="Send to Server File" onPress={sendFileToServer} disabled={!fileUri} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  headline: {
-    fontSize: 30,
-    textAlign: 'center',
-    margin: 10,
-  },
-  valueContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  valueValue: {
-    width: 200,
-    fontSize: 20
-  },
-  valueName: {
-    width: 50,
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
