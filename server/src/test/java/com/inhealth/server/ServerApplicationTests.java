@@ -1,4 +1,4 @@
-package com.inhealth.server;
+package com.inHealth.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

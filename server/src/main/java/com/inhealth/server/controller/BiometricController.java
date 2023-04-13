@@ -1,5 +1,7 @@
-package com.inhealth.server.controller;
+package com.inHealth.server.controller;
 
+import com.inHealth.server.service.BiometricService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +14,16 @@ import java.io.IOException;
 
 @RestController
 public class BiometricController {
+
+    @Autowired
+    private BiometricService biometricService;
     @PostMapping("/")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
 
         try {
-            System.out.println(new String(file.getBytes()));
+            String content = new String(file.getBytes());
+            System.out.println(content);
+            //biometricService.uploadToHdfs(content);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
