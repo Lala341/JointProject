@@ -23,7 +23,7 @@ public class BiometricController {
         try {
             String content = new String(file.getBytes());
             System.out.println(content);
-            //biometricService.uploadToHdfs(content);
+            biometricService.uploadToHdfs(content);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
