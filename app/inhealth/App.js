@@ -3,6 +3,7 @@ import { Text, View, Button } from 'react-native';
 import { Gyroscope, Accelerometer } from 'expo-sensors';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
+import { encode } from 'querystring'; // Import the querystring module to encode the data
 
 export default function App() {
   const [sensorData, setSensorData] = useState({
@@ -56,15 +57,15 @@ export default function App() {
 
         const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}`;
 
-        console.log(`Data written to file: ${newFileContent}`);
+       // console.log(`Data written to file: ${newFileContent}`);
 
-        const fileUri = FileSystem.documentDirectory + filename;
+        const fileUrit = FileSystem.documentDirectory + filename;
         await FileSystem.writeAsStringAsync(
-          fileUri,
+          fileUrit,
           newFileContent,
           { encoding: FileSystem.EncodingType.UTF8 }
         );
-        setFileUri(fileUri);
+        setFileUri(fileUrit);
         setIsWriting(false);
       };
 
@@ -74,18 +75,25 @@ export default function App() {
 
   const sendFileToServer = async () => {
     if (fileUri) {
-      const response = await fetch('https://jzqa8esvt7.execute-api.us-east-1.amazonaws.com/default/serverInfomationInwealth', {
+     
+     
+      const formData = new FormData();
+      formData.append('file', {uri: fileUri, type: "text/plain", name: "fileName.txt"});
+  
+      const options = {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'multipart/form-data',
         },
-        body: FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.UTF8 })
-      });
+        body: formData
+      };
+      const response = await fetch('http://192.168.90.23:8080', options);
 
       if (response.ok) {
         console.log('File sent to server');
         setFileUri(null);
       } else {
+
         console.error('Failed to send file to server');
       }
     }
