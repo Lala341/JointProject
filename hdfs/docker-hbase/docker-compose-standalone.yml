@@ -82,7 +82,7 @@ services:
       - ./hbase-standalone.env
 
   myapp:
-    image: javaapp-image
+    image: myapp
     container_name: myapp
     ports:
       - 8080:8080
