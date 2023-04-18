@@ -1,5 +1,3 @@
-FROM tomcat:8.5-jdk8
+FROM tomcat:9.0-jdk13-openjdk-oracle
 COPY server-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps
-
-RUN mv webapps webapps2
-RUN mv webapps.dist/ webapps
+RUN cp -r -avT $CATALINA_HOME/webapps.dist/* $CATALINA_HOME/webapps/*
