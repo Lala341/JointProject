@@ -1,2 +1,2 @@
 FROM tomcat:9-jdk11
-ADD server-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/server-0.0.1-SNAPSHOT.war
+COPY server-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/server-0.0.1-SNAPSHOT.war
