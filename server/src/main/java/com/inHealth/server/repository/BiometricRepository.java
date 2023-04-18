@@ -23,14 +23,14 @@ import java.net.URI;
         public class BiometricRepository {
 
             private final String uri = "hdfs://namenode:9000";
-            private final String hdfsDir = "/sensorData/t.txt";
+            private final String hdfsDir = "/sensors-data";
             public void uploadToHdfs(String content) throws IOException {
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
                 FileSystem fs = FileSystem.get(URI.create(uri), conf);
-                //TODO: Change file name once everything is working
+
                 String fileName = "test.txt";
-                Path hdfswritepath = new Path( "/" + fileName);
+                Path hdfswritepath = new Path( hdfsDir+"/" + fileName);
                 FSDataOutputStream outputStream = fs.create(hdfswritepath);
                 outputStream.writeBytes(content);
                 outputStream.close();

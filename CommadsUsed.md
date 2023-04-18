@@ -19,3 +19,14 @@ URL Server HDFS: http://54.235.57.170:50070/dfshealth.html#tab-overview
 URL Server API: https://jzqa8esvt7.execute-api.us-east-1.amazonaws.com/default/serverInfomationInwealth
 
 
+
+Docker
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+
+
+hdfs dfsadmin -safemode leave
+hadoop fs -mkdir /sensors-data
+
