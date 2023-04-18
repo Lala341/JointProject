@@ -6,6 +6,7 @@ services:
     hostname: namenode
     ports:
       - "50070:50070"
+      - "9000:9000"
     volumes:
       - /data/namenode:/hadoop/dfs/name
     environment:
@@ -21,6 +22,7 @@ services:
     hostname: datanode
     ports:
       - "50075:50075"
+      - "50010:50010"
     volumes:
       - /data/datanode:/hadoop/dfs/data
     environment:
