@@ -84,6 +84,8 @@ services:
   myapp:
     image: myapp
     container_name: myapp
+    expose:
+      - 8080:8080
     depends_on:
       - hbase
 
