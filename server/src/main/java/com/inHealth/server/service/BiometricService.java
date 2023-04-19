@@ -15,7 +15,7 @@ public class BiometricService {
     @Autowired
     private BiometricRepository biometricRepository;
 
-    public void uploadToHdfs(String content) throws IOException {
-        biometricRepository.uploadToHdfs(content);
+    public void uploadToHdfs(String content, String name) throws IOException {
+        biometricRepository.uploadToHdfs(content, name);
     }
 }

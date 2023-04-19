@@ -23,7 +23,7 @@ public class BiometricController {
         try {
             String content = new String(file.getBytes());
             System.out.println(content);
-            biometricService.uploadToHdfs(content);
+            biometricService.uploadToHdfs(content, file.getName());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -32,6 +32,6 @@ public class BiometricController {
 
     @GetMapping("/")
     public ResponseEntity<String> ping() {
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>("Web Server InHealth", HttpStatus.OK);
     }
 }

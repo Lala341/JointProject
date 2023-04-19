@@ -24,22 +24,26 @@ import java.net.URI;
 
             private final String uri = "hdfs://namenode:9000";
             private final String hdfsDir = "/sensors-data";
-            public void uploadToHdfs(String content) throws IOException {
+
+            public void uploadToHdfs(String content, String name) throws IOException {
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
                 FileSystem fs = FileSystem.get(URI.create(uri), conf);
+                String user = name.split("-")[0];
+                Path hdfswritepathuser =new Path( hdfsDir+"/" +user);
 
-                String fileName = "test.txt";
-                Path hdfswritepath = new Path( hdfsDir+"/" + fileName);
+                if (!fs.exists(hdfswritepathuser)) {
+                    fs.mkdirs(hdfswritepathuser);
+                }
+
+                String fileName = name+".txt";
+                Path hdfswritepath = new Path( hdfsDir+"/" +user+"/" + fileName);
                 FSDataOutputStream outputStream = fs.create(hdfswritepath);
                 outputStream.writeBytes(content);
                 outputStream.close();
         }
 
     public void uploadToHbase(String content) throws IOException {
-
-
-
 
         Configuration conf = HBaseConfiguration.create();
         conf.set("hbase.zookeeper.quorum", "hbase");
