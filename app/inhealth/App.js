@@ -85,7 +85,7 @@ export default function App() {
         },
         body: formData
       };
-      const response = await fetch('http://172.18.0.8:8080/server-0.0.1-SNAPSHOT/', options);
+      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/', options);
 
       if (response.ok) {
         console.log('File sent to server');
