@@ -75,8 +75,6 @@ export default function App() {
 
   const sendFileToServer = async () => {
     if (fileUri) {
-     
-     
       const formData = new FormData();
       formData.append('file', {uri: fileUri, type: "text/plain", name: "fileName.txt"});
   
@@ -87,7 +85,7 @@ export default function App() {
         },
         body: formData
       };
-      const response = await fetch('http://192.168.90.23:8080', options);
+      const response = await fetch('http://172.18.0.8:8080/server-0.0.1-SNAPSHOT/', options);
 
       if (response.ok) {
         console.log('File sent to server');
