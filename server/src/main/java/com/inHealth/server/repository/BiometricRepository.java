@@ -31,17 +31,27 @@ import java.net.URI;
                 FileSystem fs = FileSystem.get(URI.create(uri), conf);
                 String user = name.split("-")[0];
                 Path hdfswritepathuser =new Path( hdfsDir+"/" +user);
+                System.out.println(name);
+                System.out.println(user);
+                System.out.println("Before create");
 
                 if (!fs.exists(hdfswritepathuser)) {
+                    System.out.println("Before created");
+
                     fs.mkdirs(hdfswritepathuser);
+                    System.out.println(" create");
+
                 }
+                System.out.println("Create file");
 
                 String fileName = name+".txt";
                 Path hdfswritepath = new Path( hdfsDir+"/" +user+"/" + fileName);
                 FSDataOutputStream outputStream = fs.create(hdfswritepath);
                 outputStream.writeBytes(content);
                 outputStream.close();
-        }
+                System.out.println("Final file");
+
+            }
 
     public void uploadToHbase(String content) throws IOException {
 
