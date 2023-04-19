@@ -51,7 +51,7 @@ export default function App() {
       const writeToFile = async () => {
         const now = new Date();
         const deviceId = Constants.installationId;
-        const filename = `/sensor-data-${now.getFullYear()}-${
+        const filename = `/sensor-data_${deviceId}_${now.getFullYear()}-${
           now.getMonth() + 1
         }-${now.getDate()}.txt`;
 
@@ -76,9 +76,15 @@ export default function App() {
   const sendFileToServer = async () => {
     if (fileUri) {
       const formData = new FormData();
-      var nam=fileUri.split("/")[-1];
+      var values=fileUri.split("/");
+      var nam=values[values.length-1];
+
+      console.log(nam);
+      console.log(values);
+
       formData.append('file', {uri: fileUri, type: "text/plain", name: nam+".txt"});
-  
+      formData.append('name', nam);
+
       const options = {
         method: 'POST',
         headers: {

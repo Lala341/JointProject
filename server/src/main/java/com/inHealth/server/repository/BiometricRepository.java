@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.net.URI;
 
+import static java.lang.Math.min;
+
 @Repository
         public class BiometricRepository {
 
@@ -29,7 +31,7 @@ import java.net.URI;
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
                 FileSystem fs = FileSystem.get(URI.create(uri), conf);
-                String user = name.split("-")[0];
+                String user = name.split("_")[min(1,name.split("_").length)];
                 Path hdfswritepathuser =new Path( hdfsDir+"/" +user);
                 System.out.println(name);
                 System.out.println(user);
