@@ -82,12 +82,16 @@ services:
       - ./hbase-standalone.env
 
   myapp:
-    image: myapp
+    build:
+      context: ./javadocker
+      dockerfile: Dockerfile
     container_name: myapp
     ports:
       - 8080:8080
+    command: ['catalina.sh', 'run']
     depends_on:
       - hbase
+
 
 volumes:
   hadoop_namenode:
