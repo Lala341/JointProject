@@ -35,7 +35,7 @@ public class BiometricController {
 
     @CrossOrigin
     @PostMapping("/datasets")
-    public ResponseEntity<String> handleFileUploadDatasets(@RequestParam("file") String url, @RequestParam("name") String dir) {
+    public ResponseEntity<String> handleFileUploadDatasets(@RequestParam("url") String url, @RequestParam("name") String dir) {
 
         try {
            System.out.println(url);

@@ -56,17 +56,24 @@ import static java.lang.Math.min;
         while ((entry = zipInputStream.getNextEntry()) != null) {
             String fileName = entry.getName();
 
-            // Write the file to HDFS
-            Path hdfsFilePath = new Path(hdfsPath + fileName);
-            FSDataOutputStream outputStream = fs.create(hdfsFilePath);
-            byte[] buffer = new byte[1024];
-            int count = 0;
-            while ((count = zipInputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, count);
+            // If the entry is a directory, create it on HDFS
+            if (entry.isDirectory()) {
+                Path hdfsDirPath = new Path(hdfsPath +"/"+ fileName);
+                fs.mkdirs(hdfsDirPath);
+            } else {
+                // If the entry is a file, write it to HDFS
+                Path hdfsFilePath = new Path(hdfsPath + fileName);
+                FSDataOutputStream outputStream = fs.create(hdfsFilePath);
+                byte[] buffer = new byte[1024];
+                int count = 0;
+                while ((count = zipInputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, count);
+                }
+                outputStream.close();
             }
-            outputStream.close();
             zipInputStream.closeEntry();
         }
+
 
         // Close the ZipInputStream and input stream
         zipInputStream.close();
