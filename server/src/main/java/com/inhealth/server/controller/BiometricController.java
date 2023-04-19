@@ -17,12 +17,12 @@ public class BiometricController {
 
     @CrossOrigin
     @PostMapping("/")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) {
 
         try {
             String content = new String(file.getBytes());
             System.out.println(content);
-            biometricService.uploadToHdfs(content, file.getName());
+            biometricService.uploadToHdfs(content, name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

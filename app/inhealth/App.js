@@ -76,7 +76,7 @@ export default function App() {
   const sendFileToServer = async () => {
     if (fileUri) {
       const formData = new FormData();
-      var nam=split(fileUri,"/")[-1];
+      var nam=fileUri.split("/")[-1];
       formData.append('file', {uri: fileUri, type: "text/plain", name: nam+".txt"});
   
       const options = {
