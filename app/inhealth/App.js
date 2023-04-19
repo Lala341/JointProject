@@ -16,6 +16,7 @@ export default function App() {
   });
   const [fileUri, setFileUri] = useState(null);
   const [isWriting, setIsWriting] = useState(false);
+  const [data, setData] = useState("");
 
   useEffect(() => {
     const subscriptionAccelerometer = Accelerometer.addListener(
@@ -50,21 +51,24 @@ export default function App() {
 
       const writeToFile = async () => {
         const now = new Date();
-        const deviceId = Constants.installationId;
-        const filename = `/sensor-data_${deviceId}_${now.getFullYear()}-${
-          now.getMonth() + 1
-        }-${now.getDate()}.txt`;
+      //  const deviceId = Constants.installationId;
+      const deviceId = "1e9c1862-ec25-4cde-a689-38ab696ccba1";
+        const filename = `/sensor-data_${deviceId}_${now.toISOString().split(".")[0]}.txt`;
 
-        const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}`;
+        const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}\n`;
 
        // console.log(`Data written to file: ${newFileContent}`);
 
         const fileUrit = FileSystem.documentDirectory + filename;
+        const concatenatedData = data + newFileContent;
+        
+        // Write concatenated data back to file
         await FileSystem.writeAsStringAsync(
           fileUrit,
-          newFileContent,
+          concatenatedData,
           { encoding: FileSystem.EncodingType.UTF8 }
         );
+        setData(concatenatedData);
         setFileUri(fileUrit);
         setIsWriting(false);
       };
@@ -77,14 +81,16 @@ export default function App() {
     if (fileUri) {
       const formData = new FormData();
       var values=fileUri.split("/");
-      var nam=values[values.length-1];
-
+      var nam=values[values.length-1].replace(".txt","");
+      nam=nam.replace(":","-");
+      nam=nam.replace(":","-");
       console.log(nam);
       console.log(values);
 
       formData.append('file', {uri: fileUri, type: "text/plain", name: nam+".txt"});
       formData.append('name', nam);
-
+      setData("");
+       
       const options = {
         method: 'POST',
         headers: {
