@@ -51,8 +51,8 @@ export default function App() {
 
       const writeToFile = async () => {
         const now = new Date();
-      //  const deviceId = Constants.installationId;
-      const deviceId = "1e9c1862-ec25-4cde-a689-38ab696ccba1";
+        const deviceId = Constants.installationId;
+     // const deviceId = "1e9c1862-ec25-4cde-a689-38ab696ccba1";
         const filename = `/sensor-data_${deviceId}_${now.toISOString().split(".")[0]}.txt`;
 
         const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}\n`;
