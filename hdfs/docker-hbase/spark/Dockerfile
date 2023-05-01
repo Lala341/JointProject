@@ -4,6 +4,7 @@ FROM bde2020/spark-base:2.4.4-hadoop2.7
 ADD core-site.xml /spark/conf/core-site.xml
 ADD hdfs-site.xml /spark/conf/hdfs-site.xml
 ADD hbase-site.xml /etc/hbase/conf/hbase-site.xml
+ADD test.py /
 
 # Set environment variables for Spark
 ENV SPARK_HOME /spark
