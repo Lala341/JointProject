@@ -98,6 +98,11 @@ services:
     container_name: spark
     environment:
       HADOOP_CONF_DIR: /spark/conf
+    volumes:
+      - ./core-site.xml:/spark/conf/core-site.xml
+      - ./hdfs-site.xml:/spark/conf/hdfs-site.xml
+      - ./hbase-site.xml:/etc/hbase/conf/hbase-site.xml
+    command: "/bin/bash -c 'while :; do sleep 10; done'"
     depends_on:
       - namenode
       - datanode
