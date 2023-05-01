@@ -5,5 +5,9 @@ ADD core-site.xml /spark/conf/core-site.xml
 ADD hdfs-site.xml /spark/conf/hdfs-site.xml
 ADD hbase-site.xml /etc/hbase/conf/hbase-site.xml
 
+# Set environment variables for Spark
+ENV SPARK_HOME /spark
+ENV PATH $SPARK_HOME/bin:$PATH
+
 # Start Spark Shell by default
-CMD ["/spark/bin/spark-shell"]
+CMD ["spark-shell"]
