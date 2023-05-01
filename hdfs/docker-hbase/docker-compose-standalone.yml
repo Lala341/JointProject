@@ -91,7 +91,19 @@ services:
     command: ['catalina.sh', 'run']
     depends_on:
       - hbase
-
+  spark:
+    build:
+      context: ./spark
+      dockerfile: Dockerfile
+    environment:
+      HADOOP_CONF_DIR: /spark/conf
+    depends_on:
+      - namenode
+      - datanode
+      - resourcemanager
+      - nodemanager
+      - historyserver
+      - hbase
 
 volumes:
   hadoop_namenode:
