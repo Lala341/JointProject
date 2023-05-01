@@ -101,7 +101,7 @@ services:
       - namenode
       - datanode
       - resourcemanager
-      - nodemanager
+      - nodemanager1
       - historyserver
       - hbase
 
