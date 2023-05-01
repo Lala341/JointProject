@@ -1,7 +1,7 @@
 FROM bde2020/spark-base:2.4.4-hadoop2.7
 
 # Install Hadoop and HBase client libraries
-RUN apt-get update && apt-get install -y hadoop-client hbase
+RUN apk update && apk add hadoop-client hbase
 
 # Add HDFS and HBase configuration files
 ADD core-site.xml /spark/conf/core-site.xml
