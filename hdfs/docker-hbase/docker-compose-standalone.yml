@@ -95,6 +95,7 @@ services:
     build:
       context: ./spark
       dockerfile: Dockerfile
+    container_name: spark
     environment:
       HADOOP_CONF_DIR: /spark/conf
     depends_on:
