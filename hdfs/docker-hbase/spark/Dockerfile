@@ -5,9 +5,8 @@ ADD core-site.xml /spark/conf/core-site.xml
 ADD hdfs-site.xml /spark/conf/hdfs-site.xml
 ADD hbase-site.xml /etc/hbase/conf/hbase-site.xml
 
-# Set environment variables for Spark
-ENV SPARK_HOME /spark
-ENV PATH $SPARK_HOME/bin:$PATH
+# Add test script
+ADD test.py /
 
 # Start Spark Shell by default
-CMD ["spark-shell"]
+CMD ["/spark/bin/spark-submit", "--master", "local[*]", "/test.py"]
