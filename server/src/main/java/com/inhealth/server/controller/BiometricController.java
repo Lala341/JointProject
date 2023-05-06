@@ -42,6 +42,7 @@ public class BiometricController {
             downloadService.uploadToHdfs(url, dir);
         } catch (IOException e) {
             throw new RuntimeException(e);
+                    
         }
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }

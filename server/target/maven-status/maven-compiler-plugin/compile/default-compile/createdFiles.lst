@@ -1,0 +1,7 @@
+com\inHealth\server\service\DownloadService.class
+com\inHealth\server\ServletInitializer.class
+com\inHealth\server\controller\BiometricController.class
+com\inHealth\server\repository\BiometricRepository.class
+com\inHealth\server\ServerApplication.class
+com\inHealth\server\repository\DownloadRepository.class
+com\inHealth\server\service\BiometricService.class
