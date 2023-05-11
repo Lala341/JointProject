@@ -65,9 +65,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-core_2.13</artifactId>
-			<version>3.2.0</version>
+			<artifactId>spark-core_2.12</artifactId>
+			<version>3.1.2</version>
 		</dependency>
+
 
 
 		<!-- Hadoop -->
