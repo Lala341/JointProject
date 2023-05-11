@@ -59,8 +59,6 @@ services:
     env_file:
       - ./hadoop.env
     
-    
-
   hbase:
     image: bde2020/hbase-standalone:1.0.0-hbase1.2.6
     container_name: hbase
@@ -80,12 +78,11 @@ services:
       SERVICE_PRECONDITION: "namenode:50070 datanode:50075"
     env_file:
       - ./hbase-standalone.env
-
-  myapp:
+  javaserver:
     build:
       context: ./../../server/target
       dockerfile: Dockerfile
-    container_name: myapp
+    container_name: javaserver
     ports:
       - 8080:8080
     command: ['catalina.sh', 'run']
@@ -126,21 +123,6 @@ services:
         - "18081:18081"
       volumes:
         - /tmp/spark-events-local:/tmp/spark-events
-  spark:
-    build:
-      context: ./spark
-      dockerfile: Dockerfile
-    container_name: spark
-    environment:
-      HADOOP_CONF_DIR: /spark/conf
-    command: "/bin/bash -c 'while :; do sleep 10; done'"
-    depends_on:
-      - namenode
-      - datanode
-      - resourcemanager
-      - nodemanager1
-      - historyserver
-      - hbase
 
 volumes:
   hadoop_namenode:
