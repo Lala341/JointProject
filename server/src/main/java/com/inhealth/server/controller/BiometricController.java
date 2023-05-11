@@ -2,9 +2,11 @@ package com.inHealth.server.controller;
 
 import com.inHealth.server.service.BiometricService;
 import com.inHealth.server.service.DownloadService;
+import com.inHealth.server.service.PredictiveActivityModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,11 +15,13 @@ import java.io.IOException;
 @RestController
 public class BiometricController {
 
-    @Autowired
     private BiometricService biometricService;
 
-    @Autowired
     private DownloadService downloadService;
+
+
+    private PredictiveActivityModelService modelService;
+
 
     @CrossOrigin
     @PostMapping("/")
@@ -42,12 +46,20 @@ public class BiometricController {
             downloadService.uploadToHdfs(url, dir);
         } catch (IOException e) {
             throw new RuntimeException(e);
+                    
         }
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
     @CrossOrigin
     @GetMapping("/")
     public ResponseEntity<String> ping() {
+        try {
+            modelService.createModel();
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.OK);
+        }
+
         return new ResponseEntity<>("Web Server InHealth", HttpStatus.OK);
     }
 }
