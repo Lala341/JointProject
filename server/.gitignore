@@ -1,5 +1,5 @@
 HELP.md
-target/
+###target/
 !target/server-0.0.1-SNAPSHOT.war
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
