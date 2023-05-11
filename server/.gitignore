@@ -1,11 +1,9 @@
 HELP.md
-!target/
+target/
+!target/server-0.0.1-SNAPSHOT.war
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-hdfs/docker-hbase/javadocker/server-0.0.1-SNAPSHOT.war
-server/target/server-0.0.1-SNAPSHOT.war
-*.war
 ### STS ###
 .apt_generated
 .classpath

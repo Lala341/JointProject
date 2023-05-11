@@ -1,2 +1,1 @@
 ./hdfs/docker-hbase/javadocker/*.war
-./server/target/*
