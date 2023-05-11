@@ -83,7 +83,7 @@ services:
 
   myapp:
     build:
-      context: ./javadocker
+      context: ./../../server/target
       dockerfile: Dockerfile
     container_name: myapp
     ports:
