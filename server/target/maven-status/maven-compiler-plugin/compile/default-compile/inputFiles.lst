@@ -3,6 +3,9 @@ C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth
 C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth\server\service\DownloadService.java
 C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth\server\ServletInitializer.java
 C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth\server\service\BiometricService.java
+<<<<<<< HEAD
 C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth\server\service\PredictiveActivityModelService.java
+=======
+>>>>>>> d8b64f17703fa3c8011ddaa649953a61eef6bfa4
 C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth\server\repository\DownloadRepository.java
 C:\Users\lauis\Downloads\Maestria\JointProject\server\src\main\java\com\inHealth\server\ServerApplication.java

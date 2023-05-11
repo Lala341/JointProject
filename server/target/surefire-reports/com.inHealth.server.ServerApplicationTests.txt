@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.inHealth.server.ServerApplicationTests
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.046 s - in com.inHealth.server.ServerApplicationTests
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.148 s - in com.inHealth.server.ServerApplicationTests
+>>>>>>> d8b64f17703fa3c8011ddaa649953a61eef6bfa4

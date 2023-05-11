@@ -96,8 +96,11 @@ services:
       context: ./spark
       dockerfile: Dockerfile
     container_name: spark
+<<<<<<< HEAD
     ports:
       - 7077:7077
+=======
+>>>>>>> d8b64f17703fa3c8011ddaa649953a61eef6bfa4
     environment:
       HADOOP_CONF_DIR: /spark/conf
     command: "/bin/bash -c 'while :; do sleep 10; done'"
