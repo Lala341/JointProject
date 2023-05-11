@@ -1,10 +1,7 @@
 com\inHealth\server\service\DownloadService.class
 com\inHealth\server\ServletInitializer.class
 com\inHealth\server\controller\BiometricController.class
-<<<<<<< HEAD
 com\inHealth\server\service\PredictiveActivityModelService.class
-=======
->>>>>>> d8b64f17703fa3c8011ddaa649953a61eef6bfa4
 com\inHealth\server\repository\BiometricRepository.class
 com\inHealth\server\ServerApplication.class
 com\inHealth\server\repository\DownloadRepository.class
