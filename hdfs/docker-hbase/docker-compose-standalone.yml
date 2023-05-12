@@ -108,7 +108,6 @@ services:
       - spark-master
     ports:
       - "8081:8081"
-      - "38461:38461"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
   spark-worker-2:
@@ -119,7 +118,6 @@ services:
       - spark-master
     ports:
       - "8082:8081"
-      - "44895:44895"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
   spark-history-server:
