@@ -31,7 +31,6 @@ import static java.lang.Math.min;
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
                 conf.set("fs.defaultFS", "webhdfs://54.84.181.116:50070");
-                conf.set("dfs.datanode.hostname", "54.84.181.116");
 
                 FileSystem fs = FileSystem.get(conf);
                 String user = name.split("_")[min(1,name.split("_").length)];
