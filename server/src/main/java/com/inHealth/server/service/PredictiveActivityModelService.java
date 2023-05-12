@@ -15,14 +15,26 @@ public class PredictiveActivityModelService {
         System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
         System.setProperty("HADOOP_USER_NAME", "root");
 
-        SparkConf conf = new SparkConf().setAppName("InHealthSensors").setMaster("spark://localhost:7077");
+        SparkConf conf = new SparkConf().setAppName("InHealthSensors").setMaster("spark://54.84.181.116:7077")
+                .set("spark.hadoop.fs.defaultFS", "hdfs://54.84.181.116:9000")
+                .set("spark.hadoop.fs.hdfs.impl", "org.apache.hadoop.hdfs.DistributedFileSystem");
+
         System.out.println(conf);
         JavaSparkContext sc = new JavaSparkContext(conf);
         System.out.println(sc);
 
 
-        JavaRDD<String> data = sc.textFile("hdfs://localhost:9000/sensors-data/1e9c1862-ec25-4cde-a689-38ab696ccbc0/sensor-data_1e9c1862-ec25-4cde-a689-38ab696ccbc0_2023-04-19T13-41-44.txt");
-        System.out.println(data);
+        JavaRDD<String> data = sc.textFile("hdfs://54.84.181.116:9000/sensors-data/1e9c1862-ec25-4cde-a689-38ab696ccba1/sensor-data_1e9c1862-ec25-4cde-a689-38ab696ccba1_2023-04-19T14-05-06.txt");
+
+        // Print file content
+        System.out.println("File content:");
+        for (String line : data.collect()) {
+            System.out.println(line);
+        }
+        System.out.println("File content: c");
+
+        // Close Spark context
+        sc.close();
 
 
     }

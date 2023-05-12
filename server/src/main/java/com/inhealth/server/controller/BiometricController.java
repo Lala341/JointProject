@@ -29,7 +29,6 @@ public class BiometricController {
 
         try {
             String content = new String(file.getBytes());
-            System.out.println(content);
             biometricService.uploadToHdfs(content, name);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -53,12 +52,6 @@ public class BiometricController {
     @CrossOrigin
     @GetMapping("/")
     public ResponseEntity<String> ping() {
-        try {
-            modelService.createModel();
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.toString(), HttpStatus.OK);
-        }
 
         return new ResponseEntity<>("Web Server InHealth", HttpStatus.OK);
     }
