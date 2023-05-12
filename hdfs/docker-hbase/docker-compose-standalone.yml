@@ -106,7 +106,6 @@ services:
       - "8081:8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
-      - "SPARK_LOCAL_IP=54.84.181.116"
   spark-worker-2:
     image: bde2020/spark-worker:3.3.0-hadoop3.3
     container_name: spark-worker-2
@@ -116,7 +115,6 @@ services:
       - "8082:8081"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
-      - "SPARK_LOCAL_IP=54.84.181.116"
   spark-history-server:
       image: bde2020/spark-history-server:3.3.0-hadoop3.3
       container_name: spark-history-server
