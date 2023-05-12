@@ -30,7 +30,10 @@ import static java.lang.Math.min;
             public void uploadToHdfs(String content, String name) throws IOException {
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
-                FileSystem fs = FileSystem.get(URI.create(uri), conf);
+                conf.set("fs.defaultFS", "webhdfs://54.84.181.116:50070");
+                conf.set("dfs.datanode.hostname", "54.84.181.116");
+
+                FileSystem fs = FileSystem.get(conf);
                 String user = name.split("_")[min(1,name.split("_").length)];
                 Path hdfswritepathuser =new Path( hdfsDir+"/" +user);
                 System.out.println(name);
