@@ -96,6 +96,8 @@ services:
     ports:
       - "9090:8080"
       - "7077:7077"
+      - "6066:6066"
+      - "4040:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
   spark-worker-1:
