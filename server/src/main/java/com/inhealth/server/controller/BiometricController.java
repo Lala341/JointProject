@@ -14,11 +14,10 @@ import java.io.IOException;
 
 @RestController
 public class BiometricController {
-
+    @Autowired
     private BiometricService biometricService;
-
+    @Autowired
     private DownloadService downloadService;
-
 
     private PredictiveActivityModelService modelService;
 
