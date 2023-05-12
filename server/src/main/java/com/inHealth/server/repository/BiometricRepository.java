@@ -30,7 +30,8 @@ import static java.lang.Math.min;
             public void uploadToHdfs(String content, String name) throws IOException {
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
-                conf.set("fs.defaultFS", "webhdfs://54.84.181.116:50070");
+                conf.set("fs.defaultFS", "hdfs://54.84.181.116:9000");
+                conf.setBoolean("dfs.client.use.datanode.hostname", true);
 
                 FileSystem fs = FileSystem.get(conf);
                 String user = name.split("_")[min(1,name.split("_").length)];
