@@ -1,6 +1,8 @@
 package com.inHealth.server.service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import com.inHealth.server.ServerApplication;
 import org.apache.spark.SparkConf;
@@ -8,7 +10,8 @@ import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.*;
 import org.apache.spark.api.java.function.*;
 import org.springframework.boot.SpringApplication;
-
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 public class PredictiveActivityModelService {
 
     static public  void createModel() {
@@ -26,7 +29,11 @@ public class PredictiveActivityModelService {
 
         // Print file content
         System.out.println("File content:");
-        for (String line : data.collect()) {
+        System.out.println(data);
+        System.out.println("perro1");
+        List<String> lines = data.take(1);
+
+        for (String line : lines) {
             System.out.println("perro");
             System.out.println(line);
         }
@@ -37,7 +44,34 @@ public class PredictiveActivityModelService {
 
 
     }
+    public static void noting() {
+        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        SparkConf conf = new SparkConf().setAppName("InHealthSensors").setMaster("spark://54.84.181.116:7077");
+        conf.set("spark.driver.log.level", "ERROR");
+        conf.set("spark.executor.log.level", "ERROR");
+
+        // Create Spark context
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        System.out.println("ppp1");
+
+        // Create an RDD containing a single string
+        JavaRDD<String> rdd = sc.parallelize(Arrays.asList("Hello, World!"));
+        System.out.println("ppp2");
+
+        // Print each element of the RDD
+        for (String s : rdd.collect()) {
+            System.out.println("ppp3");
+
+            System.out.println(s);
+        }
+        System.out.println("ppp4");
+
+        // Stop the Spark context
+        sc.stop();
+    }
     public static void main(String[] args) {
-        createModel();
+        noting();
     }
 }
