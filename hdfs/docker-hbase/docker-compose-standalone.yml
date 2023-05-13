@@ -99,6 +99,7 @@ services:
        - ./data:/opt/spark-data
     environment:
       - "SPARK_LOCAL_IP=spark-master"
+      - "SPARK_PUBLIC_IP=54.84.181.116"
   spark-worker:
     image: spydernaz/spark-worker:latest
     depends_on:
