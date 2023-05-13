@@ -94,7 +94,7 @@ services:
     container_name: spark-standalone
     environment:
       - SPARK_MODE=standalone
-      - SPARK_MASTER_HOST=54.84.181.116
+      - SPARK_MASTER_HOST=0.0.0.0
       - SPARK_MASTER_PORT=7077
       - SPARK_WORKER_MEMORY=1g
       - SPARK_MASTER_WEBUI_PORT=9090
@@ -105,7 +105,7 @@ services:
       - "7077:7077"
       - "8081-8084:8081-8084"
     command: "bin/spark-class org.apache.spark.deploy.master.Master"
-    
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:
