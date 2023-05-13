@@ -100,9 +100,6 @@ services:
       - "4040:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
-      - "SPARK_MASTER_PORT=7077"
-      - "SPARK_MASTER_WEBUI_PORT=8080"
-      - "SPARK_MASTER_HOST=54.84.181.116"
   spark-worker-1:
     image: bde2020/spark-worker:3.3.0-hadoop3.3
     container_name: spark-worker-1
@@ -113,9 +110,6 @@ services:
       - "8081:8081"
     environment:
       - "SPARK_MASTER=spark://54.84.181.116:7077"
-      - "SPARK_MASTER_PORT=7077"
-      - "SPARK_MASTER_WEBUI_PORT=8080"
-      - "SPARK_MASTER_HOST=54.84.181.116"
   spark-worker-2:
     image: bde2020/spark-worker:3.3.0-hadoop3.3
     container_name: spark-worker-2
@@ -126,9 +120,6 @@ services:
       - "8082:8081"
     environment:
       - "SPARK_MASTER=spark://54.84.181.116:7077"
-      - "SPARK_MASTER_PORT=7077"
-      - "SPARK_MASTER_WEBUI_PORT=8080"
-      - "SPARK_MASTER_HOST=54.84.181.116"
   spark-history-server:
       image: bde2020/spark-history-server:3.3.0-hadoop3.3
       container_name: spark-history-server
