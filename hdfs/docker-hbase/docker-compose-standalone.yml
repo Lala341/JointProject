@@ -90,7 +90,7 @@ services:
     depends_on:
       - hbase
   spark:
-    image: apache/spark:3.2.0
+    image: apache/spark:3.4.0
     ports:
       - "9090:8080"
       - "7077:7077"
