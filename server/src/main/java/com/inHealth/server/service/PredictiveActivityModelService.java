@@ -55,7 +55,8 @@ public class PredictiveActivityModelService {
         // conf.set("spark.executor.log.level", "ERROR");
 
         // conf.set("spark.kubernetes.driver.annotation.sidecar.istio.io/inject", "false");
-       // conf.set("spark.driver.port", "8081");
+       conf.set("spark.driver.port", "7077");
+        conf.set("spark.driver.hostname", "54.84.181.116");
         //  conf.set("spark.driver.maxResultSize", "4g");
 
         //  conf.set("spark.driver.memory", "4g");

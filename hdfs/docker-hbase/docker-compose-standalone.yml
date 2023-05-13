@@ -99,6 +99,7 @@ services:
       - "4040:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
+      - "SPARK_MASTER=spark://54.84.181.116:7077"
       - SPARK_MASTER_WEBUI_PORT=9090
       - "SPARK_MASTER_HOSTNAME=spark-master"
       - "SPARK_DRIVER_HOST=spark-master"
@@ -112,7 +113,7 @@ services:
       - "8081:8081"
       - "7078:7078"
     environment:
-      - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_MASTER=spark://54.84.181.116:7077"
       - "SPARK_WORKER_HOSTNAME=spark-worker-1"
       - "SPARK_WORKER_PORT=7078"
       - "SPARK_WORKER_HOST=spark-worker-1"
