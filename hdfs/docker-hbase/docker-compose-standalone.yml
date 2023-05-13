@@ -98,6 +98,7 @@ services:
       - "7077:7077"
       - "6066:6066"
       - "4040:4040"
+      - "7078:7078"
     environment:
       - INIT_DAEMON_STEP=setup_spark
       - "SPARK_MASTER_HOSTNAME=54.84.181.116"
