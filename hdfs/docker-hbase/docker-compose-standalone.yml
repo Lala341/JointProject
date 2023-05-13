@@ -90,21 +90,32 @@ services:
     depends_on:
       - hbase
   spark:
-    image: bde2020/spark:3.1.2-hadoop3.2
-    container_name: spark
-    hostname: spark
+    image: spark:3.1.2
     ports:
-      - "9090:9090" # Spark master web UI
-      - "7077:7077" # Spark master/worker port
+      - "9090:9090"
+      - "7077:7077"
     environment:
-      - INIT_DAEMON_STEP=setup_spark
-      - "SPARK_MASTER_HOST=spark"
+      - SPARK_MASTER_HOST=spark
+      - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=9090
-      - "SPARK_MASTER_PORT=7077"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
-    command: >
-      bash -c "start-master.sh &&
-               start-worker.sh spark://spark:7077"
+      - SPARK_HOME=/opt/spark
+      - PATH=$PATH:/opt/spark/bin
+    command: bin/spark-class org.apache.spark.deploy.master.Master -h spark
+  
+    depends_on:
+      - worker
+
+  worker:
+    image: spark:3.1.2
+    environment:
+      - SPARK_MASTER_HOST=spark
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=9090
+      - "SPARK_PUBLIC_DNS=54.84.181.116"
+      - SPARK_HOME=/opt/spark
+      - PATH=$PATH:/opt/spark/bin
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark:7077
 
 volumes:
   hadoop_namenode:
