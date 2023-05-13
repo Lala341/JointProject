@@ -96,12 +96,14 @@ services:
     ports:
       - "9090:9090"
       - "7077:7077"
+      - "5032:5032"
     environment:
       - SPARK_MASTER_WEBUI_PORT=9090
       - "SPARK_MASTER_HOST=spark-master"
       - "SPARK_MASTER_PORT=7077"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
       - "SPARK_LOCAL_IP=0.0.0.0"
+      - SPARK_DRIVER_PORT=5032
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
   spark-worker-1:
@@ -112,7 +114,7 @@ services:
     ports:
       - "8081:8081"
       - "7078:7078"
-      - "9999:9999"
+      - "5031:5031"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - SPARK_WORKER_PORT=7078
@@ -120,7 +122,7 @@ services:
       - "SPARK_WORKER_CORES=2"
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
-      - SPARK_DRIVER_PORT=9999
+      - SPARK_DRIVER_PORT=5031
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
 volumes:
