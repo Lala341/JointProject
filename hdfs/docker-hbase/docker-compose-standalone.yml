@@ -96,7 +96,6 @@ services:
       - "7077:7077"
     environment:
       - SPARK_MODE=master
-      - SPARK_MASTER_HOST=127.0.0.1
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=8080
     command: bash -c "start-master.sh && start-worker.sh spark://127.0.0.1:7077 -c 1 -m 1g && start-worker.sh spark://127.0.0.1:7077 -c 1 -m 1g"
