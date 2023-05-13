@@ -97,6 +97,7 @@ services:
       MASTER: spark://master:7077
       SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: 54.84.181.116
+      SPARK_MASTER_WEBUI_PORT: 9090
     expose:
       - 7001
       - 7002
@@ -109,7 +110,7 @@ services:
       - 4040:4040
       - 6066:6066
       - 7077:7077
-      - 9090:8080
+      - 9090:9090
     volumes:
       - ./conf/master:/conf
       - ./data:/tmp/data
@@ -139,9 +140,6 @@ services:
       - ./conf/worker:/conf
       - ./data:/tmp/data
 
-networks:
-  spark-nw:
-    external: true
 volumes:
   hadoop_namenode:
   hadoop_datanode:
