@@ -90,34 +90,40 @@ services:
     depends_on:
       - hbase
   spark-master:
-    image: spydernaz/spark-master:latest
+    image: blueskyareahm/spark-base:latest
+    hostname: doc-spark-master101.local
+    container_name: spark-master101
     ports:
-      - "9090:9090"
-      - "7077:7077"
-    volumes:
-       - ./apps:/opt/spark-apps
-       - ./data:/opt/spark-data
-    environment:
-      - "SPARK_LOCAL_IP=0.0.0.0"
-      - SPARK_MASTER_WEBUI_PORT=9090
-      - "SPARK_MASTER=spark://spark-master:7077"
-      - "SPARK_PUBLIC_DNS=54.84.181.116"
+      - 4040:4040
+      - 8080:8080
+      - 7077:7077
+    mem_limit: 1g
+    networks:
+      spark-nw:
+        ipv4_address: 172.30.1.2
+    command: /spark/bin/spark-class org.apache.spark.deploy.master.Master --host 0.0.0.0
+    extra_hosts:
+      - "doc-spark-worker101.local:172.30.1.3"
+
   spark-worker:
-    image: spydernaz/spark-worker:latest
+    image: blueskyareahm/spark-base:latest
+    hostname: doc-spark-worker101.local
+    container_name: spark-worker101
     depends_on:
       - spark-master
     ports:
-      - "8081"
-    environment:
-      - SPARK_MASTER=spark://spark-master:7077
-      - SPARK_WORKER_CORES=1
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_DRIVER_MEMORY=128m
-      - SPARK_EXECUTOR_MEMORY=256m
-      - SPARK_PUBLIC_DNS=54.84.181.116
-    volumes:
-       - ./apps:/opt/spark-apps
-       - ./data:/opt/spark-data
+      - 8081:8081
+    mem_limit: 1g
+    networks:
+      spark-nw:
+        ipv4_address: 172.30.1.3
+    command: /spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --host 172.30.1.3
+    extra_hosts:
+      - "doc-spark-master101.local:172.30.1.2"
+
+networks:
+  spark-nw:
+    external: true
 volumes:
   hadoop_namenode:
   hadoop_datanode:
