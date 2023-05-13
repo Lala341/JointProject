@@ -106,8 +106,12 @@ services:
     container_name: spark-worker-1
     depends_on:
       - spark-master
+    ports:
+      - "8081:8081"
+      - "7078:7078"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_WORKER_PORT=7078"
       - "SPARK_WORKER_CORES=2"
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
@@ -116,8 +120,12 @@ services:
     container_name: spark-worker-2
     depends_on:
       - spark-master
+    ports:
+      - "8082:8081"
+      - "7079:7079"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_WORKER_PORT=7079"
       - "SPARK_WORKER_CORES=2"
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
