@@ -89,34 +89,23 @@ services:
     command: ['catalina.sh', 'run']
     depends_on:
       - hbase
-  spark-master:
-    image: bitnami/spark:3.1
-    container_name: spark-master
+  spark:
+    image: bde2020/spark:3.1.2-hadoop3.2
+    container_name: spark
     ports:
-      - "7077:7077"
-      - "9090:8080"
+      - "9090:8080" # Spark master web UI
+      - "7077:7077" # Spark master
+      - "4040-4050:4040-4050" # Spark worker web UI
     environment:
+      - INIT_DAEMON_STEP=setup_spark
       - SPARK_MODE=master
+      - SPARK_MASTER_HOST=0.0.0.0
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=8080
-  spark-worker-1:
-    image: bitnami/spark:3.1
-    container_name: spark-worker-1
-    ports:
-      - "8081:8081"
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_WEBUI_PORT=8081
-  spark-worker-2:
-    image: bitnami/spark:3.1
-    container_name: spark-worker-2
-    ports:
-      - "8082:8081"
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_WEBUI_PORT=8081
+      - SPARK_WORKER_WEBUI_PORT=4040
+      - SPARK_WORKER_INSTANCES=2
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=2g
 
 volumes:
   hadoop_namenode:
