@@ -120,6 +120,7 @@ services:
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
       - "SPARK_PUBLIC_IP=54.84.181.116"
+      - "SPARK_WORKER_OPTS=--no-randomize-ports"
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
   spark-worker-2:
@@ -138,6 +139,7 @@ services:
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
       - "SPARK_PUBLIC_IP=54.84.181.116"
+      - "SPARK_WORKER_OPTS=--no-randomize-ports"
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
 volumes:
