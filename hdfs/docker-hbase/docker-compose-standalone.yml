@@ -105,6 +105,14 @@ services:
     command: >
       bash -c "start-master.sh &&
                start-worker.sh spark://spark:7077"
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
 
 volumes:
   hadoop_namenode:
@@ -112,3 +120,4 @@ volumes:
   hadoop_historyserver:
   hbase_data:
   hbase_zookeeper_data:
+  mongodb_data:
