@@ -89,38 +89,36 @@ services:
     command: ['catalina.sh', 'run']
     depends_on:
       - hbase
-  spark-master:
-    image: spark_lab/spark:latest
-    container_name: spark-master
-    hostname: spark-master
+  master:
+    image: p7hb/docker-spark:latest
     ports:
-      - "9090:9090"
-      - "7077:7077"
-    networks:
-      - spark-network
+      - 7077:7077
+      - 9090:8080
     environment:
-      - "SPARK_LOCAL_IP=spark-master"
-      - "SPARK_MASTER_PORT=7077"
-      - "SPARK_MASTER_WEBUI_PORT=9090"
-    command: "/start-master.sh"
-  spark-worker:
-    image: spark_lab/spark:latest
-    depends_on:
-      - spark-master
+      SPARK_LOCAL_DIRS: /root/data    
+    volumes:
+      - spark_storage:/root/data
+    command: ["/usr/local/spark/bin/spark-class", "org.apache.spark.deploy.master.Master", "--host", "master"]
+  
+  worker:
+    image: p7hb/docker-spark:latest
     ports:
-      - 8081
-    networks:
-      - spark-network
+      - 8081:8081
+    volumes:
+      - spark_storage:/root/data
     environment:
-      - "SPARK_MASTER=spark://spark-master:7077"
-      - "SPARK_WORKER_WEBUI_PORT=8081"
-    command: "/start-worker.sh"
+      SPARK_WORKER_CORES: 4
+      SPARK_WORKER_MEMORY: 4g
+      SPARK_LOCAL_DIRS: /root/data
+    command: ["/usr/local/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://master:7077"]
+  
+  client:
+    image: ouwen/tensorflow-spark
+    ports:
+      - 8888:8888
 
-networks:
-  spark-network:
-    driver: bridge
-    ipam:
-      driver: default
+volumes:
+  spark_storage:
 
 volumes:
   hadoop_namenode:
