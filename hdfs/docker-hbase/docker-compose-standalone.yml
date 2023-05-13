@@ -112,27 +112,11 @@ services:
     ports:
       - "8081:8081"
       - "7078:7078"
+      - "53000-54000:53000-54000"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - SPARK_WORKER_PORT=7078
       - SPARK_WORKER_WEBUI_PORT=8081
-      - "SPARK_WORKER_CORES=2"
-      - "SPARK_WORKER_MEMORY=2g"
-      - "SPARK_PUBLIC_DNS=54.84.181.116"
-    extra_hosts:
-      - "host.docker.internal:54.84.181.116"
-  spark-worker-2:
-    image: bde2020/spark-worker:3.3.0-hadoop3.3
-    container_name: spark-worker-2
-    depends_on:
-      - spark-master
-    ports:
-      - "8082:8082"
-      - "7079:7079"
-    environment:
-      - "SPARK_MASTER=spark://spark-master:7077"
-      - SPARK_WORKER_PORT=7079
-      - SPARK_WORKER_WEBUI_PORT=8082
       - "SPARK_WORKER_CORES=2"
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
