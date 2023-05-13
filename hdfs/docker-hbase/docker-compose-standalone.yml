@@ -94,7 +94,6 @@ services:
     container_name: spark-standalone
     environment:
       - SPARK_MODE=standalone
-      - SPARK_MASTER_HOST=0.0.0.0
       - SPARK_MASTER_PORT=7077
       - SPARK_WORKER_MEMORY=1g
       - SPARK_MASTER_WEBUI_PORT=9090
