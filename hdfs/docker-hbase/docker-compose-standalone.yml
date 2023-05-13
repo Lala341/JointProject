@@ -89,17 +89,23 @@ services:
     command: ['catalina.sh', 'run']
     depends_on:
       - hbase
-  spark:
-    image: bitnami/spark:3.2.0
+  spark-master:
+    image: bde2020/spark-master:3.1.2-hadoop3.2
+    container_name: spark-master
     ports:
-      - 10001:8080
-      - 10000:7077
-
+      - "7077:7077"
+      - "8081:8080"
   spark-worker:
-    image: bitnami/spark:3.2.0
+    image: bde2020/spark-worker:3.1.2-hadoop3.2
+    container_name: spark-worker
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_MASTER=spark://spark-master:7077
+    depends_on:
+      - spark-master
+    ports:
+      - "8082:8081"
+    command: >
+      bash -c "sleep infinity"
 
 volumes:
   hadoop_namenode:
