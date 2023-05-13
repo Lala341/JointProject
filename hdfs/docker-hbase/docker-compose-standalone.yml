@@ -96,7 +96,7 @@ services:
     ports:
       - "6066:6066"
       - "7070:7070"
-      - "8080:8080"
+      - "9090:8080"
       - "50071:50070"
   worker:
     image: singularities/spark
