@@ -99,7 +99,8 @@ services:
       - "4040:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
-      - SPARK_LOCAL_IP="54.84.181.116"
+      - SPARK_LOCAL_IP="0.0.0.0"
+      - SPARK_PUBLIC_IP="54.84.181.116"
       - "SPARK_MASTER=spark://54.84.181.116:7077"
       - SPARK_MASTER_WEBUI_PORT=9090
       - "SPARK_MASTER_HOSTNAME=spark-master"
@@ -115,7 +116,8 @@ services:
       - "7078:7078"
     environment:
       - "SPARK_MASTER=spark://54.84.181.116:7077"
-      - SPARK_LOCAL_IP="54.84.181.116"
+      - SPARK_LOCAL_IP="0.0.0.0"
+      - SPARK_PUBLIC_IP="54.84.181.116"
       - "SPARK_WORKER_HOSTNAME=spark-worker-1"
       - "SPARK_WORKER_PORT=7078"
       - "SPARK_WORKER_HOST=spark-worker-1"
