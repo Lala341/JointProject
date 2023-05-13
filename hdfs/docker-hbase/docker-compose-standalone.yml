@@ -102,6 +102,7 @@ services:
       - "SPARK_MASTER_PORT=7077"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
       - SPARK_DRIVER_MAXRESULTSIZE=4g
+      - "SPARK_MASTER_MEMORY=4g"
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
   spark-worker-1:
