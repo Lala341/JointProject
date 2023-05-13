@@ -112,7 +112,6 @@ services:
     ports:
       - "8081:8081"
       - "7078:7078"
-      - "53000-54000:53000-54000"
     environment:
       - "SPARK_MASTER=spark://spark-master:7077"
       - SPARK_WORKER_PORT=7078
