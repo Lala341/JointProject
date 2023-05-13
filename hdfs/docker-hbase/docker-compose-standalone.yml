@@ -97,7 +97,7 @@ services:
       - "7077:7077" # Master URL
     environment:
       - SPARK_MODE=master
-      - SPARK_MASTER_HOST=127.0.0.1
+      - SPARK_MASTER_HOST=54.84.181.116
       - SPARK_MASTER_PORT=7077
       - SPARK_WORKER_INSTANCES=2
       - SPARK_WORKER_MEMORY=1g
@@ -111,7 +111,7 @@ services:
     container_name: spark-worker-1
     environment:
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://127.0.0.1:7077
+      - SPARK_MASTER_URL=spark://54.84.181.116:7077
       - SPARK_WORKER_MEMORY=1g
       - SPARK_WORKER_CORES=1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker
@@ -125,7 +125,7 @@ services:
     container_name: spark-worker-2
     environment:
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://127.0.0.1:7077
+      - SPARK_MASTER_URL=spark://54.84.181.116:7077
       - SPARK_WORKER_MEMORY=1g
       - SPARK_WORKER_CORES=1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker
