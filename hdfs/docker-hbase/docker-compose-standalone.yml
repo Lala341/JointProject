@@ -90,11 +90,11 @@ services:
     depends_on:
       - hbase
   spark:
-    image: apache/spark:3.1.2
+    image: apache/spark:3.1.1
     container_name: spark
     hostname: spark
     ports:
-      - "8080:8080" # Spark master UI
+      - "9090:8080" # Spark master UI
       - "7077:7077" # Spark master & worker communication
       - "8081:8081" # Spark worker UI
     environment:
