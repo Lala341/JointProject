@@ -99,8 +99,8 @@ services:
       - "4040:4040"
     environment:
       - INIT_DAEMON_STEP=setup_spark
-      - SPARK_MASTER_HOST=ec2-54-84-181-116.compute-1.amazonaws.com
-      - SPARK_MASTER=spark://ec2-54-84-181-116.compute-1.amazonaws.com:7077
+      - SPARK_MASTER_HOST=54.84.181.116
+      - SPARK_MASTER=spark://54.84.181.116:7077
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=9090
   spark-worker-1:
@@ -112,7 +112,7 @@ services:
       - "8081:8081"
       - "7078:7078"
     environment:
-      - SPARK_MASTER=spark://ec2-54-84-181-116.compute-1.amazonaws.com:7077
+      - SPARK_MASTER=spark://54.84.181.116:7077
       - SPARK_WORKER_PORT=7078
       - SPARK_WORKER_CORES=2
       - SPARK_WORKER_MEMORY=2g

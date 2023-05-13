@@ -60,8 +60,8 @@ public class PredictiveActivityModelService {
 
         // conf.set("spark.kubernetes.driver.annotation.sidecar.istio.io/inject", "false");
 
-        conf.set("spark.local.ip","54.84.181.116") ;
-        conf.set("spark.driver.host","localhost");
+      //  conf.set("spark.local.ip","54.84.181.116") ;
+      //  conf.set("spark.driver.host","localhost");
       // conf.set("spark.driver.port", "7077");
       //  conf.set("spark.driver.bindAddress", "54.84.181.116");
 
