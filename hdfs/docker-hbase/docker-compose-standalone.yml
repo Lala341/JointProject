@@ -111,7 +111,7 @@ services:
       - "8081:8081"
       - "7078:7078"
     environment:
-      - "SPARK_MASTER=spark://54.84.181.116:7077"
+      - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_HOSTNAME=54.84.181.116"
       - "SPARK_WORKER_PORT=7078"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
@@ -127,7 +127,7 @@ services:
       - "8082:8081"
       - "7079:7079"
     environment:
-      - "SPARK_MASTER=spark://54.84.181.116:7077"
+      - "SPARK_MASTER=spark://spark-master:7077"
       - "SPARK_WORKER_HOSTNAME=54.84.181.116"
       - "SPARK_WORKER_PORT=7079"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
