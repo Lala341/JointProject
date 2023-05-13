@@ -90,44 +90,55 @@ services:
     depends_on:
       - hbase
   spark:
-    image: "bitnami/spark:3-debian-10"
+    image: bitnami/spark:3
+    container_name: spark-standalone
     ports:
-      - "9090:8080"
-      - "7077:7077"
+      - "9090:8080" # Web UI
+      - "7077:7077" # Master URL
     environment:
       - SPARK_MODE=master
-      - SPARK_MASTER_HOST=spark
+      - SPARK_MASTER_HOST=127.0.0.1
+      - SPARK_MASTER_PORT=7077
+      - SPARK_WORKER_INSTANCES=2
+      - SPARK_WORKER_MEMORY=1g
+      - SPARK_WORKER_CORES=1
     command: bin/spark-class org.apache.spark.deploy.master.Master
+    networks:
+      - spark-network
 
-  spark-worker-1:
-    image: "bitnami/spark:3-debian-10"
-    depends_on:
-      - spark
+  worker-1:
+    image: bitnami/spark:3
+    container_name: spark-worker-1
     environment:
       - SPARK_MODE=worker
-      - SPARK_WORKER_CORES=1
+      - SPARK_MASTER_URL=spark://127.0.0.1:7077
       - SPARK_WORKER_MEMORY=1g
-      - SPARK_WORKER_INSTANCE=1
-      - SPARK_WORKER_PORT=8881
-      - SPARK_WORKER_WEBUI_PORT=8081
-      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_CORES=1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker
-
-  spark-worker-2:
-    image: "bitnami/spark:3-debian-10"
     depends_on:
       - spark
+    networks:
+      - spark-network
+
+  worker-2:
+    image: bitnami/spark:3
+    container_name: spark-worker-2
     environment:
       - SPARK_MODE=worker
-      - SPARK_WORKER_CORES=1
+      - SPARK_MASTER_URL=spark://127.0.0.1:7077
       - SPARK_WORKER_MEMORY=1g
-      - SPARK_WORKER_INSTANCE=2
-      - SPARK_WORKER_PORT=8882
-      - SPARK_WORKER_WEBUI_PORT=8082
-      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_WORKER_CORES=1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker
+    depends_on:
+      - spark
+    networks:
+      - spark-network
   
-  volumes:
+  
+networks:
+  spark-network:
+
+volumes:
   hadoop_namenode:
   hadoop_datanode:
   hadoop_historyserver:
