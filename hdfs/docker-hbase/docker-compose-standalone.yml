@@ -97,7 +97,6 @@ services:
       - "9090:9090"
       - "7077:7077"
     environment:
-      - "SPARK_PUBLIC_DNS=54.84.181.116"
       - SPARK_MASTER_WEBUI_PORT=9090
       - "SPARK_MASTER_HOST=spark-master"
       - "SPARK_MASTER_PORT=7077"
@@ -116,7 +115,6 @@ services:
       - "SPARK_WORKER_PORT=7078"
       - "SPARK_WORKER_CORES=2"
       - "SPARK_WORKER_MEMORY=2g"
-      - "SPARK_PUBLIC_DNS=54.84.181.116"
     extra_hosts:
        - "host.docker.internal:54.84.181.116"
   spark-worker-2:
@@ -132,7 +130,6 @@ services:
       - "SPARK_WORKER_PORT=7079"
       - "SPARK_WORKER_CORES=2"
       - "SPARK_WORKER_MEMORY=2g"
-      - "SPARK_PUBLIC_DNS=54.84.181.116"
     extra_hosts:
        - "host.docker.internal:54.84.181.116"
 volumes:
