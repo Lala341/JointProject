@@ -19,6 +19,8 @@ public class PredictiveActivityModelService {
         System.setProperty("HADOOP_USER_NAME", "root");
 
         SparkConf conf = new SparkConf().setAppName("InHealthSensors").setMaster("spark://54.84.181.116:7077");
+        conf.set("spark.kubernetes.driver.annotation.sidecar.istio.io/inject", "false");
+        conf.set("spark.kubernetes.executor.annotation.sidecar.istio.io/inject", "false");
 
         System.out.println(conf);
         JavaSparkContext sc = new JavaSparkContext(conf);
@@ -51,6 +53,9 @@ public class PredictiveActivityModelService {
         SparkConf conf = new SparkConf().setAppName("InHealthSensors").setMaster("spark://54.84.181.116:7077");
         conf.set("spark.driver.log.level", "ERROR");
         conf.set("spark.executor.log.level", "ERROR");
+
+        conf.set("spark.kubernetes.driver.annotation.sidecar.istio.io/inject", "false");
+        conf.set("spark.kubernetes.executor.annotation.sidecar.istio.io/inject", "false");
 
         // Create Spark context
         JavaSparkContext sc = new JavaSparkContext(conf);
