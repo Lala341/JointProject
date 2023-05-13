@@ -99,7 +99,7 @@ services:
        - ./data:/opt/spark-data
     environment:
       - "SPARK_LOCAL_IP=spark-master"
-      - "SPARK_PUBLIC_IP=54.84.181.116"
+      - "SPARK_PUBLIC_DNS=54.84.181.116"
   spark-worker:
     image: spydernaz/spark-worker:latest
     depends_on:
@@ -112,6 +112,7 @@ services:
       - SPARK_WORKER_MEMORY=1G
       - SPARK_DRIVER_MEMORY=128m
       - SPARK_EXECUTOR_MEMORY=256m
+      - SPARK_PUBLIC_DNS=54.84.181.116
     volumes:
        - ./apps:/opt/spark-apps
        - ./data:/opt/spark-data
