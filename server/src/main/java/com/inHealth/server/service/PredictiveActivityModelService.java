@@ -55,8 +55,7 @@ public class PredictiveActivityModelService {
         conf.set("spark.executor.log.level", "ERROR");
 
         conf.set("spark.kubernetes.driver.annotation.sidecar.istio.io/inject", "false");
-        conf.set("spark.executor.port", "9999");
-
+        conf.set("spark.driver.port", "8081");
         // Create Spark context
         JavaSparkContext sc = new JavaSparkContext(conf);
         System.out.println("ppp1");

@@ -104,6 +104,7 @@ services:
       - "SPARK_PUBLIC_DNS=54.84.181.116"
       - "SPARK_LOCAL_IP=0.0.0.0"
       - SPARK_DRIVER_PORT=5032
+      - SPARK_DRIVER_MAXRESULTSIZE=1g
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
   spark-worker-1:
@@ -123,6 +124,7 @@ services:
       - "SPARK_WORKER_MEMORY=2g"
       - "SPARK_PUBLIC_DNS=54.84.181.116"
       - SPARK_DRIVER_PORT=5031
+      - SPARK_DRIVER_MAXRESULTSIZE=1g
     extra_hosts:
       - "host.docker.internal:54.84.181.116"
 volumes:
