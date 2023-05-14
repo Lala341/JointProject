@@ -53,7 +53,7 @@ public class PredictiveActivityModelService {
         System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
         System.setProperty("HADOOP_USER_NAME", "root");
 
-        SparkConf conf = new SparkConf().setAppName("InHealthSensors").setMaster("spark://54.84.181.116:7077")
+        SparkConf conf = new SparkConf().setAppName("InHealthSensorsPPP").setMaster("spark://ec2-54-84-181-116.compute-1.amazonaws.com:7077");
                 ;
         //  conf.set("spark.driver.log.level", "ERROR");
         // conf.set("spark.executor.log.level", "ERROR");
