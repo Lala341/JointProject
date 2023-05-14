@@ -187,6 +187,17 @@ public class PredictiveActivityModelService {
         System.out.println("File testErrDT:");
         System.out.println(testErrDT);
 
+
+        // specify the path where the model will be saved
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets";
+
+        // save the model
+        model.save(spark.sparkContext(), modelPath);
+        DecisionTreeModel dtModel = DecisionTreeModel.load(spark.sparkContext(), modelPath);
+
+
+        System.out.println("Final complete");
+
         spark.stop();
 
 
