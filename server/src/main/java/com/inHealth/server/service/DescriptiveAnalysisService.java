@@ -1,7 +1,12 @@
 package com.inHealth.server.service;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession;
+import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
@@ -16,12 +21,19 @@ import java.util.List;
 public class DescriptiveAnalysisService {
 
     private final SparkSession spark;
+    private final MongoClient mongoClient;
+    private final MongoDatabase database;
 
     public DescriptiveAnalysisService() {
         spark = SparkSession.builder()
                 .appName("Step Counting")
                 .master("local[*]")
                 .getOrCreate();
+
+        // Create a MongoClient instance for connecting to MongoDB
+        mongoClient = MongoClients.create("mongodb://localhost:27017");
+        database = mongoClient.getDatabase("inhealth"); // Replace "inhealth" with your desired database name
+
     }
 
     public double calculateDistance(String user, LocalDate date) {
@@ -68,6 +80,14 @@ public class DescriptiveAnalysisService {
 
         // Calculate the total distance crossed using reduce action
         double totalDistance = distancesRDD.reduce(Double::sum);
+
+        // Store the calculated KPI in MongoDB
+        MongoCollection<Document> kpiCollection = database.getCollection("distancekpi"); // Replace "distancekpi" with your desired collection name
+        Document kpiDocument = new Document();
+        kpiDocument.append("user", user);
+        kpiDocument.append("date", date.toString());
+        kpiDocument.append("distance", totalDistance);
+        kpiCollection.insertOne(kpiDocument);
 
         return totalDistance;
     }
@@ -126,6 +146,14 @@ public class DescriptiveAnalysisService {
 
         // Calculate the total steps taken using reduce action
         int totalSteps = stepsRDD.reduce(Integer::sum);
+
+        // Store the calculated KPI in MongoDB
+        MongoCollection<Document> kpiCollection = database.getCollection("stepskpi"); // Replace "stepskpi" with your desired collection name
+        Document kpiDocument = new Document();
+        kpiDocument.append("user", user);
+        kpiDocument.append("date", date.toString());
+        kpiDocument.append("steps", totalSteps);
+        kpiCollection.insertOne(kpiDocument);
 
         return totalSteps;
     }
