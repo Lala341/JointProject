@@ -161,5 +161,6 @@ public class DescriptiveAnalysisService {
     @PreDestroy
     private void cleanup() {
         spark.stop();
+        mongoClient.close();
     }
 }
