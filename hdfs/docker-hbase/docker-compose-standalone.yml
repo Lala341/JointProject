@@ -142,13 +142,22 @@ services:
         - /tmp/spark-events-local:/tmp/spark-events
       extra_hosts:
         - "host.docker.internal:54.84.181.116"
-  mongodb:
+  mongo:
     image: mongo:latest
     container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "28081:8081"
+    depends_on:
+      - mongo
       
 volumes:
   shared-workspace:
