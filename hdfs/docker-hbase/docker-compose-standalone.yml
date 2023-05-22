@@ -142,7 +142,14 @@ services:
         - /tmp/spark-events-local:/tmp/spark-events
       extra_hosts:
         - "host.docker.internal:54.84.181.116"
-
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      
 volumes:
   shared-workspace:
   hadoop_namenode:
@@ -150,3 +157,4 @@ volumes:
   hadoop_historyserver:
   hbase_data:
   hbase_zookeeper_data:
+  mongodb_data:
