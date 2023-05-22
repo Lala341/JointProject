@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 @RestController()
@@ -18,7 +18,7 @@ public class DescriptiveAnalysisController {
     @GetMapping("/distance")
     public ResponseEntity<Double> getDailyDistance(@RequestParam("user") String user, @RequestParam("date") String dateString) {
         try {
-            LocalDate date = LocalDate.parse(dateString);
+            LocalDateTime date = LocalDateTime.parse(dateString);
             double totalDistance = descriptiveAnalysisService.calculateDistance(user, date);
             return new ResponseEntity<>(totalDistance, HttpStatus.OK);
         } catch (DateTimeParseException e) {
@@ -29,7 +29,7 @@ public class DescriptiveAnalysisController {
     @GetMapping("/steps")
     public ResponseEntity<Integer> getDailySteps(@RequestParam("user") String user, @RequestParam("date") String dateString) {
         try {
-            LocalDate date = LocalDate.parse(dateString);
+            LocalDateTime date = LocalDateTime.parse(dateString);
             int totalSteps = descriptiveAnalysisService.calculateTotalSteps(user, date, 1.5, 50, 25);
             return new ResponseEntity<>(totalSteps, HttpStatus.OK);
         } catch (DateTimeParseException e) {

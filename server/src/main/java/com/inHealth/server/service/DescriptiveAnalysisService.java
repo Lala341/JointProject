@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PreDestroy;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,7 @@ public class DescriptiveAnalysisService {
 
     }
 
-    public double calculateDistance(String user, LocalDate date) {
+    public double calculateDistance(String user, LocalDateTime date) {
         SparkSession spark = SparkSession.builder()
                 .appName("Distance Calculation")
                 .master("local[*]")
@@ -50,7 +51,7 @@ public class DescriptiveAnalysisService {
                     String[] values = line.split(",");
                     String timestampStr = values[1];
                     LocalDate fileDate = LocalDate.parse(timestampStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE);
-                    return fileDate.equals(date);
+                    return fileDate.equals(date.toLocalDate());
                 });
 
         // Calculate the distance using map transformation
@@ -92,7 +93,7 @@ public class DescriptiveAnalysisService {
         return totalDistance;
     }
 
-    public int calculateTotalSteps(String user, LocalDate date, double threshold, int windowSize, int stepSize) {
+    public int calculateTotalSteps(String user, LocalDateTime date, double threshold, int windowSize, int stepSize) {
         SparkSession spark = SparkSession.builder()
                 .appName("Step Counting")
                 .master("local[*]")
@@ -106,7 +107,7 @@ public class DescriptiveAnalysisService {
                     String[] values = line.split(",");
                     String timestampStr = values[1];
                     LocalDate fileDate = LocalDate.parse(timestampStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE);
-                    return fileDate.equals(date);
+                    return fileDate.equals(date.toLocalDate());
                 });
 
         // Calculate the total steps using map transformation with windowing and averaging
