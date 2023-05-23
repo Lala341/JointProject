@@ -36,9 +36,6 @@ import java.util.List;
 public class DescriptiveAnalysisService {
 
     private final SparkSession spark;
-    private final MongoClient mongoClient;
-    private final MongoDatabase database;
-
     @Autowired
     private DistanceKPIRepository distanceKPIRepository;
     @Autowired
@@ -49,11 +46,6 @@ public class DescriptiveAnalysisService {
                 .appName("Step Counting")
                 .master("local[*]")
                 .getOrCreate();
-
-        // Create a MongoClient instance for connecting to MongoDB
-        mongoClient = MongoClients.create("mongodb://localhost:27017");
-        database = mongoClient.getDatabase("inhealth"); // Replace "inhealth" with your desired database name
-
     }
 
     public double calculateDistance(String user, LocalDateTime date) {
@@ -201,6 +193,5 @@ public class DescriptiveAnalysisService {
     @PreDestroy
     private void cleanup() {
         spark.stop();
-        mongoClient.close();
     }
 }
