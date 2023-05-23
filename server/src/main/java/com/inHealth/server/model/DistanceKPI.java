@@ -1,11 +1,14 @@
 package com.inHealth.server.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Document("distancekpi")
 public class DistanceKPI {
+    @Id
+    private String id;
     private String user;
     private LocalDateTime date;
     private double distance;
@@ -13,7 +16,8 @@ public class DistanceKPI {
     public DistanceKPI() {
     }
 
-    public DistanceKPI(String user, LocalDateTime date, double distance) {
+    public DistanceKPI(String id, String user, LocalDateTime date, double distance) {
+        this.id = id;
         this.user = user;
         this.date = date;
         this.distance = distance;
@@ -41,5 +45,13 @@ public class DistanceKPI {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

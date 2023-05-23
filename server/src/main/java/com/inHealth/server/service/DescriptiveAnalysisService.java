@@ -4,18 +4,12 @@ import com.inHealth.server.model.DistanceKPI;
 import com.inHealth.server.model.StepsKPI;
 import com.inHealth.server.repository.DistanceKPIRepository;
 import com.inHealth.server.repository.StepsKPIRepository;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.shaded.org.checkerframework.checker.units.qual.A;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -94,7 +88,7 @@ public class DescriptiveAnalysisService {
         double totalDistance = distancesRDD.reduce(Double::sum);
 
         // Store the calculated KPI in MongoDB
-        DistanceKPI distanceKPI = new DistanceKPI(user, date, totalDistance);
+        DistanceKPI distanceKPI = new DistanceKPI(null, user, date, totalDistance);
         distanceKPIRepository.save(distanceKPI);
 
         return totalDistance;
@@ -156,7 +150,7 @@ public class DescriptiveAnalysisService {
         int totalSteps = stepsRDD.reduce(Integer::sum);
 
         // Store the calculated KPI in MongoDB
-        StepsKPI stepsKPI = new StepsKPI(user, date, totalSteps);
+        StepsKPI stepsKPI = new StepsKPI(null, user, date, totalSteps);
         stepsKPIRepository.save(stepsKPI);
 
         return totalSteps;
