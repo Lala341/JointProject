@@ -15,7 +15,7 @@ public class User {
     private LocalDate birthday;
 
     public User() {}
-    
+
     public User(String id, String name, int heightCm, int weightKg, String country, LocalDate birthday) {
         this.id = id;
         this.name = name;

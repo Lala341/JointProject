@@ -1,5 +1,9 @@
 package com.inHealth.server.service;
 
+import com.inHealth.server.model.DistanceKPI;
+import com.inHealth.server.model.StepsKPI;
+import com.inHealth.server.repository.DistanceKPIRepository;
+import com.inHealth.server.repository.StepsKPIRepository;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -8,9 +12,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.shaded.org.checkerframework.checker.units.qual.A;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -32,6 +38,11 @@ public class DescriptiveAnalysisService {
     private final SparkSession spark;
     private final MongoClient mongoClient;
     private final MongoDatabase database;
+
+    @Autowired
+    private DistanceKPIRepository distanceKPIRepository;
+    @Autowired
+    private StepsKPIRepository stepsKPIRepository;
 
     public DescriptiveAnalysisService() {
         spark = SparkSession.builder()
@@ -91,12 +102,8 @@ public class DescriptiveAnalysisService {
         double totalDistance = distancesRDD.reduce(Double::sum);
 
         // Store the calculated KPI in MongoDB
-        MongoCollection<Document> kpiCollection = database.getCollection("distancekpi"); // Replace "distancekpi" with your desired collection name
-        Document kpiDocument = new Document();
-        kpiDocument.append("user", user);
-        kpiDocument.append("date", date.toString());
-        kpiDocument.append("distance", totalDistance);
-        kpiCollection.insertOne(kpiDocument);
+        DistanceKPI distanceKPI = new DistanceKPI(user, date, totalDistance);
+        distanceKPIRepository.save(distanceKPI);
 
         return totalDistance;
     }
@@ -157,12 +164,8 @@ public class DescriptiveAnalysisService {
         int totalSteps = stepsRDD.reduce(Integer::sum);
 
         // Store the calculated KPI in MongoDB
-        MongoCollection<Document> kpiCollection = database.getCollection("stepskpi"); // Replace "stepskpi" with your desired collection name
-        Document kpiDocument = new Document();
-        kpiDocument.append("user", user);
-        kpiDocument.append("date", date.toString());
-        kpiDocument.append("steps", totalSteps);
-        kpiCollection.insertOne(kpiDocument);
+        StepsKPI stepsKPI = new StepsKPI(user, date, totalSteps);
+        stepsKPIRepository.save(stepsKPI);
 
         return totalSteps;
     }
