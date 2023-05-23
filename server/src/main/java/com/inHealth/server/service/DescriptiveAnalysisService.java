@@ -4,12 +4,19 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession;
 import org.bson.Document;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@EnableScheduling
 public class DescriptiveAnalysisService {
 
     private final SparkSession spark;
@@ -157,6 +165,34 @@ public class DescriptiveAnalysisService {
         kpiCollection.insertOne(kpiDocument);
 
         return totalSteps;
+    }
+
+    @Scheduled(fixedRate = 60000) // Runs every minute
+    public void performAnalysisScheduled() {
+        String uri = "hdfs://54.84.181.116:9000";
+        String hdfsDir = "/sensors-data";
+
+        Configuration conf = new Configuration();
+        System.setProperty("HADOOP_USER_NAME", "root");
+        conf.set("fs.defaultFS", uri);
+        conf.setBoolean("dfs.client.use.datanode.hostname", true);
+        try {
+            FileSystem fileSystem = FileSystem.get(conf);
+            FileStatus[] userDirectories = fileSystem.listStatus(new Path(hdfsDir));
+
+            for (FileStatus userDirectory : userDirectories) {
+                String user = userDirectory.getPath().getName();
+                LocalDateTime now = LocalDateTime.now();
+
+                double distance = calculateDistance(user, now);
+                System.out.println("Distance for user " + user + ": " + distance);
+
+                int steps = calculateTotalSteps(user, now, 0.5, 10, 5);
+                System.out.println("Total steps for user " + user + ": " + steps);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @PreDestroy
