@@ -1,0 +1,4 @@
+pip3 install flintrock
+export AWS_ACCESS_KEY_ID=AKIA26H3E3BXXM2QXXAB
+export AWS_SECRET_ACCESS_KEY=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
+/home/ec2-user/flintrock/spark_cluster.pem

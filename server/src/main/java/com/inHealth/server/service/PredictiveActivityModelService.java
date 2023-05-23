@@ -11,6 +11,8 @@ import org.apache.spark.mllib.linalg.Vectors;
 import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.mllib.tree.DecisionTree;
 import org.apache.spark.mllib.tree.model.DecisionTreeModel;
+import org.apache.spark.mllib.tree.RandomForest;
+import org.apache.spark.mllib.tree.model.RandomForestModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
@@ -62,6 +64,7 @@ public class PredictiveActivityModelService {
 
 
     }
+
     static public  JavaRDD<LabeledPoint>  preprocessDataSets( SparkSession spark, String urlx, String urly) {
 
         Dataset<String> columnsRDD = spark.read().textFile("hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/features.txt");
@@ -150,7 +153,30 @@ public class PredictiveActivityModelService {
 
         return labeledPoints;
     }
-    static public  void createmodel() {
+
+    public double predictLabel(Row row, DecisionTreeModel model) {
+        // Extract features
+        double[] featuresArray = new double[row.size()];
+        for (int i = 0; i < row.size(); i++) {
+            Double value = 0.0;
+
+            if (!row.isNullAt(i)) {
+                value = row.getDouble(i);
+            }
+            featuresArray[i] = value;
+        }
+
+        // Create vector of features
+        Vector featuresVector = Vectors.dense(featuresArray);
+
+        // Predict the label using the model
+        double prediction = model.predict(featuresVector);
+
+        return prediction;
+    }
+
+
+    static public  void createmodelandtrain_decisiontree() {
         System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -189,7 +215,7 @@ public class PredictiveActivityModelService {
 
 
         // specify the path where the model will be saved
-        String modelPath = "hdfs://54.84.181.116:9000/models-datasets";
+        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/decisiontree";
 
         // save the model
         model.save(spark.sparkContext(), modelPath);
@@ -200,6 +226,138 @@ public class PredictiveActivityModelService {
 
         spark.stop();
 
+
+    }
+
+
+    static public  void testmodel_decisiontree( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
+
+        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/decisiontree";
+
+
+        DecisionTreeModel loadedModel = DecisionTreeModel.load(spark.sparkContext(), modelPath);
+
+        StructType schema = new StructType()
+                .add("1 tBodyAcc-mean()-X", DoubleType, false)
+                .add("2 tBodyAcc-mean()-Y", DoubleType, false)
+                .add("3 tBodyAcc-mean()-Z", DoubleType, false)
+                .add("121 tBodyGyro-mean()-X", DoubleType, false)
+                .add("122 tBodyGyro-mean()-Y", DoubleType, false)
+                .add("123 tBodyGyro-mean()-Z", DoubleType, false);
+
+// Create the Row object with values
+        Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
+// Validate the row against the schema
+        boolean isValid = RowFactory.create(schema).isValid(row);
+        System.out.println("Is row valid: " + isValid);
+
+// Predict the label for the row
+        double predictedLabel = predictLabel(rowToPredict, loadedModel);
+
+        System.out.println("Predicted label: " + predictedLabel);
+        spark.stop();
+
+    }
+
+
+
+
+
+    static public  void createmodelandtrain_randomforest() {
+        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
+
+        JavaRDD<LabeledPoint> trainData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/train/X_train.txt",
+                "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/train/y_train.txt" );
+
+        JavaRDD<LabeledPoint> testData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/X_test.txt",
+                "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/y_test.txt" );
+        // Stop the SparkSession
+
+
+        Map<Integer, Integer> categoricalFeaturesInfo = new HashMap<>();
+        int numClasses = 7;
+        int numTrees = 100;
+        String featureSubsetStrategy = "auto";
+        String impurity = "gini";
+        int maxDepth = 9;
+        int maxBins = 32;
+
+        // Create random forest model
+        final RandomForestModel model = RandomForest.trainClassifier(trainData, numClasses,
+                categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins);
+
+
+// Evaluate model on training instances and compute training error
+        JavaPairRDD<Double, Double> predictionAndLabel = testData.mapToPair(p -> new Tuple2<>(model.predict(p.features()), p.label()));
+
+        Double testErrDT = 1.0 * predictionAndLabel.filter(pl -> !pl._1().equals(pl._2())).count() / testData.count();
+
+
+        System.out.println("File testErrDT:");
+        System.out.println(testErrDT);
+
+
+        // specify the path where the model will be saved
+        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/randomforest";
+
+        // save the model
+        model.save(spark.sparkContext(), modelPath);
+
+
+        System.out.println("Final complete");
+
+        spark.stop();
+
+
+    }
+
+
+    static public  void testmodel_randomforest( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
+
+        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/randomforest";
+
+
+        DecisionTreeModel loadedModel = RandomForestModel.load(spark.sparkContext(), modelPath);
+
+        StructType schema = new StructType()
+                .add("1 tBodyAcc-mean()-X", DoubleType, false)
+                .add("2 tBodyAcc-mean()-Y", DoubleType, false)
+                .add("3 tBodyAcc-mean()-Z", DoubleType, false)
+                .add("121 tBodyGyro-mean()-X", DoubleType, false)
+                .add("122 tBodyGyro-mean()-Y", DoubleType, false)
+                .add("123 tBodyGyro-mean()-Z", DoubleType, false);
+
+// Create the Row object with values
+        Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
+// Validate the row against the schema
+        boolean isValid = RowFactory.create(schema).isValid(row);
+        System.out.println("Is row valid: " + isValid);
+
+// Predict the label for the row
+        double predictedLabel = predictLabel(rowToPredict, loadedModel);
+
+        System.out.println("Predicted label: " + predictedLabel);
+        spark.stop();
 
     }
     //   .setMaster("spark://ec2-54-84-181-116.compute-1.amazonaws.com:7077");
@@ -252,6 +410,6 @@ public class PredictiveActivityModelService {
 
     }
     public static void main(String[] args) {
-        createmodel();
+        preprocessDataBiometrics();
     }
 }
