@@ -25,6 +25,7 @@ import scala.Tuple2;
 import java.util.*;
 
 import static org.apache.spark.sql.functions.monotonically_increasing_id;
+import static org.apache.spark.sql.types.DataTypes.DoubleType;
 
 public class PredictiveActivityModelService {
 
@@ -42,12 +43,12 @@ public class PredictiveActivityModelService {
         StructType schema = new StructType()
                 .add("deviceId", DataTypes.StringType)
                 .add("timestamp", DataTypes.StringType)
-                .add("xAccelerometer", DataTypes.DoubleType)
-                .add("yAccelerometer", DataTypes.DoubleType)
-                .add("zAccelerometer", DataTypes.DoubleType)
-                .add("xGyroscope", DataTypes.DoubleType)
-                .add("yGyroscope", DataTypes.DoubleType)
-                .add("zGyroscope", DataTypes.DoubleType);
+                .add("xAccelerometer", DoubleType)
+                .add("yAccelerometer", DoubleType)
+                .add("zAccelerometer", DoubleType)
+                .add("xGyroscope", DoubleType)
+                .add("yGyroscope", DoubleType)
+                .add("zGyroscope", DoubleType);
 
         String url="hdfs://54.84.181.116:9000/sensors-data/1e9c1862-ec25-4cde-a689-38ab696ccba1/sensor-data_1e9c1862-ec25-4cde-a689-38ab696ccba1_2023-04-19T14-05-11.txt";
         Dataset<Row> data = spark.read()
@@ -154,7 +155,7 @@ public class PredictiveActivityModelService {
         return labeledPoints;
     }
 
-    public double predictLabel(Row row, DecisionTreeModel model) {
+    public static double predictLabel(Row row, DecisionTreeModel model) {
         // Extract features
         double[] featuresArray = new double[row.size()];
         for (int i = 0; i < row.size(); i++) {
@@ -174,6 +175,29 @@ public class PredictiveActivityModelService {
 
         return prediction;
     }
+
+
+    public static double predictLabelRandom(Row row, RandomForestModel model) {
+        // Extract features
+        double[] featuresArray = new double[row.size()];
+        for (int i = 0; i < row.size(); i++) {
+            Double value = 0.0;
+
+            if (!row.isNullAt(i)) {
+                value = row.getDouble(i);
+            }
+            featuresArray[i] = value;
+        }
+
+        // Create vector of features
+        Vector featuresVector = Vectors.dense(featuresArray);
+
+        // Predict the label using the model
+        double prediction = model.predict(featuresVector);
+
+        return prediction;
+    }
+
 
 
     static public  void createmodelandtrain_decisiontree() {
@@ -254,9 +278,7 @@ public class PredictiveActivityModelService {
 
 // Create the Row object with values
         Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
-// Validate the row against the schema
-        boolean isValid = RowFactory.create(schema).isValid(row);
-        System.out.println("Is row valid: " + isValid);
+
 
 // Predict the label for the row
         double predictedLabel = predictLabel(rowToPredict, loadedModel);
@@ -297,7 +319,7 @@ public class PredictiveActivityModelService {
 
         // Create random forest model
         final RandomForestModel model = RandomForest.trainClassifier(trainData, numClasses,
-                categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins);
+                categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins,1);
 
 
 // Evaluate model on training instances and compute training error
@@ -337,7 +359,7 @@ public class PredictiveActivityModelService {
         String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/randomforest";
 
 
-        DecisionTreeModel loadedModel = RandomForestModel.load(spark.sparkContext(), modelPath);
+        RandomForestModel loadedModel = RandomForestModel.load(spark.sparkContext(), modelPath);
 
         StructType schema = new StructType()
                 .add("1 tBodyAcc-mean()-X", DoubleType, false)
@@ -349,12 +371,9 @@ public class PredictiveActivityModelService {
 
 // Create the Row object with values
         Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
-// Validate the row against the schema
-        boolean isValid = RowFactory.create(schema).isValid(row);
-        System.out.println("Is row valid: " + isValid);
 
 // Predict the label for the row
-        double predictedLabel = predictLabel(rowToPredict, loadedModel);
+        double predictedLabel = predictLabelRandom(rowToPredict, loadedModel);
 
         System.out.println("Predicted label: " + predictedLabel);
         spark.stop();
@@ -410,6 +429,6 @@ public class PredictiveActivityModelService {
 
     }
     public static void main(String[] args) {
-        preprocessDataBiometrics();
+        createmodelandtrain_decisiontree();
     }
 }
