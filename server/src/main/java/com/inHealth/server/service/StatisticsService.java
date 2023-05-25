@@ -49,8 +49,8 @@ public class StatisticsService {
             else {
             String id = parts[0];
             String timestamp = parts[1];
-            String date = timestamp.split("T")[0];
-            double x_accelerometer = Double.parseDouble(parts[2]);
+            String date = timestamp.split(":")[0] + ":" + timestamp.split(":")[1];
+                double x_accelerometer = Double.parseDouble(parts[2]);
             double y_accelerometer = Double.parseDouble(parts[3]);
             double z_accelerometer = Double.parseDouble(parts[4]);
             double x_gyroscope = Double.parseDouble(parts[5]);
