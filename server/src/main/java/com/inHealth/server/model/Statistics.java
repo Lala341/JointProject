@@ -12,15 +12,23 @@ public class Statistics {
     private double avgAccY;
     private double avgAccZ;
 
+    private double avgGyroX;
+    private double avgGyroY;
+    private double avgGyroZ;
+
+
     public Statistics(){}
 
-    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ) {
+    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ) {
         this.id = id;
         this.userId = userId;
         this.date = date;
         this.avgAccX = avgAccX;
         this.avgAccY = avgAccY;
         this.avgAccZ = avgAccZ;
+        this.avgGyroX = avgGyroX;
+        this.avgGyroY = avgGyroY;
+        this.avgGyroZ = avgGyroZ;
     }
 
     public String getUserId() {
@@ -69,5 +77,29 @@ public class Statistics {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public double getAvgGyroX() {
+        return avgGyroX;
+    }
+
+    public void setAvgGyroX(double avgGyroX) {
+        this.avgGyroX = avgGyroX;
+    }
+
+    public double getAvgGyroY() {
+        return avgGyroY;
+    }
+
+    public void setAvgGyroY(double avgGyroY) {
+        this.avgGyroY = avgGyroY;
+    }
+
+    public double getAvgGyroZ() {
+        return avgGyroZ;
+    }
+
+    public void setAvgGyroZ(double avgGyroZ) {
+        this.avgGyroZ = avgGyroZ;
     }
 }
