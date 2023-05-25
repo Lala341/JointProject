@@ -11,15 +11,19 @@ public class Statistics {
     private double avgAccX;
     private double avgAccY;
     private double avgAccZ;
-
     private double avgGyroX;
     private double avgGyroY;
     private double avgGyroZ;
-
+    private double stdDevAccX;
+    private double stdDevAccY;
+    private double stdDevAccZ;
+    private double stdDevGyroX;
+    private double stdDevGyroY;
+    private double stdDevGyroZ;
 
     public Statistics(){}
 
-    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ) {
+    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ, double stdDevAccX, double stdDevAccY, double stdDevAccZ, double stdDevGyroX, double stdDevGyroY, double stdDevGyroZ) {
         this.id = id;
         this.userId = userId;
         this.date = date;
@@ -29,6 +33,12 @@ public class Statistics {
         this.avgGyroX = avgGyroX;
         this.avgGyroY = avgGyroY;
         this.avgGyroZ = avgGyroZ;
+        this.stdDevAccX = stdDevAccX;
+        this.stdDevAccY = stdDevAccY;
+        this.stdDevAccZ = stdDevAccZ;
+        this.stdDevGyroX = stdDevGyroX;
+        this.stdDevGyroY = stdDevGyroY;
+        this.stdDevGyroZ = stdDevGyroZ;
     }
 
     public String getUserId() {
@@ -101,5 +111,53 @@ public class Statistics {
 
     public void setAvgGyroZ(double avgGyroZ) {
         this.avgGyroZ = avgGyroZ;
+    }
+
+    public double getStdDevAccX() {
+        return stdDevAccX;
+    }
+
+    public void setStdDevAccX(double stdDevAccX) {
+        this.stdDevAccX = stdDevAccX;
+    }
+
+    public double getStdDevAccY() {
+        return stdDevAccY;
+    }
+
+    public void setStdDevAccY(double stdDevAccY) {
+        this.stdDevAccY = stdDevAccY;
+    }
+
+    public double getStdDevAccZ() {
+        return stdDevAccZ;
+    }
+
+    public void setStdDevAccZ(double stdDevAccZ) {
+        this.stdDevAccZ = stdDevAccZ;
+    }
+
+    public double getStdDevGyroX() {
+        return stdDevGyroX;
+    }
+
+    public void setStdDevGyroX(double stdDevGyroX) {
+        this.stdDevGyroX = stdDevGyroX;
+    }
+
+    public double getStdDevGyroY() {
+        return stdDevGyroY;
+    }
+
+    public void setStdDevGyroY(double stdDevGyroY) {
+        this.stdDevGyroY = stdDevGyroY;
+    }
+
+    public double getStdDevGyroZ() {
+        return stdDevGyroZ;
+    }
+
+    public void setStdDevGyroZ(double stdDevGyroZ) {
+        this.stdDevGyroZ = stdDevGyroZ;
     }
 }
