@@ -1,7 +1,7 @@
 package com.inHealth.server.service;
 
+import com.inHealth.server.model.ModelMetrics;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Level;
@@ -10,7 +10,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.ml.classification.DecisionTreeClassificationModel;
+import org.apache.spark.mllib.evaluation.MulticlassMetrics;
 import org.apache.spark.mllib.linalg.Vectors;
 import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.mllib.tree.DecisionTree;
@@ -22,11 +22,10 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
-import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import scala.Tuple2;
 
-import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 import static java.lang.Math.min;
@@ -301,6 +300,127 @@ public class PredictiveActivityModelService {
 
     }
 
+    static public  void calculatemetrics_testdecisiontree(SparkSession spark, String version, String type, JavaRDD<LabeledPoint> testData ,
+                                                          ModelMetricsService modelService, LocalDate date) {
+
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets/tree";
+
+
+        DecisionTreeModel model = DecisionTreeModel.load( spark.sparkContext(),modelPath);
+
+
+// Evaluate model on training instances and compute training error
+        JavaPairRDD<Double, Double> predictionAndLabel = testData.mapToPair(p -> new Tuple2<>(model.predict(p.features()), p.label()));
+
+        Double testErrDT = 1.0 * predictionAndLabel.filter(pl -> !pl._1().equals(pl._2())).count() / testData.count();
+
+
+        // Create RDD for prediction and label pairs
+        JavaRDD<Tuple2<Object, Object>> predictionAndLabel1 = testData.map(p -> new Tuple2<>(model.predict(p.features()), p.label()));
+
+// Instantiate MulticlassMetrics object
+        MulticlassMetrics metrics = new MulticlassMetrics(predictionAndLabel1.rdd());
+
+
+
+// Accuracy
+        double accuracy = metrics.accuracy();
+
+        for (var i=1; i<7;i++){
+
+            // Precision
+            double precision = metrics.precision(i);
+
+// F1 score
+            double f1Score = metrics.fMeasure(i);
+
+// Recall
+            double recall = metrics.recall(i);
+
+            ModelMetrics modelme= new ModelMetrics(null, type,  version, testErrDT, accuracy, precision, recall, f1Score,date, getLabel(i),  i);
+            modelService.save(modelme);
+            System.out.println(modelme.toString());
+        }
+
+
+
+    }
+
+    static public  void calculatemetrics_testrandom(SparkSession spark, String version, String type, JavaRDD<LabeledPoint> testData ,
+                                                          ModelMetricsService modelService, LocalDate date) {
+
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets/random";
+
+
+        RandomForestModel model = RandomForestModel.load(spark.sparkContext(),modelPath);
+
+
+// Evaluate model on training instances and compute training error
+        JavaPairRDD<Double, Double> predictionAndLabel = testData.mapToPair(p -> new Tuple2<>(model.predict(p.features()), p.label()));
+
+        Double testErrDT = 1.0 * predictionAndLabel.filter(pl -> !pl._1().equals(pl._2())).count() / testData.count();
+
+
+        // Create RDD for prediction and label pairs
+        JavaRDD<Tuple2<Object, Object>> predictionAndLabel1 = testData.map(p -> new Tuple2<>(model.predict(p.features()), p.label()));
+
+// Instantiate MulticlassMetrics object
+        MulticlassMetrics metrics = new MulticlassMetrics(predictionAndLabel1.rdd());
+
+
+
+// Accuracy
+        double accuracy = metrics.accuracy();
+
+        for (var i=1; i<7;i++){
+
+            // Precision
+            double precision = metrics.precision(i);
+
+// F1 score
+            double f1Score = metrics.fMeasure(i);
+
+// Recall
+            double recall = metrics.recall(i);
+
+            ModelMetrics modelme= new ModelMetrics(null, type,  version, testErrDT, accuracy, precision, recall, f1Score,date, getLabel(i),  i);
+            modelService.save(modelme);
+            System.out.println(modelme.toString());
+        }
+
+
+
+    }
+
+    static public  void calculatemetrics_test(String version) {
+        System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDatasetInFi").config("spark.hadoop.validateOutputSpecs", "false").master("local[*]").getOrCreate();
+
+
+
+        JavaRDD<LabeledPoint> testData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/X_test.txt",
+                "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/y_test.txt" );
+        // Stop the SparkSession
+
+        ModelMetricsService modelService= new ModelMetricsService();
+        LocalDate date = LocalDate.now();
+
+
+        calculatemetrics_testdecisiontree(spark,version, "DecisionTree", testData, modelService, date);
+        calculatemetrics_testrandom(spark,version, "DecisionTree", testData, modelService, date);
+
+
+        System.out.println("Final complete metrics");
+        spark.stop();
+
+
+    }
+
 
     static public  void createmodelandtrain_decisiontree(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData )  {
 
@@ -501,14 +621,16 @@ public class PredictiveActivityModelService {
 
     }
     public static void main(String[] args) {
-        System.out.println("empez");
+        System.out.println("start");
         // createmodelsandtrain();
 
-        String predictedLabel=testmodel_decisiontree(1,2,3,4,5,6);
-        String predictedLabel1=testmodel_randomforest(1,2,3,4,5,6);
+        calculatemetrics_test("1.0.0");
 
-        System.out.println("Predicted label Tree: " + predictedLabel);
-        System.out.println("Predicted label Random: " + predictedLabel1);
+       // String predictedLabel=testmodel_decisiontree(1,2,3,4,5,6);
+       // String predictedLabel1=testmodel_randomforest(1,2,3,4,5,6);
+
+       // System.out.println("Predicted label Tree: " + predictedLabel);
+       // System.out.println("Predicted label Random: " + predictedLabel1);
 
     }
 }
