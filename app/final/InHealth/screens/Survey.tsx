@@ -7,6 +7,7 @@ import { CheckBox as RNKCheckBox } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, FontFamily } from "../GlobalStyles";
 import Menu from "../components/Menu";
+import Toast from 'react-native-toast-message';
 
 const Survey = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
@@ -50,7 +51,63 @@ const Survey = () => {
   const [rectangleCheckbox4checked, setRectangleCheckbox4checked] =
     useState(undefined);
   const navigation = useNavigation();
+const [schema, setSchema]= useState(undefined);
 
+
+  const getSurvey = async () => {
+   
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
+      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/survey/dayly', options);
+
+      if (response.ok) {
+        console.log('File sent to server');
+        setSchema(response.body);
+      } else {
+
+        console.error('Failed to send file to server');
+      }
+    
+  };
+  const sendSurvey = async () => {
+    
+    var body={
+      rectangleDropdownValue,
+      rectangleCheckboxchecked, 
+      rectangleCheckbox1checked, 
+      rectangleCheckbox2checked, 
+      rectangleCheckbox3checked, 
+      rectangleCheckbox4checked
+    }
+    
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body
+      };
+      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/user/register', options);
+
+      if (response.ok) {
+        console.log('File sent to server');
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Survey sent successfully.',
+          position: 'bottom',
+        });
+        navigation.navigate("Home");
+      } else {
+
+        console.error('Failed to send file to server');
+      }
+    
+  };
   return (
     <View style={styles.survey}>
       <View style={styles.groupParent}>
