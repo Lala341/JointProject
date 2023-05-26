@@ -3,8 +3,10 @@ import { Text, StyleSheet, View, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
+import Menu from "../components/Menu";
 
-const Home = () => {
+
+const Home  = () => {
   const navigation = useNavigation();
 
   return (
@@ -15,63 +17,9 @@ const Home = () => {
           <Text style={[styles.laura, styles.lauraTypo]}>Laura</Text>
         </View>
         <View style={styles.frameGroup}>
-          <View style={[styles.notification1Parent, styles.parentPosition1]}>
-            <Pressable
-              style={[styles.notification1, styles.notification1Position]}
-              onPress={() => navigation.navigate("Disease")}
-            >
-              <Image
-                style={[styles.icon, styles.iconCommon]}
-                contentFit="cover"
-                source={require("../assets/notification-11.png")}
-              />
-            </Pressable>
-            <Pressable
-              style={[styles.notification1, styles.notification1Position]}
-              onPress={() => navigation.navigate("Profile")}
-            >
-              <Image
-                style={[styles.icon1, styles.iconCommon]}
-                contentFit="cover"
-                source={require("../assets/profile-11.png")}
-              />
-            </Pressable>
-            <Image
-              style={[styles.frameChild, styles.todayPosition]}
-              contentFit="cover"
-              source={require("../assets/ellipse-737.png")}
-            />
-            <Pressable
-              style={[styles.wrapper, styles.todayPosition]}
-              onPress={() => navigation.navigate("Survey")}
-            >
-              <Image
-                style={[styles.icon2, styles.iconLayout]}
-                contentFit="cover"
-                source={require("../assets/group-20.png")}
-              />
-            </Pressable>
-            <Pressable
-              style={[styles.notification1, styles.notification1Position]}
-              onPress={() => navigation.navigate("Statistics")}
-            >
-              <Image
-                style={[styles.icon3, styles.iconLayout]}
-                contentFit="cover"
-                source={require("../assets/category-1.png")}
-              />
-            </Pressable>
-            <Pressable
-              style={[styles.notification1, styles.notification1Position]}
-              onPress={() => navigation.navigate("Statistics")}
-            >
-              <Image
-                style={[styles.icon4, styles.iconCommon]}
-                contentFit="cover"
-                source={require("../assets/graph-11.png")}
-              />
-            </Pressable>
-          </View>
+        <View style={styles.notification1Parent}>
+         <Menu/>
+        </View>
           <View style={[styles.todayParent, styles.parentPosition1]}>
             <Text style={[styles.today, styles.todayPosition]}>Today</Text>
             <View style={[styles.frameContainer, styles.parentPosition1]}>
@@ -93,7 +41,7 @@ const Home = () => {
                 </View>
                 <View style={[styles.parent, styles.parentPosition]}>
                   <Text style={[styles.text, styles.textTypo]}>78</Text>
-                  <Text style={[styles.min, styles.minPosition]}> min</Text>
+                  <Text style={[styles.min, styles.minPosition]}>  min</Text>
                 </View>
               </View>
               <View style={[styles.frameParent1, styles.frameLayout]}>
@@ -112,7 +60,7 @@ const Home = () => {
                 </View>
                 <View style={[styles.group, styles.parentPosition]}>
                   <Text style={[styles.text1, styles.kmClr]}>10</Text>
-                  <Text style={[styles.km, styles.kmClr]}> km</Text>
+                  <Text style={[styles.km, styles.kmClr]}>  km</Text>
                 </View>
               </View>
               <View style={[styles.frameParent2, styles.frameParentPosition]}>
@@ -133,7 +81,7 @@ const Home = () => {
                 </View>
                 <View style={[styles.parent, styles.parentPosition]}>
                   <Text style={[styles.text2, styles.min1Clr]}>24</Text>
-                  <Text style={[styles.min1, styles.min1Clr]}> min</Text>
+                  <Text style={[styles.min1, styles.min1Clr]}>  min</Text>
                 </View>
               </View>
               <View style={[styles.frameParent3, styles.frameParentPosition]}>
@@ -152,7 +100,7 @@ const Home = () => {
                 </View>
                 <View style={[styles.parent1, styles.parentPosition]}>
                   <Text style={[styles.text3, styles.hrsClr]}>8</Text>
-                  <Text style={[styles.hrs, styles.hrsClr]}>hrs</Text>
+                  <Text style={[styles.hrs, styles.hrsClr]}> hrs</Text>
                 </View>
               </View>
             </View>
@@ -162,14 +110,17 @@ const Home = () => {
               style={[styles.saturdayChild, styles.saturdayLayout]}
               contentFit="cover"
               source={require("../assets/rectangle-65.png")}
+              
             />
             <Text style={styles.sendData}>Send Data</Text>
           </Pressable>
-          <Image
+          <Pressable style={[styles.saturday2, styles.saturdayLayout2]}>
+           <Image
             style={[styles.syncIcon, styles.iconCommon]}
             contentFit="cover"
             source={require("../assets/sync1.png")}
           />
+          </Pressable>
         </View>
       </View>
     </View>
@@ -177,6 +128,11 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  notification1Parent: {
+    top: 420,
+    position: "absolute",
+
+  },
   lauraTypo: {
     fontFamily: FontFamily.dMSansBold,
     fontWeight: "700",
@@ -265,6 +221,11 @@ const styles = StyleSheet.create({
     width: 104,
     position: "absolute",
   },
+  saturdayLayout2: {
+    height: 40,
+    width: 40,
+    position: "absolute",
+  },
   hello: {
     fontSize: FontSize.size_11xl,
     width: 295,
@@ -314,10 +275,6 @@ const styles = StyleSheet.create({
     marginLeft: -87.5,
     height: "100%",
     width: "100%",
-  },
-  notification1Parent: {
-    top: 405,
-    height: 56,
   },
   today: {
     fontSize: FontSize.size_lg,
@@ -480,6 +437,10 @@ const styles = StyleSheet.create({
     top: 319,
     left: 191,
   },
+  saturday2: {
+    top: 10,
+    left: 121,
+  },
   syncIcon: {
     marginLeft: 127.5,
     top: 3,
@@ -489,7 +450,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   frameGroup: {
-    height: 461,
+    height: 700,
     marginTop: 98,
     width: 295,
   },
@@ -507,5 +468,4 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
 export default Home;

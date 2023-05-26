@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Toggle as RNKToggle } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, FontFamily, FontSize } from "../GlobalStyles";
+import Menu from "../components/Menu";
 
 const Profile = () => {
   const [togglechecked, setTogglechecked] = useState(undefined);
@@ -12,18 +13,7 @@ const Profile = () => {
 
   return (
     <View style={styles.profile}>
-      <Text style={[styles.fashion, styles.fashionPosition]}>Running</Text>
-      <Text style={[styles.articles, styles.fashionPosition]}>40%</Text>
-      <Image
-        style={[styles.ovalIcon, styles.iconLayout2]}
-        contentFit="cover"
-        source={require("../assets/oval.png")}
-      />
-      <Image
-        style={[styles.runerSilhouetteRunningFastIcon, styles.nameLayout]}
-        contentFit="cover"
-        source={require("../assets/runersilhouetterunningfast-1.png")}
-      />
+    
       <View style={[styles.frameParent, styles.frameParentPosition]}>
         <View style={styles.profileWrapper}>
           <Text style={styles.profile1}>Profile</Text>
@@ -197,61 +187,7 @@ const Profile = () => {
           </View>
         </View>
         <View style={styles.notification1Parent}>
-          <Pressable
-            style={styles.category1Position}
-            onPress={() => navigation.navigate("Disease")}
-          >
-            <Image
-              style={[styles.icon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/notification-12.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.category1Position}
-            onPress={() => navigation.navigate("Profile")}
-          >
-            <Image
-              style={[styles.icon1, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/profile-1.png")}
-            />
-          </Pressable>
-          <Image
-            style={[styles.frameChild, styles.wrapperPosition]}
-            contentFit="cover"
-            source={require("../assets/ellipse-737.png")}
-          />
-          <Pressable
-            style={[styles.wrapper, styles.wrapperPosition]}
-            onPress={() => navigation.navigate("Survey")}
-          >
-            <Image
-              style={styles.icon2}
-              contentFit="cover"
-              source={require("../assets/group-20.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={[styles.category1, styles.category1Position]}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Image
-              style={[styles.groupIcon, styles.iconLayout2]}
-              contentFit="cover"
-              source={require("../assets/group.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.category1Position}
-            onPress={() => navigation.navigate("Statistics")}
-          >
-            <Image
-              style={[styles.icon3, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/graph-1.png")}
-            />
-          </Pressable>
+         <Menu/>
         </View>
       </View>
     </View>
@@ -463,7 +399,6 @@ const styles = StyleSheet.create({
   },
   heightText: {
     left: 24,
-    width: 46,
   },
   bgItem: {
     width: 95,
@@ -489,7 +424,6 @@ const styles = StyleSheet.create({
   },
   weightText: {
     left: 26,
-    width: 43,
   },
   weightCard: {
     left: 110,
@@ -514,7 +448,6 @@ const styles = StyleSheet.create({
   },
   ageText: {
     left: 35,
-    width: 24,
     height: 44,
     top: 11,
     position: "absolute",
@@ -537,7 +470,6 @@ const styles = StyleSheet.create({
   },
   name: {
     left: 74,
-    width: 68,
     top: 10,
   },
   latestPicIcon: {
@@ -569,7 +501,6 @@ const styles = StyleSheet.create({
   },
   text1: {
     top: 6,
-    width: 23,
     height: 18,
     left: 30,
     position: "absolute",
@@ -602,7 +533,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   title: {
-    width: 69,
   },
   iconProfile: {
     width: 20,
@@ -614,7 +544,6 @@ const styles = StyleSheet.create({
     left: 0,
   },
   text2: {
-    width: 84,
     left: 30,
   },
   iconArrow: {
@@ -645,10 +574,8 @@ const styles = StyleSheet.create({
     top: 0,
   },
   title1: {
-    width: 95,
   },
   text3: {
-    width: 117,
     left: 30,
   },
   toggle: {
@@ -675,14 +602,11 @@ const styles = StyleSheet.create({
     top: 0,
   },
   title2: {
-    width: 46,
   },
   text4: {
-    width: 67,
     left: 30,
   },
   text5: {
-    width: 49,
     left: 30,
   },
   setting: {
@@ -692,7 +616,6 @@ const styles = StyleSheet.create({
     left: 20,
   },
   text6: {
-    width: 82,
     left: 30,
   },
   iconArrow3: {
@@ -751,9 +674,9 @@ const styles = StyleSheet.create({
     marginLeft: -87.5,
   },
   notification1Parent: {
-    height: 56,
-    marginTop: 24,
-    width: 295,
+    top: 700,
+    position: "absolute",
+
   },
   frameParent: {
     top: 44,

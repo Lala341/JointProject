@@ -6,6 +6,7 @@ import { Slider as RNESlider } from "@rneui/themed";
 import { CheckBox as RNKCheckBox } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, FontFamily } from "../GlobalStyles";
+import Menu from "../components/Menu";
 
 const Survey = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
@@ -62,7 +63,7 @@ const Survey = () => {
           />
         </View>
         <View style={styles.frameParent}>
-          <View>
+          <View style={styles.dropdata}>
             <Text style={styles.moodTypo}>Mood</Text>
             <View style={[styles.wrapper, styles.frameLayout]}>
               <DropDownPicker
@@ -84,7 +85,7 @@ const Survey = () => {
           </View>
           <TextInput
             style={[styles.frameChild, styles.frameLayout]}
-            placeholder="Placeholder text"
+            placeholder=" "
             keyboardType="decimal-pad"
             autoCapitalize="none"
           />
@@ -181,68 +182,20 @@ high-fat foods or drinks?`}</Text>
           </View>
         </View>
       </View>
-      <View style={[styles.notification1Parent, styles.parentLayout1]}>
-        <Pressable
-          style={[styles.notification1, styles.containerPosition]}
-          onPress={() => navigation.navigate("Disease")}
-        >
-          <Image
-            style={[styles.icon, styles.iconLayout]}
-            contentFit="cover"
-            source={require("../assets/notification-11.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={[styles.notification1, styles.containerPosition]}
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Image
-            style={[styles.icon1, styles.iconLayout]}
-            contentFit="cover"
-            source={require("../assets/profile-11.png")}
-          />
-        </Pressable>
-        <Image
-          style={[styles.frameInner, styles.containerPosition]}
-          contentFit="cover"
-          source={require("../assets/ellipse-737.png")}
-        />
-        <Pressable
-          style={[styles.container, styles.containerPosition]}
-          onPress={() => navigation.navigate("Survey")}
-        >
-          <Image
-            style={styles.icon2}
-            contentFit="cover"
-            source={require("../assets/group-20.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={[styles.notification1, styles.containerPosition]}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Image
-            style={styles.icon3}
-            contentFit="cover"
-            source={require("../assets/category-1.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={[styles.notification1, styles.containerPosition]}
-          onPress={() => navigation.navigate("Statistics")}
-        >
-          <Image
-            style={[styles.icon4, styles.iconLayout]}
-            contentFit="cover"
-            source={require("../assets/graph-1.png")}
-          />
-        </Pressable>
-      </View>
+      <View style={styles.notification1Parent}>
+         <Menu/>
+        </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  dropdata:{
+
+    position:"relative",
+    zIndex: 1000,
+  }
+  ,
   rectangleDropdowndropDownContainer: {
     backgroundColor: "#d9d9d9",
   },
@@ -255,11 +208,11 @@ const styles = StyleSheet.create({
     height: 56,
   },
   frameLayout: {
-    height: 28,
+    height: 32,
     width: 297,
   },
   moodTypo: {
-    textAlign: "center",
+    textAlign: "left",
     fontSize: FontSize.size_lg,
     color: Color.bl,
     fontFamily: FontFamily.dMSansMedium,
@@ -306,9 +259,12 @@ const styles = StyleSheet.create({
   },
   dropdownpicker: {
     backgroundColor: Color.gainsboro,
+
   },
   wrapper: {
-    marginTop: 15,
+    marginTop: 10,
+    marginBottom: 15,
+
   },
   weight: {
     left: 0,
@@ -317,13 +273,14 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   weightWrapper: {
-    width: 60,
     height: 23,
     marginTop: 10,
   },
   frameChild: {
     backgroundColor: Color.gainsboro,
     marginTop: 10,
+    borderRadius: 7,
+height: 20,
   },
   howWouldYouContainer: {
     fontSize: FontSize.size_lg,
@@ -412,9 +369,10 @@ const styles = StyleSheet.create({
     marginLeft: -87.5,
   },
   notification1Parent: {
-    top: 729,
-    left: 44,
+    top: 770,
+    left:30,
     position: "absolute",
+
   },
   survey: {
     backgroundColor: Color.whiteColor,

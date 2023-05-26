@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   bannerText: {
     height: "30.14%",
-    width: "51.43%",
+    width: "60.43%",
     top: "17.81%",
     right: "42.22%",
     bottom: "52.05%",
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   bannerPieText: {
     height: "16.98%",
-    width: "21.7%",
+    width: "41.7%",
     top: "18.87%",
     right: "18.87%",
     bottom: "64.15%",

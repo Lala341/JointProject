@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, Pressable, View, TextInput } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Pressable, View, TextInput } from "react-native";
 import { Image } from "expo-image";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
@@ -10,6 +10,7 @@ const Data = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
   const [rectangleDropdownValue, setRectangleDropdownValue] = useState("");
   const [rectangleDropdownItems, setRectangleDropdownItems] = useState([
+    { value: "Spain", label: "Spain" },
     { value: "Afghanistan", label: "Afghanistan" },
     { value: "Albania", label: "Albania" },
     { value: "Algeria", label: "Algeria" },
@@ -174,7 +175,6 @@ const Data = () => {
     { value: "Somalia", label: "Somalia" },
     { value: "South Africa", label: "South Africa" },
     { value: "South Sudan", label: "South Sudan" },
-    { value: "Spain", label: "Spain" },
     { value: "Sri Lanka", label: "Sri Lanka" },
     { value: "Sudan", label: "Sudan" },
     { value: "Suriname", label: "Suriname" },
@@ -208,6 +208,11 @@ const Data = () => {
     { value: "Zimbabwe", label: "Zimbabwe" },
   ]);
   const [rectangleDatePicker, setRectangleDatePicker] = useState(undefined);
+  const [selectedOption, setSelectedOption] = useState('');
+
+  const handleOptionSelect = (option: React.SetStateAction<string>) => {
+    setSelectedOption(option);
+  };
   const navigation = useNavigation();
 
   return (
@@ -217,22 +222,32 @@ const Data = () => {
           <Text style={styles.giveUsSome}>Give us some basic information</Text>
           <View style={styles.frameGroup}>
             <View style={styles.groupParent}>
-              <Pressable style={styles.parentLayout}>
-                <Text style={[styles.male, styles.maleTypo]}>Male</Text>
-                <Image
-                  style={[styles.groupChild, styles.namePosition]}
-                  contentFit="cover"
-                  source={require("../assets/group-11.png")}
-                />
-              </Pressable>
-              <Pressable style={[styles.femaleParent, styles.parentLayout]}>
-                <Text style={[styles.female, styles.maleTypo]}>Female</Text>
-                <Image
-                  style={[styles.groupChild, styles.namePosition]}
-                  contentFit="cover"
-                  source={require("../assets/group-9.png")}
-                />
-              </Pressable>
+            <View style={styles.container2}>
+      <TouchableOpacity
+        style={[
+          styles.option,
+          selectedOption === 'female' && styles.selectedOption,
+        ]}
+        onPress={() => handleOptionSelect('female')}
+      >
+        <Image source={require("../assets/group-9.png")} style={styles.optionImage} />
+        
+        <Text style={styles.optionLabel}>Female</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[
+          styles.option,
+          selectedOption === 'male' && styles.selectedOption,
+        ]}
+        onPress={() => handleOptionSelect('male')}
+      >
+        <Image source={require("../assets/group-11.png")} style={styles.optionImage} />
+        <Text style={styles.optionLabel}>Male</Text>
+      </TouchableOpacity>
+
+      
+    </View>
             </View>
             <View style={[styles.nameWrapper, styles.wrapperLayout1]}>
               <Text style={[styles.name, styles.nameTypo]}>Name</Text>
@@ -263,7 +278,7 @@ const Data = () => {
             <View style={[styles.countryWrapper, styles.wrapperLayout1]}>
               <Text style={[styles.name, styles.nameTypo]}>Country</Text>
             </View>
-            <View style={styles.wrapperLayout}>
+            <View style={styles.wrapperLayout2}>
               <DropDownPicker
                 style={styles.dropdownpicker}
                 open={rectangleDropdownOpen}
@@ -345,11 +360,19 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: FontSize.size_xl,
     color: Color.bl,
+    textAlign: "left",
+    paddingTop: 5,
   },
   wrapperLayout: {
-    height: 28,
-    width: 297,
+    height: 40,
+    width: 300,
     marginTop: 7,
+  },
+  wrapperLayout2: {
+    width: 300,
+    marginTop: 7,
+    position:"relative",
+    zIndex: 1000,
   },
   giveUsSome: {
     fontSize: 28,
@@ -386,22 +409,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   nameWrapper: {
-    width: 57,
+    width: "100%",
     marginTop: 7,
   },
   frameChild: {
     backgroundColor: Color.gainsboro,
+    borderRadius: 7,
   },
   heightWrapper: {
-    width: 64,
+    width: "100%",
     marginTop: 7,
   },
   weightWrapper: {
-    width: 69,
+    width: "100%",
     marginTop: 7,
   },
   countryWrapper: {
-    width: 80,
+    width: "100%",
     marginTop: 7,
   },
   dropdownpicker: {
@@ -446,6 +470,39 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 812,
     width: "100%",
+  },
+  container2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    
+  },
+  option: {
+    alignItems: 'center',
+    marginVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    margin: 10,
+
+  },
+  selectedOption: {
+    backgroundColor: '#ccc',
+  },
+  optionImage: {
+    width: 50,
+    height: 90,
+    margin: 10,
+  },
+  optionLabel: {
+    fontSize: 16,
+  },
+  selectedLabel: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

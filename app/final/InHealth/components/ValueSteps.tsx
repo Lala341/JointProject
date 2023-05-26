@@ -47,7 +47,6 @@ const ValueSteps = () => {
 
 const styles = StyleSheet.create({
   kTypo: {
-    height: 15,
     textAlign: "left",
     fontSize: FontSize.textMediumTextSemiBold_size,
     position: "absolute",
@@ -86,7 +85,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_5xl,
     fontWeight: "600",
     fontFamily: FontFamily.montserratSemibold,
-    height: 25,
     color: Color.whiteColor,
     left: "5.68%",
     top: "50%",
@@ -139,7 +137,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.textSmallTextSemiBold_size,
     color: Color.textColor,
     width: 34,
-    height: 12,
     fontFamily: FontFamily.montserratMedium,
     fontWeight: "500",
   },

@@ -6,6 +6,7 @@ import ValueSteps from "../components/ValueSteps";
 import GraphStatistics from "../components/GraphStatistics";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontSize, FontFamily, Color } from "../GlobalStyles";
+import Menu from "../components/Menu";
 
 const Statistics = () => {
   const navigation = useNavigation();
@@ -73,56 +74,7 @@ const Statistics = () => {
           </Text>
         </Pressable>
         <View style={styles.notification1Parent}>
-          <Pressable
-            style={styles.graph1IconPosition}
-            onPress={() => navigation.navigate("Disease")}
-          >
-            <Image
-              style={[styles.icon, styles.iconCommon]}
-              contentFit="cover"
-              source={require("../assets/notification-11.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.graph1IconPosition}
-            onPress={() => navigation.navigate("Profile")}
-          >
-            <Image
-              style={[styles.icon1, styles.iconCommon]}
-              contentFit="cover"
-              source={require("../assets/profile-11.png")}
-            />
-          </Pressable>
-          <Image
-            style={styles.frameChild}
-            contentFit="cover"
-            source={require("../assets/ellipse-737.png")}
-          />
-          <Pressable
-            style={[styles.wrapper, styles.wrapperPosition]}
-            onPress={() => navigation.navigate("Survey")}
-          >
-            <Image
-              style={[styles.icon2, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/group-20.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={styles.graph1IconPosition}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Image
-              style={[styles.icon3, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/category-1.png")}
-            />
-          </Pressable>
-          <Image
-            style={[styles.graph1Icon, styles.iconCommon]}
-            contentFit="cover"
-            source={require("../assets/graph-11.png")}
-          />
+         <Menu/>
         </View>
       </View>
     </View>
@@ -357,9 +309,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   notification1Parent: {
-    height: 56,
-    marginTop: 20,
-    width: 295,
+    top: 700,
+    position: "absolute",
+
   },
   frame: {
     marginTop: -367,

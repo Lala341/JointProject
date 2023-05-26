@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inhealthWrapper: {
-    width: 146,
+    width: "100%",
     flexDirection: "row",
   },
   intro: {

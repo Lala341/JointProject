@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import ChangeIntervalQuery from "../components/ChangeIntervalQuery";
 import ChangeSpecialization from "../components/ChangeSpecialization";
 import { Border, Color, FontFamily, FontSize } from "../GlobalStyles";
+import Menu from "../components/Menu";
 
 const StatisticsII = () => {
   const navigation = useNavigation();
@@ -150,61 +151,7 @@ const StatisticsII = () => {
           />
         </View>
         <View style={styles.notification1Parent}>
-          <Pressable
-            style={[styles.notification1, styles.notification1Position]}
-            onPress={() => navigation.navigate("Disease")}
-          >
-            <Image
-              style={[styles.icon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/notification-11.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={[styles.notification1, styles.notification1Position]}
-            onPress={() => navigation.navigate("Profile")}
-          >
-            <Image
-              style={[styles.icon1, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/profile-11.png")}
-            />
-          </Pressable>
-          <Image
-            style={[styles.frameChild, styles.wrapperPosition]}
-            contentFit="cover"
-            source={require("../assets/ellipse-737.png")}
-          />
-          <Pressable
-            style={[styles.wrapper, styles.wrapperPosition]}
-            onPress={() => navigation.navigate("Survey")}
-          >
-            <Image
-              style={styles.icon2}
-              contentFit="cover"
-              source={require("../assets/group-20.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={[styles.notification1, styles.notification1Position]}
-            onPress={() => navigation.navigate("Home")}
-          >
-            <Image
-              style={styles.icon3}
-              contentFit="cover"
-              source={require("../assets/category-1.png")}
-            />
-          </Pressable>
-          <Pressable
-            style={[styles.notification1, styles.notification1Position]}
-            onPress={() => navigation.navigate("Statistics")}
-          >
-            <Image
-              style={[styles.icon4, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/graph-12.png")}
-            />
-          </Pressable>
+         <Menu/>
         </View>
       </View>
     </View>
@@ -572,9 +519,9 @@ const styles = StyleSheet.create({
     marginLeft: -87.5,
   },
   notification1Parent: {
-    marginTop: 10,
-    height: 56,
-    width: 295,
+    top: 700,
+    position: "absolute",
+
   },
   frameParent: {
     top: 44,

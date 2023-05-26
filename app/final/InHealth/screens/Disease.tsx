@@ -19,7 +19,9 @@ const Disease = () => {
         </View>
         <Banner />
         <View style={styles.frameGroup}>
-          <Menu />
+        <View style={styles.notification1Parent}>
+         <Menu/>
+        </View>
           <Pressable
             style={[styles.rectangleParent, styles.groupChildLayout]}
             onPress={() => navigation.navigate("DiseaseII")}
@@ -112,6 +114,11 @@ const Disease = () => {
 };
 
 const styles = StyleSheet.create({
+  notification1Parent: {
+    top: 400,
+    position: "absolute",
+
+  },
   updatedTodayClr: {
     color: Color.bl,
     textAlign: "left",
