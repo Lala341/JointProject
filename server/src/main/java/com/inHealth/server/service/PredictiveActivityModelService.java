@@ -504,8 +504,11 @@ public class PredictiveActivityModelService {
         System.out.println("empez");
         // createmodelsandtrain();
 
-        String predictedLabel=testmodel_randomforest(1,2,3,4,5,6);
-        System.out.println("Predicted label: " + predictedLabel);
+        String predictedLabel=testmodel_decisiontree(1,2,3,4,5,6);
+        String predictedLabel1=testmodel_randomforest(1,2,3,4,5,6);
+
+        System.out.println("Predicted label Tree: " + predictedLabel);
+        System.out.println("Predicted label Random: " + predictedLabel1);
 
     }
 }
