@@ -117,7 +117,11 @@ public class StatisticsService {
             Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer> value = tuple._2();
 
             // Create a new Statistics object and add it to the list
-            Statistics statistics = new Statistics(null, key._1(), key._2(), value._1(), value._2(), value._3(), value._4(), value._5(), value._6(), value._7(), value._8(), value._9(), value._10(), value._11(), value._12());
+            PredictiveActivityModelService service=new PredictiveActivityModelService();
+            String predictActivityM1=service.testmodel_decisiontree(value._1(), value._2(), value._3(), value._4(), value._5(), value._6());
+            String predictActivityM2=service.testmodel_randomforest(value._1(), value._2(), value._3(), value._4(), value._5(), value._6());
+
+            Statistics statistics = new Statistics(null, key._1(), key._2(), value._1(), value._2(), value._3(), value._4(), value._5(), value._6(), value._7(), value._8(), value._9(), value._10(), value._11(), value._12(),predictActivityM1,predictActivityM2);
 
             // Print the statistics (optional)
             System.out.println(
@@ -135,6 +139,9 @@ public class StatisticsService {
                     + "\n Standard deviation gyroscope x:" + statistics.getStdDevGyroX()
                     + "\n Standard deviation gyroscope y:" + statistics.getStdDevGyroY()
                     + "\n Standard deviation gyroscope z:" + statistics.getStdDevGyroZ()
+                    + "\n predictActivityM1:" + statistics.getPredictActivityM1()
+                    + "\n predictActivityM2:" + statistics.getPredictActivityM2()
+
                     + "\n ______________________");
 
             statisticsList.add(statistics);

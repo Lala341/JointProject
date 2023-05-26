@@ -21,9 +21,12 @@ public class Statistics {
     private double stdDevGyroY;
     private double stdDevGyroZ;
 
+    private String predictActivityM1;
+    private String predictActivityM2;
+
     public Statistics(){}
 
-    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ, double stdDevAccX, double stdDevAccY, double stdDevAccZ, double stdDevGyroX, double stdDevGyroY, double stdDevGyroZ) {
+    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ, double stdDevAccX, double stdDevAccY, double stdDevAccZ, double stdDevGyroX, double stdDevGyroY, double stdDevGyroZ, String predictActivityM1, String predictActivityM2) {
         this.id = id;
         this.userId = userId;
         this.date = date;
@@ -39,6 +42,8 @@ public class Statistics {
         this.stdDevGyroX = stdDevGyroX;
         this.stdDevGyroY = stdDevGyroY;
         this.stdDevGyroZ = stdDevGyroZ;
+        this.predictActivityM1=predictActivityM1;
+        this.predictActivityM2=predictActivityM2;
     }
 
     public String getUserId() {
@@ -160,4 +165,22 @@ public class Statistics {
     public void setStdDevGyroZ(double stdDevGyroZ) {
         this.stdDevGyroZ = stdDevGyroZ;
     }
+
+    public String getPredictActivityM1() {
+        return predictActivityM1;
+    }
+
+    public void setPredictActivityM1(String predictActivityM1) {
+        this.predictActivityM1 = predictActivityM1;
+    }
+
+
+    public String getPredictActivityM2() {
+        return predictActivityM2;
+    }
+
+    public void setPredictActivityM2(String predictActivityM2) {
+        this.predictActivityM2 = predictActivityM2;
+    }
+
 }
