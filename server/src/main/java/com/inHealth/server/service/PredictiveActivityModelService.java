@@ -1,17 +1,21 @@
 package com.inHealth.server.service;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.mllib.linalg.Vector;
+import org.apache.spark.ml.classification.DecisionTreeClassificationModel;
 import org.apache.spark.mllib.linalg.Vectors;
 import org.apache.spark.mllib.regression.LabeledPoint;
 import org.apache.spark.mllib.tree.DecisionTree;
-import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.RandomForest;
+import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -22,32 +26,35 @@ import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import scala.Tuple2;
 
+import java.io.IOException;
 import java.util.*;
 
+import static java.lang.Math.min;
 import static org.apache.spark.sql.functions.monotonically_increasing_id;
+import static org.apache.spark.sql.types.DataTypes.DoubleType;
 
 public class PredictiveActivityModelService {
 
     private static final int NUM_SAMPLES = 1;
 
     static public  void preprocessDataBiometrics() {
-        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
         Logger.getLogger("org").setLevel(Level.OFF);
         Logger.getLogger("akka").setLevel(Level.OFF);
 
-        SparkSession spark = SparkSession.builder().appName("DatasetExample").master("local[*]").getOrCreate();
+        SparkSession spark = SparkSession.builder().appName("DatasetExampleIn").master("local[*]").getOrCreate();
 
         StructType schema = new StructType()
                 .add("deviceId", DataTypes.StringType)
                 .add("timestamp", DataTypes.StringType)
-                .add("xAccelerometer", DataTypes.DoubleType)
-                .add("yAccelerometer", DataTypes.DoubleType)
-                .add("zAccelerometer", DataTypes.DoubleType)
-                .add("xGyroscope", DataTypes.DoubleType)
-                .add("yGyroscope", DataTypes.DoubleType)
-                .add("zGyroscope", DataTypes.DoubleType);
+                .add("xAccelerometer", DoubleType)
+                .add("yAccelerometer", DoubleType)
+                .add("zAccelerometer", DoubleType)
+                .add("xGyroscope", DoubleType)
+                .add("yGyroscope", DoubleType)
+                .add("zGyroscope", DoubleType);
 
         String url="hdfs://54.84.181.116:9000/sensors-data/1e9c1862-ec25-4cde-a689-38ab696ccba1/sensor-data_1e9c1862-ec25-4cde-a689-38ab696ccba1_2023-04-19T14-05-11.txt";
         Dataset<Row> data = spark.read()
@@ -65,7 +72,7 @@ public class PredictiveActivityModelService {
 
     }
 
-    static public  JavaRDD<LabeledPoint>  preprocessDataSets( SparkSession spark, String urlx, String urly) {
+    static public  JavaRDD<LabeledPoint>  preprocessDataSets(SparkSession spark, String urlx, String urly) {
 
         Dataset<String> columnsRDD = spark.read().textFile("hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/features.txt");
         String[] columnsList = (String[]) columnsRDD.collect();
@@ -144,7 +151,9 @@ public class PredictiveActivityModelService {
                     }
 
                     // Create vector of features
-                    Vector featuresVector = Vectors.dense(featuresArray);
+
+
+                    org.apache.spark.mllib.linalg.Vector featuresVector = Vectors.dense(featuresArray);
 
                     // Create LabeledPoint
                     return new LabeledPoint(y, featuresVector);
@@ -154,7 +163,7 @@ public class PredictiveActivityModelService {
         return labeledPoints;
     }
 
-    public double predictLabel(Row row, DecisionTreeModel model) {
+    public static double predictLabel(Row row, DecisionTreeModel model) {
         // Extract features
         double[] featuresArray = new double[row.size()];
         for (int i = 0; i < row.size(); i++) {
@@ -167,7 +176,8 @@ public class PredictiveActivityModelService {
         }
 
         // Create vector of features
-        Vector featuresVector = Vectors.dense(featuresArray);
+
+        org.apache.spark.mllib.linalg.Vector featuresVector = Vectors.dense(featuresArray);
 
         // Predict the label using the model
         double prediction = model.predict(featuresVector);
@@ -176,14 +186,102 @@ public class PredictiveActivityModelService {
     }
 
 
-    static public  void createmodelandtrain_decisiontree() {
-        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+    public static double predictLabelRandom(Row row, RandomForestModel model) {
+        // Extract features
+        double[] featuresArray = new double[row.size()];
+        for (int i = 0; i < row.size(); i++) {
+            Double value = 0.0;
+
+            if (!row.isNullAt(i)) {
+                value = row.getDouble(i);
+            }
+            featuresArray[i] = value;
+        }
+
+        // Create vector of features
+
+        org.apache.spark.mllib.linalg.Vector  featuresVector = Vectors.dense(featuresArray);
+
+        // Predict the label using the model
+        double prediction = model.predict(featuresVector);
+
+        return prediction;
+    }
+
+public static  String getLabel(double prediction){
+    String label;
+    switch ((int) prediction) {
+        case 1:
+            label = "WALKING";
+            break;
+        case 2:
+            label = "WALKING_UPSTAIRS";
+            break;
+        case 3:
+            label = "WALKING_DOWNSTAIRS";
+            break;
+        case 4:
+            label = "SITTING";
+            break;
+        case 5:
+            label = "STANDING";
+            break;
+        case 6:
+            label = "LAYING";
+            break;
+        default:
+            label = "UNKNOWN";
+    }
+
+    return label;
+}
+
+
+    public static void preHdfs(String hdfsDir)  {
+        String uri = "hdfs://54.84.181.116:9000";
+
+        Configuration conf = new Configuration();
+        System.setProperty("HADOOP_USER_NAME", "root");
+        conf.set("fs.defaultFS", uri);
+        conf.setBoolean("dfs.client.use.datanode.hostname", true);
+
+        System.out.println("Start verify folder");
+
+
+        try {
+            FileSystem fs = FileSystem.get(conf);
+            Path hdfswritepathuser1 =new Path( hdfsDir+"/data");
+            Path hdfswritepathuser2 =new Path( hdfsDir+"/metadata");
+
+            System.out.println("Before create");
+            if (fs.exists(hdfswritepathuser1)) {
+                System.out.println("exist");
+
+                fs.delete(hdfswritepathuser1, true);
+                fs.delete(hdfswritepathuser2, true);
+                System.out.println(" delete");
+
+            }
+        }catch (Exception e){
+            System.out.println("error");
+            System.out.println(e.toString());
+
+        }
+
+
+        System.out.println("Final file");
+
+    }
+    static public  void createmodelsandtrain() {
+        System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
         Logger.getLogger("org").setLevel(Level.OFF);
         Logger.getLogger("akka").setLevel(Level.OFF);
 
-        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDatasetInFi").config("spark.hadoop.validateOutputSpecs", "false").master("local[*]").getOrCreate();
+
+        System.out.println("Final clearCache");
 
         JavaRDD<LabeledPoint> trainData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/train/X_train.txt",
                 "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/train/y_train.txt" );
@@ -192,6 +290,19 @@ public class PredictiveActivityModelService {
                 "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/y_test.txt" );
         // Stop the SparkSession
 
+
+        createmodelandtrain_decisiontree(spark, trainData, testData);
+        createmodelandtrain_randomforest(spark, trainData, testData);
+
+        System.out.println("Final complete");
+
+        spark.stop();
+
+
+    }
+
+
+    static public  void createmodelandtrain_decisiontree(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData )  {
 
         Map<Integer, Integer> categoricalFeaturesInfo = new HashMap<>();
         int numClasses = 7;
@@ -215,78 +326,21 @@ public class PredictiveActivityModelService {
 
 
         // specify the path where the model will be saved
-        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/decisiontree";
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets/tree";
 
         // save the model
+        preHdfs(modelPath);
         model.save(spark.sparkContext(), modelPath);
         DecisionTreeModel dtModel = DecisionTreeModel.load(spark.sparkContext(), modelPath);
 
 
         System.out.println("Final complete");
 
-        spark.stop();
+
 
 
     }
-
-
-    static public  void testmodel_decisiontree( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
-        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
-        System.setProperty("HADOOP_USER_NAME", "root");
-
-        Logger.getLogger("org").setLevel(Level.OFF);
-        Logger.getLogger("akka").setLevel(Level.OFF);
-
-        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
-
-        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/decisiontree";
-
-
-        DecisionTreeModel loadedModel = DecisionTreeModel.load(spark.sparkContext(), modelPath);
-
-        StructType schema = new StructType()
-                .add("1 tBodyAcc-mean()-X", DoubleType, false)
-                .add("2 tBodyAcc-mean()-Y", DoubleType, false)
-                .add("3 tBodyAcc-mean()-Z", DoubleType, false)
-                .add("121 tBodyGyro-mean()-X", DoubleType, false)
-                .add("122 tBodyGyro-mean()-Y", DoubleType, false)
-                .add("123 tBodyGyro-mean()-Z", DoubleType, false);
-
-// Create the Row object with values
-        Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
-// Validate the row against the schema
-        boolean isValid = RowFactory.create(schema).isValid(row);
-        System.out.println("Is row valid: " + isValid);
-
-// Predict the label for the row
-        double predictedLabel = predictLabel(rowToPredict, loadedModel);
-
-        System.out.println("Predicted label: " + predictedLabel);
-        spark.stop();
-
-    }
-
-
-
-
-
-    static public  void createmodelandtrain_randomforest() {
-        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
-        System.setProperty("HADOOP_USER_NAME", "root");
-
-        Logger.getLogger("org").setLevel(Level.OFF);
-        Logger.getLogger("akka").setLevel(Level.OFF);
-
-        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
-
-        JavaRDD<LabeledPoint> trainData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/train/X_train.txt",
-                "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/train/y_train.txt" );
-
-        JavaRDD<LabeledPoint> testData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/X_test.txt",
-                "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/y_test.txt" );
-        // Stop the SparkSession
-
-
+    static public  void createmodelandtrain_randomforest(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData)  {
         Map<Integer, Integer> categoricalFeaturesInfo = new HashMap<>();
         int numClasses = 7;
         int numTrees = 100;
@@ -297,7 +351,7 @@ public class PredictiveActivityModelService {
 
         // Create random forest model
         final RandomForestModel model = RandomForest.trainClassifier(trainData, numClasses,
-                categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins);
+                categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins,1);
 
 
 // Evaluate model on training instances and compute training error
@@ -311,33 +365,31 @@ public class PredictiveActivityModelService {
 
 
         // specify the path where the model will be saved
-        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/randomforest";
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets/random";
 
+        preHdfs(modelPath);
         // save the model
         model.save(spark.sparkContext(), modelPath);
 
 
         System.out.println("Final complete");
 
-        spark.stop();
-
-
     }
 
 
-    static public  void testmodel_randomforest( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
-        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+    static public  String testmodel_decisiontree( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+        System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
         Logger.getLogger("org").setLevel(Level.OFF);
         Logger.getLogger("akka").setLevel(Level.OFF);
 
-        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDataset").master("local[*]").getOrCreate();
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDatasetInF").master("local[*]").getOrCreate();
 
-        String modelPath = "hdfs://54.84.181.116:9000/models/activitymodels/randomforest";
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets/tree";
 
 
-        DecisionTreeModel loadedModel = RandomForestModel.load(spark.sparkContext(), modelPath);
+        DecisionTreeModel loadedModel = DecisionTreeModel.load( spark.sparkContext(),modelPath);
 
         StructType schema = new StructType()
                 .add("1 tBodyAcc-mean()-X", DoubleType, false)
@@ -349,15 +401,54 @@ public class PredictiveActivityModelService {
 
 // Create the Row object with values
         Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
-// Validate the row against the schema
-        boolean isValid = RowFactory.create(schema).isValid(row);
-        System.out.println("Is row valid: " + isValid);
+
 
 // Predict the label for the row
         double predictedLabel = predictLabel(rowToPredict, loadedModel);
 
-        System.out.println("Predicted label: " + predictedLabel);
         spark.stop();
+
+        return getLabel(predictedLabel);
+
+    }
+
+
+
+
+
+
+    static public  String testmodel_randomforest( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDatasetInF").master("local[*]").getOrCreate();
+
+        String modelPath = "hdfs://54.84.181.116:9000/models-datasets/random";
+
+
+        RandomForestModel loadedModel = RandomForestModel.load(spark.sparkContext(),modelPath);
+
+        StructType schema = new StructType()
+                .add("1 tBodyAcc-mean()-X", DoubleType, false)
+                .add("2 tBodyAcc-mean()-Y", DoubleType, false)
+                .add("3 tBodyAcc-mean()-Z", DoubleType, false)
+                .add("121 tBodyGyro-mean()-X", DoubleType, false)
+                .add("122 tBodyGyro-mean()-Y", DoubleType, false)
+                .add("123 tBodyGyro-mean()-Z", DoubleType, false);
+
+// Create the Row object with values
+        Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
+
+// Predict the label for the row
+        double predictedLabel = predictLabelRandom(rowToPredict, loadedModel);
+
+       spark.stop();
+
+       return getLabel(predictedLabel);
+
 
     }
     //   .setMaster("spark://ec2-54-84-181-116.compute-1.amazonaws.com:7077");
@@ -380,7 +471,7 @@ public class PredictiveActivityModelService {
     static public  void example() {
 
 
-        System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
+        System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
         Logger.getLogger("org").setLevel(Level.OFF);
@@ -410,6 +501,11 @@ public class PredictiveActivityModelService {
 
     }
     public static void main(String[] args) {
-        preprocessDataBiometrics();
+        System.out.println("empez");
+        // createmodelsandtrain();
+
+        String predictedLabel=testmodel_randomforest(1,2,3,4,5,6);
+        System.out.println("Predicted label: " + predictedLabel);
+
     }
 }
