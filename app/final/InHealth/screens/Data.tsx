@@ -209,6 +209,42 @@ const Data = () => {
   ]);
   const [rectangleDatePicker, setRectangleDatePicker] = useState(undefined);
   const [selectedOption, setSelectedOption] = useState('');
+  const [nameValue, setnameValue] = useState('');
+  const [heightValue, setheightValue] = useState(null);
+  const [weightValue, setweightValue] = useState(null);
+  const [diseaseValue, setdiseaseValue] = useState('');
+
+
+
+  const registerUser = async () => {
+    var body={
+      name:nameValue,
+      gender: selectedOption,
+      heightCm: heightValue,
+      weightKg: weightValue,
+      country: rectangleDropdownValue,
+      birthday: rectangleDatePicker,
+      disease: diseaseValue,
+    }
+    
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body
+      };
+      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/user/register', options);
+
+      if (response.ok) {
+        console.log('File sent to server');
+        navigation.navigate("Home");
+      } else {
+
+        console.error('Failed to send file to server');
+      }
+    
+  };
 
   const handleOptionSelect = (option: React.SetStateAction<string>) => {
     setSelectedOption(option);
@@ -256,6 +292,8 @@ const Data = () => {
               style={[styles.frameChild, styles.wrapperLayout]}
               placeholder="Placeholder text"
               keyboardType="default"
+              value={nameValue}
+              onChangeText={(e)=>setnameValue(e)}
             />
             <View style={[styles.heightWrapper, styles.wrapperLayout1]}>
               <Text style={[styles.name, styles.nameTypo]}>Height</Text>
@@ -265,6 +303,8 @@ const Data = () => {
               placeholder="Placeholder text"
               keyboardType="decimal-pad"
               autoCapitalize="none"
+              value={heightValue}
+              onChangeText={(e)=>setheightValue(e)}
             />
             <View style={[styles.weightWrapper, styles.wrapperLayout1]}>
               <Text style={[styles.name, styles.nameTypo]}>Weight</Text>
@@ -274,6 +314,8 @@ const Data = () => {
               placeholder="Placeholder text"
               keyboardType="decimal-pad"
               autoCapitalize="none"
+              value={weightValue}
+              onChangeText={(e)=>setweightValue(e)}
             />
             <View style={[styles.countryWrapper, styles.wrapperLayout1]}>
               <Text style={[styles.name, styles.nameTypo]}>Country</Text>
@@ -305,12 +347,14 @@ const Data = () => {
               style={[styles.frameChild, styles.wrapperLayout]}
               placeholder="Placeholder text"
               keyboardType="default"
+              value={diseaseValue}
+              onChangeText={(e)=>setdiseaseValue(e)}
             />
           </View>
         </View>
         <Pressable
           style={styles.container}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => registerUser()}
         >
           <Image
             style={styles.icon}
