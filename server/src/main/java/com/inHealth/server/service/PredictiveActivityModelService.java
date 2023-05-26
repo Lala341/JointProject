@@ -208,33 +208,33 @@ public class PredictiveActivityModelService {
         return prediction;
     }
 
-public static  String getLabel(double prediction){
-    String label;
-    switch ((int) prediction) {
-        case 1:
-            label = "WALKING";
-            break;
-        case 2:
-            label = "WALKING_UPSTAIRS";
-            break;
-        case 3:
-            label = "WALKING_DOWNSTAIRS";
-            break;
-        case 4:
-            label = "SITTING";
-            break;
-        case 5:
-            label = "STANDING";
-            break;
-        case 6:
-            label = "LAYING";
-            break;
-        default:
-            label = "UNKNOWN";
-    }
+    public static  String getLabel(double prediction){
+        String label;
+        switch ((int) prediction) {
+            case 1:
+                label = "WALKING";
+                break;
+            case 2:
+                label = "WALKING_UPSTAIRS";
+                break;
+            case 3:
+                label = "WALKING_DOWNSTAIRS";
+                break;
+            case 4:
+                label = "SITTING";
+                break;
+            case 5:
+                label = "STANDING";
+                break;
+            case 6:
+                label = "LAYING";
+                break;
+            default:
+                label = "UNKNOWN";
+        }
 
-    return label;
-}
+        return label;
+    }
 
 
     public static void preHdfs(String hdfsDir)  {
@@ -445,9 +445,9 @@ public static  String getLabel(double prediction){
 // Predict the label for the row
         double predictedLabel = predictLabelRandom(rowToPredict, loadedModel);
 
-       spark.stop();
+        spark.stop();
 
-       return getLabel(predictedLabel);
+        return getLabel(predictedLabel);
 
 
     }

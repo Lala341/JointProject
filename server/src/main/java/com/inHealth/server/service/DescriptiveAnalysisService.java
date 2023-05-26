@@ -1,26 +1,23 @@
 package com.inHealth.server.service;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.inHealth.server.model.DistanceKPI;
+import com.inHealth.server.model.StepsKPI;
+import com.inHealth.server.repository.DistanceKPIRepository;
+import com.inHealth.server.repository.StepsKPIRepository;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession;
-import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PreDestroy;
-import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,37 +27,24 @@ import java.util.List;
 public class DescriptiveAnalysisService {
 
     private final SparkSession spark;
-    private final MongoClient mongoClient;
-    private final MongoDatabase database;
 
     public DescriptiveAnalysisService() {
         spark = SparkSession.builder()
                 .appName("Step Counting")
                 .master("local[*]")
                 .getOrCreate();
-
-        // Create a MongoClient instance for connecting to MongoDB
-        mongoClient = MongoClients.create("mongodb://localhost:27017");
-        database = mongoClient.getDatabase("inhealth"); // Replace "inhealth" with your desired database name
-
     }
 
-    public double calculateDistance(String user, LocalDateTime date) {
+    public double calculateDistance(String user, String fileName) {
         SparkSession spark = SparkSession.builder()
                 .appName("Distance Calculation")
                 .master("local[*]")
                 .getOrCreate();
 
-        // Load all files from the user directory with the specific date into an RDD
-        JavaRDD<String> dataRDD = spark.read()
-                .textFile("hdfs://54.84.181.116:9000/sensors-data/" + user + "/sensor-data*.txt")
-                .toJavaRDD()
-                .filter(line -> {
-                    String[] values = line.split(",");
-                    String timestampStr = values[1];
-                    LocalDate fileDate = LocalDate.parse(timestampStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE);
-                    return fileDate.equals(date.toLocalDate());
-                });
+        // Load the data into an RDD
+        JavaRDD<String> dataRDD = spark.sparkContext()
+                .textFile("hdfs://54.84.181.116:9000/sensors-data/"+user+"/"+fileName, 1)
+                .toJavaRDD();
 
         // Calculate the distance using map transformation
         JavaRDD<Double> distancesRDD = dataRDD.mapPartitions(lines -> {
@@ -90,33 +74,19 @@ public class DescriptiveAnalysisService {
         // Calculate the total distance crossed using reduce action
         double totalDistance = distancesRDD.reduce(Double::sum);
 
-        // Store the calculated KPI in MongoDB
-        MongoCollection<Document> kpiCollection = database.getCollection("distancekpi"); // Replace "distancekpi" with your desired collection name
-        Document kpiDocument = new Document();
-        kpiDocument.append("user", user);
-        kpiDocument.append("date", date.toString());
-        kpiDocument.append("distance", totalDistance);
-        kpiCollection.insertOne(kpiDocument);
-
         return totalDistance;
     }
 
-    public int calculateTotalSteps(String user, LocalDateTime date, double threshold, int windowSize, int stepSize) {
+    public int calculateTotalSteps(String user, String fileName, double threshold, int windowSize, int stepSize) {
         SparkSession spark = SparkSession.builder()
                 .appName("Step Counting")
                 .master("local[*]")
                 .getOrCreate();
 
-        // Load all files from the user directory with the specific date into an RDD
-        JavaRDD<String> dataRDD = spark.read()
-                .textFile("hdfs://54.84.181.116:9000/sensors-data/" + user + "/sensor-data*.txt")
-                .toJavaRDD()
-                .filter(line -> {
-                    String[] values = line.split(",");
-                    String timestampStr = values[1];
-                    LocalDate fileDate = LocalDate.parse(timestampStr.substring(0, 10), DateTimeFormatter.ISO_LOCAL_DATE);
-                    return fileDate.equals(date.toLocalDate());
-                });
+        // Load the data into an RDD
+        JavaRDD<String> dataRDD = spark.sparkContext()
+                .textFile("hdfs://54.84.181.116:9000/sensors-data/"+user+"/"+fileName, 1)
+                .toJavaRDD();
 
         // Calculate the total steps using map transformation with windowing and averaging
         JavaRDD<Integer> stepsRDD = dataRDD.mapPartitions(lines -> {
@@ -156,48 +126,11 @@ public class DescriptiveAnalysisService {
         // Calculate the total steps taken using reduce action
         int totalSteps = stepsRDD.reduce(Integer::sum);
 
-        // Store the calculated KPI in MongoDB
-        MongoCollection<Document> kpiCollection = database.getCollection("stepskpi"); // Replace "stepskpi" with your desired collection name
-        Document kpiDocument = new Document();
-        kpiDocument.append("user", user);
-        kpiDocument.append("date", date.toString());
-        kpiDocument.append("steps", totalSteps);
-        kpiCollection.insertOne(kpiDocument);
-
         return totalSteps;
-    }
-
-    @Scheduled(fixedRate = 60000) // Runs every minute
-    public void performAnalysisScheduled() {
-        String uri = "hdfs://54.84.181.116:9000";
-        String hdfsDir = "/sensors-data";
-
-        Configuration conf = new Configuration();
-        System.setProperty("HADOOP_USER_NAME", "root");
-        conf.set("fs.defaultFS", uri);
-        conf.setBoolean("dfs.client.use.datanode.hostname", true);
-        try {
-            FileSystem fileSystem = FileSystem.get(conf);
-            FileStatus[] userDirectories = fileSystem.listStatus(new Path(hdfsDir));
-
-            for (FileStatus userDirectory : userDirectories) {
-                String user = userDirectory.getPath().getName();
-                LocalDateTime now = LocalDateTime.now();
-
-                double distance = calculateDistance(user, now);
-                System.out.println("Distance for user " + user + ": " + distance);
-
-                int steps = calculateTotalSteps(user, now, 0.5, 10, 5);
-                System.out.println("Total steps for user " + user + ": " + steps);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @PreDestroy
     private void cleanup() {
         spark.stop();
-        mongoClient.close();
     }
 }

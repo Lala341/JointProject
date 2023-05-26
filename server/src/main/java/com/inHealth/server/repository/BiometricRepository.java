@@ -27,17 +27,16 @@ import static java.lang.Math.min;
             private final String uri = "hdfs://54.84.181.116:9000";
             private final String hdfsDir = "/sensors-data";
 
-            public void uploadToHdfs(String content, String name) throws IOException {
+            public void uploadToHdfs(String content, String user, String fileName) throws IOException {
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
                 conf.set("fs.defaultFS", uri);
                 conf.setBoolean("dfs.client.use.datanode.hostname", true);
 
                 FileSystem fs = FileSystem.get(conf);
-                String user = name.split("_")[min(1,name.split("_").length)];
+
                 Path hdfswritepathuser =new Path( hdfsDir+"/" +user);
-                System.out.println(name);
-                System.out.println(user);
+
                 System.out.println("Before create");
 
                 if (!fs.exists(hdfswritepathuser)) {
@@ -49,7 +48,7 @@ import static java.lang.Math.min;
                 }
                 System.out.println("Create file");
 
-                String fileName = name+".txt";
+
                 Path hdfswritepath = new Path( hdfsDir+"/" +user+"/" + fileName);
                 FSDataOutputStream outputStream = fs.create(hdfswritepath);
                 outputStream.writeBytes(content);
