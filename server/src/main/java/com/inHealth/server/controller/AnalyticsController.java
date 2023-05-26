@@ -3,6 +3,7 @@ package com.inHealth.server.controller;
 import com.inHealth.server.model.DistanceKPI;
 import com.inHealth.server.model.StepsKPI;
 import com.inHealth.server.service.AnalyticsService;
+import org.apache.spark.sql.sources.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,7 @@ public class AnalyticsController {
     }
 
     @GetMapping("/steps/avg")
-    public ResponseEntity<Double>avgStepsByUserAndDateBetween(@RequestParam("user") String user, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    public ResponseEntity<Integer>avgStepsByUserAndDateBetween(@RequestParam("user") String user, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return new ResponseEntity<>(analyticsService.avgStepsByUserAndDateBetween(user, startDate, endDate), HttpStatus.OK);
     }
 }

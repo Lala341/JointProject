@@ -41,7 +41,7 @@ public class AnalyticsService {
         return stepsKPIRepository.sumStepsByUserAndDateBetween(user, startDate, endDate);
     }
 
-    public Double avgStepsByUserAndDateBetween(String user, LocalDate startDate, LocalDate endDate) {
+    public Integer avgStepsByUserAndDateBetween(String user, LocalDate startDate, LocalDate endDate) {
         return stepsKPIRepository.avgStepsByUserAndDateBetween(user, startDate, endDate);
     }
 }

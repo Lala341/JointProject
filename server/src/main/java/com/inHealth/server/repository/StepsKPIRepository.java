@@ -22,7 +22,7 @@ public interface StepsKPIRepository extends MongoRepository<StepsKPI, String> {
             "{$match: { 'user': ?0, 'date': { $gte: ?1, $lte: ?2 } } }",
             "{$group: { '_id': null, 'averageSteps': { $avg: 'steps' } } }"
     })
-    Double avgStepsByUserAndDateBetween(String user, LocalDate startDate, LocalDate endDate);
+    Integer avgStepsByUserAndDateBetween(String user, LocalDate startDate, LocalDate endDate);
 
 
 }
