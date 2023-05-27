@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -54,6 +54,11 @@ const Survey = () => {
 const [schema, setSchema]= useState(undefined);
 
 
+useEffect(() => {
+  if(schema===undefined){
+    getSurvey();
+  }
+}, [schema]);
   const getSurvey = async () => {
    
       const options = {
@@ -62,36 +67,87 @@ const [schema, setSchema]= useState(undefined);
           'Content-Type': 'application/json',
         }
       };
-      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/survey/dayly', options);
+      const response = await fetch('http://192.168.0.22:8090/survey/daily', options);
 
       if (response.ok) {
         console.log('File sent to server');
-        setSchema(response.body);
+        const data = await response.json();
+        console.log(data);
+        setSchema(data);
       } else {
 
         console.error('Failed to send file to server');
       }
     
   };
+  const getStructureSurvey=()=>{
+    
+    var data=[{
+      "id": "6b7c4d15-a207-46a2-bc15-7cc9dcd5c3de",
+      "text": "Mood",
+      "answer": rectangleDropdownValue
+  },
+  {
+      "id": "3ded6f30-27b5-4ab5-a89b-0eacffc2d055",
+      "text": "Weight",
+      "answer": "10"
+  },
+  {
+      "id": "42ceb623-cef1-4527-98a4-57eeac627225",
+      "text": "How would you rate your stress level today?",
+      "answer": "10"
+  },
+  {
+      "id": "9e5c65fb-7eac-4ce8-8fa1-d4a5cd82921a",
+      "text": "Did you have trouble sleeping last night?",
+      "answer": rectangleCheckboxchecked +""
+  },
+  {
+      "id": "3ca23594-924a-4ed0-aaf3-eeaddd653fa5",
+      "text": "Did you consume any sugary or high-fat foods or drinks?",
+      "answer": rectangleCheckbox1checked +""
+  },
+  {
+      "id": "a3be4ef4-8b59-4ba6-b5bb-9bfd97806f54",
+      "text": "Did you consume enough fruits and vegetables?",
+      "answer": rectangleCheckbox2checked +""
+  },
+  {
+      "id": "e1031218-7a3d-4319-b5e0-9cc7e0a40f3f",
+      "text": "Did you engage in any activities that helped you relax or reduce stress?",
+      "answer": rectangleCheckbox3checked +""
+  },
+  {
+      "id": "c1a6132a-8469-4af4-b037-6af1ed3f5bef",
+      "text": "Have you noticed any changes in your appetite or dietary habits recently?",
+      "answer": rectangleCheckbox4checked+"" 
+  }];
+
+  if(schema!=null && schema["questions"]!=null){
+  for(var i=0;i<data.length;i++ ){
+ var id= data[i]["id"];
+    for(var j=0;j<8;j++ ){
+        if(data[i]["text"]===schema["questions"][i]["text"]){
+          id=schema["questions"][i]["id"];
+        }
+    }
+    data[i]["id"]=id;
+  }
+}
+    return {"surveyId": "64720ba2674ea050a7ef5596","userId": "64720d3c674ea050a7ef559d", "answers":data};
+  }
   const sendSurvey = async () => {
     
-    var body={
-      rectangleDropdownValue,
-      rectangleCheckboxchecked, 
-      rectangleCheckbox1checked, 
-      rectangleCheckbox2checked, 
-      rectangleCheckbox3checked, 
-      rectangleCheckbox4checked
-    }
+    var body=getStructureSurvey();
     
       const options = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: body
+        body: JSON.stringify(body)
       };
-      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/user/register', options);
+      const response = await fetch('http://192.168.0.22:8090/survey/response', options);
 
       if (response.ok) {
         console.log('File sent to server');
@@ -113,11 +169,16 @@ const [schema, setSchema]= useState(undefined);
       <View style={styles.groupParent}>
         <View style={styles.parentLayout1}>
           <Text style={styles.dailySurvey}>Daily Survey</Text>
-          <Image
+          <Pressable
+          onPress={() => sendSurvey()}
+        >
+ <Image
             style={[styles.image1Icon, styles.containerLayout]}
             contentFit="cover"
             source={require("../assets/image-1.png")}
           />
+        </Pressable>
+         
         </View>
         <View style={styles.frameParent}>
           <View style={styles.dropdata}>

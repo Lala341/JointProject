@@ -208,7 +208,7 @@ const Data = () => {
     { value: "Zimbabwe", label: "Zimbabwe" },
   ]);
   const [rectangleDatePicker, setRectangleDatePicker] = useState(undefined);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState('female');
   const [nameValue, setnameValue] = useState('');
   const [heightValue, setheightValue] = useState(null);
   const [weightValue, setweightValue] = useState(null);
@@ -224,7 +224,7 @@ const Data = () => {
       weightKg: weightValue,
       country: rectangleDropdownValue,
       birthday: rectangleDatePicker,
-      disease: diseaseValue,
+      diseases: diseaseValue,
     }
     
       const options = {
@@ -232,12 +232,14 @@ const Data = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: body
+        body: JSON.stringify(body)
       };
-      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/user/register', options);
+      const response = await fetch('http://192.168.0.22:8090/user/register', options);
 
       if (response.ok) {
-        console.log('File sent to server');
+        console.log('user registered');
+        const data = await response.json();
+        console.log(data);
         navigation.navigate("Home");
       } else {
 

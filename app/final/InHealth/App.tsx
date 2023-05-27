@@ -172,7 +172,7 @@ const App = () => {
         },
         body: formData
       };
-      const response = await fetch('http://54.84.181.116:8080/server-0.0.1-SNAPSHOT/', options);
+      const response = await fetch('http://192.168.0.22:8090/', options);
 
       if (response.ok) {
         console.log('File sent to server');
