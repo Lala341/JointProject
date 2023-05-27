@@ -4,6 +4,7 @@ import { Gyroscope, Accelerometer } from 'expo-sensors';
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
 import { encode } from 'querystring'; // Import the querystring module to encode the data
+import * as BackgroundFetch from 'react-native-background-fetch';
 
 export default function App() {
   const [sensorData, setSensorData] = useState({
@@ -18,64 +19,7 @@ export default function App() {
   const [isWriting, setIsWriting] = useState(false);
   const [data, setData] = useState("");
 
-  useEffect(() => {
-    const subscriptionAccelerometer = Accelerometer.addListener(
-      (accelerometerData) => {
-        setSensorData((prevData) => ({
-          ...prevData,
-          xAccelerometer: accelerometerData.x,
-          yAccelerometer: accelerometerData.y,
-          zAccelerometer: accelerometerData.z,
-        }));
-      }
-    );
 
-    const subscriptionGyroscope = Gyroscope.addListener((gyroscopeData) => {
-      setSensorData((prevData) => ({
-        ...prevData,
-        xGyroscope: gyroscopeData.x,
-        yGyroscope: gyroscopeData.y,
-        zGyroscope: gyroscopeData.z,
-      }));
-    });
-
-    return () => {
-      subscriptionAccelerometer.remove();
-      subscriptionGyroscope.remove();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isWriting) {
-      setIsWriting(true);
-
-      const writeToFile = async () => {
-        const now = new Date();
-        const deviceId = Constants.installationId;
-     // const deviceId = "1e9c1862-ec25-4cde-a689-38ab696ccba1";
-        const filename = `/sensor-data_${deviceId}_${now.toISOString().split(".")[0]}.txt`;
-
-        const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}\n`;
-
-       // console.log(`Data written to file: ${newFileContent}`);
-
-        const fileUrit = FileSystem.documentDirectory + filename;
-        const concatenatedData = data + newFileContent;
-        
-        // Write concatenated data back to file
-        await FileSystem.writeAsStringAsync(
-          fileUrit,
-          concatenatedData,
-          { encoding: FileSystem.EncodingType.UTF8 }
-        );
-        setData(concatenatedData);
-        setFileUri(fileUrit);
-        setIsWriting(false);
-      };
-
-      writeToFile();
-    }
-  }, [sensorData, isWriting]);
 
   const sendFileToServer = async () => {
     if (fileUri) {
