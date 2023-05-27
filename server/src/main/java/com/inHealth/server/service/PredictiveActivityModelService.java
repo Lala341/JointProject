@@ -495,7 +495,7 @@ public class PredictiveActivityModelService {
 
 
         calculatemetrics_testdecisiontree(spark,version, "DecisionTree", testData, modelService, date);
-        calculatemetrics_testrandom(spark,version, "DecisionTree", testData, modelService, date);
+        calculatemetrics_testrandom(spark,version, "RandomForest", testData, modelService, date);
 
 
         System.out.println("Final complete metrics");

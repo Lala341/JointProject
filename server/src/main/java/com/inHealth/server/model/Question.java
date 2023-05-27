@@ -6,18 +6,22 @@ import java.util.List;
 import java.util.UUID;
 
 public class Question {
+
+
     @Id
     private String id;
     private String text;
-    private List<Option> options;
+    private String type;
+    private List<String> options;
 
     public Question() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Question(String id, String text, List<Option> options) {
+    public Question(String id, String text, String type, List<String> options) {
         this.id = id;
         this.text = text;
+        this.type = type;
         this.options = options;
     }
 
@@ -37,11 +41,20 @@ public class Question {
         this.text = text;
     }
 
-    public List<Option> getOptions() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<String> getOptions() {
         return options;
     }
 
-    public void setOptions(List<Option> options) {
+    public void setOptions(List<String> options) {
         this.options = options;
     }
+
 }
