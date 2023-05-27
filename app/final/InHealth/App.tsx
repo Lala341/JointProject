@@ -18,9 +18,11 @@ import { IconRegistry, ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
 import { Gyroscope, Accelerometer } from 'expo-sensors';
 import Constants from 'expo-constants';
-import * as FileSystem from 'expo-file-system';
-import * as BackgroundFetch from 'expo-background-fetch';
-import * as TaskManager from 'expo-task-manager';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const SENSOR_TASK_NAME = 'sensorTask';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -33,6 +35,7 @@ import {
 } from "react-native";
 
 const App = () => {
+  
   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
   const [fontsLoaded, error] = useFonts({
     "DM Sans_regular": require("./assets/fonts/DM_Sans_regular.ttf"),
@@ -57,99 +60,54 @@ const App = () => {
     zGyroscope: 0,
   });
   const [fileUri, setFileUri] = useState(null);
-  const [isWriting, setIsWriting] = useState(false);
   const [data, setData] = useState("");
 
+
   useEffect(() => {
-    const handleSensorData = () => {
-      // Handle sensor data
-      // Perform necessary operations like updating state, writing to a file, etc.
-      if (!isWriting) {
-        setIsWriting(true);
-  
-        const writeToFile = async () => {
+    Accelerometer.setUpdateInterval(10000);
+    Gyroscope.setUpdateInterval(10000);
 
-          const now = new Date();
-          const deviceId = Constants.installationId;
-       // const deviceId = "1e9c1862-ec25-4cde-a689-38ab696ccba1";
-          const filename = `/sensor-data_${deviceId}_${now.toISOString().split(".")[0]}.txt`;
-  
-          const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}\n`;
-  
-         // console.log(`Data written to file: ${newFileContent}`);
-  
-          const fileUrit = FileSystem.documentDirectory + filename;
-          const concatenatedData = data + newFileContent;
-          
-          // Write concatenated data back to file
-          await FileSystem.writeAsStringAsync(
-            fileUrit,
-            concatenatedData,
-            { encoding: FileSystem.EncodingType.UTF8 }
-          );
-          setData(concatenatedData);
-          setFileUri(fileUrit);
-          setIsWriting(false);
-        };
-  
-        writeToFile();
-      }
-    };
-
-    const sensorDataCollector = () => {
-      console.log("accelerometerData3");
-
-       Accelerometer.addListener(
-        (accelerometerData) => {
-          setSensorData((prevData) => ({
-            ...prevData,
-            xAccelerometer: accelerometerData.x,
-            yAccelerometer: accelerometerData.y,
-            zAccelerometer: accelerometerData.z,
-          }));
-          handleSensorData();
-        }
-      );
-  
-      Gyroscope.addListener((gyroscopeData) => {
+    const subscriptionAccelerometer = Accelerometer.addListener(
+      (accelerometerData) => {
         setSensorData((prevData) => ({
           ...prevData,
-          xGyroscope: gyroscopeData.x,
-          yGyroscope: gyroscopeData.y,
-          zGyroscope: gyroscopeData.z,
+          xAccelerometer: accelerometerData.x,
+          yAccelerometer: accelerometerData.y,
+          zAccelerometer: accelerometerData.z,
         }));
-        handleSensorData();
-      });
-  
-      
-    };
-    const registerSensorTask = async () => {
-      TaskManager.defineTask(SENSOR_TASK_NAME, () => {
-        // This function will be executed in the background task
-        console.log("accelerometerData");
+      }
+    );
 
-        sensorDataCollector();
-        return "BackgroundFetch.Result.NewData";
+    const subscriptionGyroscope = Gyroscope.addListener((gyroscopeData) => {
+      setSensorData((prevData) => ({
+        ...prevData,
+        xGyroscope: gyroscopeData.x,
+        yGyroscope: gyroscopeData.y,
+        zGyroscope: gyroscopeData.z,
+      }));
+    });
 
-      });
-      await TaskManager.unregisterAllTasksAsync();
-      await BackgroundFetch.registerTaskAsync(SENSOR_TASK_NAME, {
-        minimumInterval: 5, // Minimum interval in seconds (minimum 15 minutes)
-        stopOnTerminate: false, // Continue background task even when the app is terminated
-        startOnBoot: true, // Start background task when the device boots up
-      });
-    };
-    console.log("accelerometerData1");
-
-    registerSensorTask();
-    
-    // Clean up resources when the component unmounts
     return () => {
-      Accelerometer.removeAllListeners();
-      TaskManager.unregisterTaskAsync(SENSOR_TASK_NAME);
+      subscriptionAccelerometer.remove();
+      subscriptionGyroscope.remove();
     };
   }, []);
 
+  useEffect(() => {
+  
+      const writeToFile = async () => {
+        console.log("getting data sensors");
+        const now = new Date();
+        const deviceId = Constants.installationId;
+        const newFileContent = `${deviceId},${now.toISOString()},${sensorData.xAccelerometer},${sensorData.yAccelerometer},${sensorData.zAccelerometer},${sensorData.xGyroscope},${sensorData.yGyroscope},${sensorData.zGyroscope}\n`;
+
+        const concatenatedData = data + newFileContent;
+         setData(concatenatedData);
+      };
+
+      writeToFile();
+    
+  }, [sensorData]);
 
   const sendFileToServer = async () => {
     if (fileUri) {
@@ -252,6 +210,7 @@ const App = () => {
               <Stack.Screen
                 name="Home"
                 component={Home}
+                initialParams={{fileUri:fileUri, data: data}}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

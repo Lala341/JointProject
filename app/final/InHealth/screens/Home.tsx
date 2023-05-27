@@ -1,14 +1,80 @@
 import * as React from "react";
 import { Text, StyleSheet, View, Pressable } from "react-native";
 import { Image } from "expo-image";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
 import Menu from "../components/Menu";
+import { Alert } from "react-native";
+import Constants from 'expo-constants';
+import * as FileSystem from 'expo-file-system';
 
-
-const Home  = () => {
+export type RootStackParamList = {
+  Home: { fileUri: string , data: string};
+};
+export type RootRouteProps<RouteName extends keyof RootStackParamList> = RouteProp<
+  RootStackParamList,
+  RouteName
+>;
+const Home  = (  ) => {
   const navigation = useNavigation();
+  const route = useRoute<RootRouteProps<'Home'>>();
+  const [isWriting, setIsWriting] = React.useState(false);
 
+  const createTwoButtonAlert = () =>
+  Alert.alert('Success', 'File sent successfully.', [
+    {text: 'OK', onPress: () => {console.log('OK Pressed');}},
+  ]);
+  const sendFileToServer = async () => {
+
+
+    var data= route.params.data;
+
+    console.log("voy");
+    const now = new Date();
+    const deviceId = Constants.installationId;
+ // const deviceId = "1e9c1862-ec25-4cde-a689-38ab696ccba1";
+    const filename = `/sensor-data_${deviceId}_${now.toISOString().split(".")[0]}.txt`;
+
+    const fileUri = FileSystem.documentDirectory + filename;
+    
+    // Write concatenated data back to file
+    await FileSystem.writeAsStringAsync(
+      fileUri,
+      data,
+      { encoding: FileSystem.EncodingType.UTF8 }
+    );
+     setIsWriting(false);
+
+    if (fileUri) {
+      const formData = new FormData();
+      var values=fileUri.split("/");
+      var nam=values[values.length-1].replace(".txt","");
+      nam=nam.replace(":","-");
+      nam=nam.replace(":","-");
+      console.log(nam);
+      console.log(values);
+
+      formData.append('file', {uri: fileUri, type: "text/plain", name: nam+".txt"});
+      formData.append('name', nam);
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData
+      };
+      const response = await fetch('http://192.168.0.22:8090/', options);
+
+      if (response.ok) {
+        console.log('File sent to server');
+        createTwoButtonAlert();
+      } else {
+
+        console.error('Failed to send file to server');
+      }
+    }
+  };
   return (
     <View style={styles.home}>
       <View style={styles.frameParent}>
@@ -105,7 +171,8 @@ const Home  = () => {
               </View>
             </View>
           </View>
-          <Pressable style={[styles.saturday, styles.saturdayLayout]}>
+          <Pressable style={[styles.saturday, styles.saturdayLayout]}
+          onPress={()=>sendFileToServer()}>
             <Image
               style={[styles.saturdayChild, styles.saturdayLayout]}
               contentFit="cover"

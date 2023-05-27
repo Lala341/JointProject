@@ -7,7 +7,7 @@ import { CheckBox as RNKCheckBox } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, FontFamily } from "../GlobalStyles";
 import Menu from "../components/Menu";
-import Toast from 'react-native-toast-message';
+import { Alert } from "react-native";
 
 const Survey = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
@@ -52,6 +52,12 @@ const Survey = () => {
     useState(undefined);
   const navigation = useNavigation();
 const [schema, setSchema]= useState(undefined);
+
+const createTwoButtonAlert = () =>
+Alert.alert('Success', 'Survey sent successfully.', [
+  {text: 'OK', onPress: () => {console.log('OK Pressed');
+  navigation.navigate("Home");}},
+]);
 
 
 useEffect(() => {
@@ -151,13 +157,8 @@ useEffect(() => {
 
       if (response.ok) {
         console.log('File sent to server');
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Survey sent successfully.',
-          position: 'bottom',
-        });
-        navigation.navigate("Home");
+        createTwoButtonAlert();
+        //navigation.navigate("Home");
       } else {
 
         console.error('Failed to send file to server');

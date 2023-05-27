@@ -5,6 +5,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, FontFamily } from "../GlobalStyles";
+import { Alert } from "react-native";
 
 const Data = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
@@ -215,7 +216,13 @@ const Data = () => {
   const [diseaseValue, setdiseaseValue] = useState('');
 
 
+  const createTwoButtonAlert = () =>
+  Alert.alert('Success', 'User register successfully.', [
+    {text: 'OK', onPress: () => {console.log('OK Pressed');
+    navigation.navigate("Home");}},
+  ]);
 
+  
   const registerUser = async () => {
     var body={
       name:nameValue,
@@ -240,7 +247,7 @@ const Data = () => {
         console.log('user registered');
         const data = await response.json();
         console.log(data);
-        navigation.navigate("Home");
+        createTwoButtonAlert();
       } else {
 
         console.error('Failed to send file to server');
