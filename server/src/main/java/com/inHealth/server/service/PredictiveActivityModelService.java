@@ -1,12 +1,14 @@
 package com.inHealth.server.service;
 
 import com.inHealth.server.model.ModelMetrics;
+import com.inHealth.server.repository.ModelMetricsRepository;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -17,14 +19,16 @@ import org.apache.spark.mllib.tree.DecisionTree;
 import org.apache.spark.mllib.tree.RandomForest;
 import org.apache.spark.mllib.tree.model.DecisionTreeModel;
 import org.apache.spark.mllib.tree.model.RandomForestModel;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.RowFactory;
-import org.apache.spark.sql.SparkSession;
+import org.apache.spark.mllib.util.MLUtils;
+import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import scala.Tuple2;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -32,9 +36,20 @@ import static java.lang.Math.min;
 import static org.apache.spark.sql.functions.monotonically_increasing_id;
 import static org.apache.spark.sql.types.DataTypes.DoubleType;
 
+@SpringBootApplication(scanBasePackages={
+        "com.inHealth", "com.inHealth.serve"})
 public class PredictiveActivityModelService {
 
     private static final int NUM_SAMPLES = 1;
+
+    private static ModelMetricsService modelService;
+    @Autowired
+    private ModelMetricsService tmodelMetricsService;
+
+    @PostConstruct
+    public void init() {
+        PredictiveActivityModelService.modelService = tmodelMetricsService;
+    }
 
     static public  void preprocessDataBiometrics() {
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
@@ -235,7 +250,34 @@ public class PredictiveActivityModelService {
         return label;
     }
 
+    public static void createfolderhdfs(String hdfsDir)  {
+        String uri = "hdfs://54.84.181.116:9000";
 
+        Configuration conf = new Configuration();
+        System.setProperty("HADOOP_USER_NAME", "root");
+        conf.set("fs.defaultFS", uri);
+        conf.setBoolean("dfs.client.use.datanode.hostname", true);
+        System.out.println("Start verify folder");
+
+
+        try {
+            FileSystem fs = FileSystem.get(conf);
+            Path hdfswritepathuser1 =new Path( hdfsDir);
+
+            System.out.println("Before create");
+            if (!fs.exists(hdfswritepathuser1)) {
+                System.out.println("exist");
+                fs.mkdirs(hdfswritepathuser1);
+                System.out.println("created");
+
+            }
+        }catch (Exception e){
+            System.out.println("error");
+            System.out.println(e.toString());
+        }
+        System.out.println("Final file");
+
+    }
     public static void preHdfs(String hdfsDir)  {
         String uri = "hdfs://54.84.181.116:9000";
 
@@ -271,7 +313,7 @@ public class PredictiveActivityModelService {
         System.out.println("Final file");
 
     }
-    static public  void createmodelsandtrain() {
+    static public  void preprocessSaveDataModels(){
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -288,6 +330,47 @@ public class PredictiveActivityModelService {
         JavaRDD<LabeledPoint> testData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/X_test.txt",
                 "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/y_test.txt" );
         // Stop the SparkSession
+        // Convert JavaRDD<LabeledPoint> to a Dataset
+        // Convert JavaRDD<LabeledPoint> to DataFrame
+        String inputPathTrain = "hdfs://54.84.181.116:9000/models-datasets/datasets/train";
+        String inputPathTest = "hdfs://54.84.181.116:9000/models-datasets/datasets/test";
+
+        trainData.saveAsObjectFile(inputPathTrain);
+        testData.saveAsObjectFile(inputPathTest);
+
+
+        JavaSparkContext javaSparkContext = JavaSparkContext.fromSparkContext(spark.sparkContext());
+        // test data
+        JavaRDD<LabeledPoint> retrievedRDD = javaSparkContext.objectFile(inputPathTrain);
+        LabeledPoint firstElement = retrievedRDD.first();
+        System.out.println(firstElement);
+
+        System.out.println("Final complete");
+
+        spark.stop();
+
+    }
+    static public  void createmodelsandtrain() {
+        System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
+        System.setProperty("HADOOP_USER_NAME", "root");
+
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
+
+
+        SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDatasetInFi").config("spark.hadoop.validateOutputSpecs", "false").master("local[*]").getOrCreate();
+
+        System.out.println("Final clearCache");
+
+        String inputPathTrain = "hdfs://54.84.181.116:9000/models-datasets/datasets/train";
+        String inputPathTest = "hdfs://54.84.181.116:9000/models-datasets/datasets/test";
+
+
+        JavaSparkContext javaSparkContext = JavaSparkContext.fromSparkContext(spark.sparkContext());
+        // load clean datasets
+        JavaRDD<LabeledPoint> trainData = javaSparkContext.objectFile(inputPathTrain);
+        JavaRDD<LabeledPoint> testData = javaSparkContext.objectFile(inputPathTest);
 
 
         createmodelandtrain_decisiontree(spark, trainData, testData);
@@ -315,11 +398,8 @@ public class PredictiveActivityModelService {
         Double testErrDT = 1.0 * predictionAndLabel.filter(pl -> !pl._1().equals(pl._2())).count() / testData.count();
 
 
-        // Create RDD for prediction and label pairs
-        JavaRDD<Tuple2<Object, Object>> predictionAndLabel1 = testData.map(p -> new Tuple2<>(model.predict(p.features()), p.label()));
-
 // Instantiate MulticlassMetrics object
-        MulticlassMetrics metrics = new MulticlassMetrics(predictionAndLabel1.rdd());
+        MulticlassMetrics metrics = new MulticlassMetrics(predictionAndLabel.rdd());
 
 
 
@@ -338,6 +418,9 @@ public class PredictiveActivityModelService {
             double recall = metrics.recall(i);
 
             ModelMetrics modelme= new ModelMetrics(null, type,  version, testErrDT, accuracy, precision, recall, f1Score,date, getLabel(i),  i);
+            System.out.println("modelServicefinal");
+            System.out.println(modelService);
+
             modelService.save(modelme);
             System.out.println(modelme.toString());
         }
@@ -361,11 +444,8 @@ public class PredictiveActivityModelService {
         Double testErrDT = 1.0 * predictionAndLabel.filter(pl -> !pl._1().equals(pl._2())).count() / testData.count();
 
 
-        // Create RDD for prediction and label pairs
-        JavaRDD<Tuple2<Object, Object>> predictionAndLabel1 = testData.map(p -> new Tuple2<>(model.predict(p.features()), p.label()));
-
 // Instantiate MulticlassMetrics object
-        MulticlassMetrics metrics = new MulticlassMetrics(predictionAndLabel1.rdd());
+        MulticlassMetrics metrics = new MulticlassMetrics(predictionAndLabel.rdd());
 
 
 
@@ -401,14 +481,17 @@ public class PredictiveActivityModelService {
 
         SparkSession spark = SparkSession.builder().appName("InHealthSensors-PreprocessingDatasetInFi").config("spark.hadoop.validateOutputSpecs", "false").master("local[*]").getOrCreate();
 
+        String inputPathTest = "hdfs://54.84.181.116:9000/models-datasets/datasets/test";
 
 
-        JavaRDD<LabeledPoint> testData = preprocessDataSets(  spark, "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/X_test.txt",
-                "hdfs://54.84.181.116:9000/models-datasets/human_sensorsUCI HAR Dataset/test/y_test.txt" );
+        JavaSparkContext javaSparkContext = JavaSparkContext.fromSparkContext(spark.sparkContext());
+        // load clean datasets
+        JavaRDD<LabeledPoint> testData = javaSparkContext.objectFile(inputPathTest);
+
         // Stop the SparkSession
 
-        ModelMetricsService modelService= new ModelMetricsService();
         LocalDate date = LocalDate.now();
+
 
 
         calculatemetrics_testdecisiontree(spark,version, "DecisionTree", testData, modelService, date);
@@ -621,9 +704,14 @@ public class PredictiveActivityModelService {
 
     }
     public static void main(String[] args) {
-        System.out.println("start");
-        // createmodelsandtrain();
+        SpringApplication.run(PredictiveActivityModelService.class, args);
 
+        System.out.println("start");
+        //createfolderhdfs("hdfs://54.84.181.116:9000/models-datasets/datasets");
+        //createfolderhdfs("hdfs://54.84.181.116:9000/models-datasets/datasets/train");
+        //createfolderhdfs("hdfs://54.84.181.116:9000/models-datasets/datasets/test");
+        //preprocessSaveDataModels();
+        //createmodelsandtrain();
         calculatemetrics_test("1.0.0");
 
        // String predictedLabel=testmodel_decisiontree(1,2,3,4,5,6);
