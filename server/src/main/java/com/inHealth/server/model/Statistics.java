@@ -2,12 +2,14 @@ package com.inHealth.server.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document("statistics")
 public class Statistics {
 
     private String id;
     private String userId;
-    private String date;
+    private LocalDateTime date;
     private double avgAccX;
     private double avgAccY;
     private double avgAccZ;
@@ -26,7 +28,7 @@ public class Statistics {
 
     public Statistics(){}
 
-    public Statistics(String id, String userId, String date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ, double stdDevAccX, double stdDevAccY, double stdDevAccZ, double stdDevGyroX, double stdDevGyroY, double stdDevGyroZ, String predictActivityM1, String predictActivityM2) {
+    public Statistics(String id, String userId, LocalDateTime date, double avgAccX, double avgAccY, double avgAccZ, double avgGyroX, double avgGyroY, double avgGyroZ, double stdDevAccX, double stdDevAccY, double stdDevAccZ, double stdDevGyroX, double stdDevGyroY, double stdDevGyroZ, String predictActivityM1, String predictActivityM2) {
         this.id = id;
         this.userId = userId;
         this.date = date;
@@ -54,11 +56,11 @@ public class Statistics {
         this.userId = userId;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

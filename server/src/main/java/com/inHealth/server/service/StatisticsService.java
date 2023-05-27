@@ -12,6 +12,7 @@ import scala.*;
 
 import javax.annotation.PreDestroy;
 import java.lang.Double;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,17 +41,18 @@ public class StatisticsService {
                 .textFile("hdfs://54.84.181.116:9000/sensors-data/*/sensor-data*.txt")
                 .toJavaRDD();
 
-        JavaRDD<Tuple8<String,String,Double,Double,Double,Double,Double,Double>> data = dataRDD.map(line-> {
+        JavaRDD<Tuple8<String,LocalDateTime,Double,Double,Double,Double,Double,Double>> data = dataRDD.map(line-> {
             String[] parts = line.split(",");
 
             if (parts.length < 8) {
-                return new Tuple8<>("", "", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                return new Tuple8<>("", null, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
             }
             else {
             String id = parts[0];
             String timestamp = parts[1];
-            String date = timestamp.split(":")[0] + ":" + timestamp.split(":")[1];
-                double x_accelerometer = Double.parseDouble(parts[2]);
+            String dateStr = timestamp.split(":")[0] + ":" + timestamp.split(":")[1] + ":00";
+            LocalDateTime date = LocalDateTime.parse(dateStr);
+            double x_accelerometer = Double.parseDouble(parts[2]);
             double y_accelerometer = Double.parseDouble(parts[3]);
             double z_accelerometer = Double.parseDouble(parts[4]);
             double x_gyroscope = Double.parseDouble(parts[5]);
@@ -61,9 +63,9 @@ public class StatisticsService {
         });
 
 
-        JavaPairRDD<Tuple2<String, String>, Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer>> groupedData = data
+        JavaPairRDD<Tuple2<String, LocalDateTime>, Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer>> groupedData = data
                 .mapToPair(tuple -> {
-                    Tuple2<String, String> key = new Tuple2<>(tuple._1(), tuple._2());
+                    Tuple2<String, LocalDateTime> key = new Tuple2<>(tuple._1(), tuple._2());
                     Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer> value = new Tuple13<>(
                             tuple._3(), tuple._4(), tuple._5(), tuple._6(), tuple._7(), tuple._8(),
                             tuple._3(), tuple._4(), tuple._5(), tuple._6(), tuple._7(), tuple._8(), 1);
@@ -109,11 +111,11 @@ public class StatisticsService {
                             stdDevXAcc, stdDevYAcc, stdDevZAcc, stdDevXGyro, stdDevYGyro, stdDevZGyro, tuple._13());
                 });
 
-        List<Tuple2<Tuple2<String, String>, Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer>>> result = groupedData.collect();
+        List<Tuple2<Tuple2<String, LocalDateTime>, Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer>>> result = groupedData.collect();
         List<Statistics> statisticsList = new ArrayList<>();
 
-        for (Tuple2<Tuple2<String, String>, Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer>> tuple : result) {
-            Tuple2<String, String> key = tuple._1();
+        for (Tuple2<Tuple2<String, LocalDateTime>, Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer>> tuple : result) {
+            Tuple2<String, LocalDateTime> key = tuple._1();
             Tuple13<Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Integer> value = tuple._2();
 
             // Create a new Statistics object and add it to the list
