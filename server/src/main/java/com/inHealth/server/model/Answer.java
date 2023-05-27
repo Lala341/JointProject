@@ -8,16 +8,16 @@ public class Answer {
     @Id
     private String id;
     private String questionId;
-    private String optionId;
+    private String answer;
 
     public Answer() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Answer(String id, String questionId, String optionId) {
+    public Answer(String id, String questionId, String answer) {
         this.id = id;
         this.questionId = questionId;
-        this.optionId = optionId;
+        this.answer = answer;
     }
 
     public String getId() {
@@ -36,11 +36,11 @@ public class Answer {
         this.questionId = questionId;
     }
 
-    public String getOptionId() {
-        return optionId;
+    public String getanswer() {
+        return answer;
     }
 
-    public void setOptionId(String optionId) {
-        this.optionId = optionId;
+    public void setanswer(String answer) {
+        this.answer = answer;
     }
 }

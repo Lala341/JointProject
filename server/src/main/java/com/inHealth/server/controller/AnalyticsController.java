@@ -1,6 +1,8 @@
 package com.inHealth.server.controller;
 
+import com.inHealth.server.dto.ActivityCount;
 import com.inHealth.server.model.DistanceKPI;
+import com.inHealth.server.model.Statistics;
 import com.inHealth.server.model.StepsKPI;
 import com.inHealth.server.service.AnalyticsService;
 import org.apache.spark.sql.sources.In;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import scala.Tuple2;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -50,5 +53,10 @@ public class AnalyticsController {
     @GetMapping("/steps/avg")
     public ResponseEntity<Integer>avgStepsByUserAndDateBetween(@RequestParam("user") String user, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return new ResponseEntity<>(analyticsService.avgStepsByUserAndDateBetween(user, startDate, endDate), HttpStatus.OK);
+    }
+
+    @GetMapping("/activity")
+    public ResponseEntity<List<ActivityCount>>activitiesByUserAndDateBetween(@RequestParam("user") String user, @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return new ResponseEntity<>(analyticsService.activitiesByUserAndDateBetween(user, startDate, endDate), HttpStatus.OK);
     }
 }

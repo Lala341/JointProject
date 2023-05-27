@@ -8,22 +8,27 @@ import java.time.LocalDate;
 public class User {
     @Id
     private String id;
-    private String name;
+    private String gender;
     private int heightCm;
     private int weightKg;
     private String country;
     private LocalDate birthday;
+    private String diseases;
 
     public User() {}
 
-    public User(String id, String name, int heightCm, int weightKg, String country, LocalDate birthday) {
+    public User(String id, String name, String gender, int heightCm, int weightKg, String country, LocalDate birthday, String diseases) {
         this.id = id;
         this.name = name;
+        this.gender = gender;
         this.heightCm = heightCm;
         this.weightKg = weightKg;
         this.country = country;
         this.birthday = birthday;
+        this.diseases = diseases;
     }
+
+    private String name;
 
     public String getId() {
         return id;
@@ -39,6 +44,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public int getHeightCm() {
@@ -72,4 +85,15 @@ public class User {
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
+
+    public String getDiseases() {
+        return diseases;
+    }
+
+    public void setDiseases(String diseases) {
+        this.diseases = diseases;
+    }
+
+
+
 }
