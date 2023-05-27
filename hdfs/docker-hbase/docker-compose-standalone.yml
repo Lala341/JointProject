@@ -81,7 +81,7 @@ services:
       - ./hbase-standalone.env
   javaserver:
     build:
-      context: ./../../server/target
+      context: ./../../server/dockerjava
       dockerfile: Dockerfile
     container_name: javaserver
     ports:

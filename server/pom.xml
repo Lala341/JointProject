@@ -74,4 +74,22 @@
 
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.2</version>
+				<configuration>
+						<warName>server-0.0.1-SNAPSHOT</warName>
+						<outputDirectory>dockerjava</outputDirectory>
+					<webResources>
+						<resource>
+							<!-- Relative path to the pom.xml directory -->
+							<directory>dockerjava</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
