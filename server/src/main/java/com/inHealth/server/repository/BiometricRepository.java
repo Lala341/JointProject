@@ -24,7 +24,7 @@ import static java.lang.Math.min;
 @Repository
         public class BiometricRepository {
 
-            private final String uri = "hdfs://54.84.181.116:9000";
+            private final String uri = "hdfs://34.237.242.179:9000";
             private final String hdfsDir = "/sensors-data";
 
             public void uploadToHdfs(String content, String user, String fileName) throws IOException {

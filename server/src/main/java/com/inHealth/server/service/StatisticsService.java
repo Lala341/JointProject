@@ -38,7 +38,7 @@ public class StatisticsService {
 
         // Load all files from the sensor-data directory into an RDD
         JavaRDD<String> dataRDD = spark.read()
-                .textFile("hdfs://54.84.181.116:9000/sensors-data/*/sensor-data*.txt")
+                .textFile("hdfs://34.237.242.179:9000/sensors-data/*/sensor-data*.txt")
                 .toJavaRDD();
 
         JavaRDD<Tuple8<String,LocalDateTime,Double,Double,Double,Double,Double,Double>> data = dataRDD.map(line-> {
