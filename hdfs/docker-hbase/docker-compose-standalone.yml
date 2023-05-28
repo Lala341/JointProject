@@ -79,16 +79,16 @@ services:
       SERVICE_PRECONDITION: "namenode:50070 datanode:50075"
     env_file:
       - ./hbase-standalone.env
-  javaserver:
-    build:
-      context: ./../../server/dockerjava
-      dockerfile: Dockerfile
-    container_name: javaserver
-    ports:
-      - 8080:8080
-    command: ['catalina.sh', 'run']
-    depends_on:
-      - hbase
+ # javaserver:
+ #    build:
+ #      context: ./../../server/dockerjava
+ #      dockerfile: Dockerfile
+ #    container_name: javaserver
+ #    ports:
+ #      - 8080:8080
+  #   command: ['catalina.sh', 'run']
+  #   depends_on:
+  #     - hbase
   spark-master:
     image: bde2020/spark-master:3.3.0-hadoop3.3
     container_name: spark-master
