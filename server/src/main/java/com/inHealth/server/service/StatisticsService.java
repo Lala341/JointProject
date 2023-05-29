@@ -30,7 +30,7 @@ public class StatisticsService {
                 .getOrCreate();
     }
 
-    public List<Statistics> calculateStatistics() {
+    public List<Statistics> calculateStatistics(String user, String fileName) {
         SparkSession spark = SparkSession.builder()
                 .appName("Statistical Analysis")
                 .master("local[*]")
@@ -38,7 +38,7 @@ public class StatisticsService {
 
         // Load all files from the sensor-data directory into an RDD
         JavaRDD<String> dataRDD = spark.read()
-                .textFile("hdfs://34.237.242.179:9000/sensors-data/*/sensor-data*.txt")
+                .textFile("hdfs://34.237.242.179:9000/sensors-data/" + user + "/" + fileName)
                 .toJavaRDD();
 
         JavaRDD<Tuple8<String,LocalDateTime,Double,Double,Double,Double,Double,Double>> data = dataRDD.map(line-> {

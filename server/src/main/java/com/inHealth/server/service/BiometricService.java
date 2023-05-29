@@ -55,7 +55,7 @@ public class BiometricService {
         StepsKPI stepsKPI = new StepsKPI(null, user, LocalDateTime.now(), totalSteps);
         stepsKPIRepository.save(stepsKPI);
         // Calculate statistics
-        List<Statistics> statisticsList = statisticsService.calculateStatistics();
+        List<Statistics> statisticsList = statisticsService.calculateStatistics(user, fileName);
         // Store statistics in MongoDB
         for(Statistics statistic: statisticsList )
         statisticsRepository.save(statistic);
