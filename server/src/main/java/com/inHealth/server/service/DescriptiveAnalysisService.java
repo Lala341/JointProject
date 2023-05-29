@@ -42,8 +42,8 @@ public class DescriptiveAnalysisService {
                 .getOrCreate();
 
         // Load the data into an RDD
-        JavaRDD<String> dataRDD = spark.sparkContext()
-                .textFile("hdfs://54.84.181.116:9000/sensors-data/"+user+"/"+fileName, 1)
+        JavaRDD<String> dataRDD = spark.read()
+                .textFile("hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+fileName)
                 .toJavaRDD();
 
         // Calculate the distance using map transformation
@@ -84,8 +84,8 @@ public class DescriptiveAnalysisService {
                 .getOrCreate();
 
         // Load the data into an RDD
-        JavaRDD<String> dataRDD = spark.sparkContext()
-                .textFile("hdfs://54.84.181.116:9000/sensors-data/"+user+"/"+fileName, 1)
+        JavaRDD<String> dataRDD = spark.read()
+                .textFile("hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+fileName)
                 .toJavaRDD();
 
         // Calculate the total steps using map transformation with windowing and averaging

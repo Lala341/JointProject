@@ -9,6 +9,5 @@ import java.time.LocalDate;
 
 @Repository
 public interface SurveyRepository extends MongoRepository<Survey, String> {
-    @Query("{date: { $date: '?0' } }")
-    Survey findByDate(LocalDate date);
+    Survey findFirstByOrderByDateDesc();
 }
