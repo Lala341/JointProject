@@ -26,7 +26,7 @@ public class SurveyService {
     }
 
     public Survey getDailySurvey() {
-        Survey survey = surveyRepository.findByDate(LocalDate.now());
+        Survey survey = surveyRepository.findFirstByOrderByDateDesc();
         return survey;
     }
 }
