@@ -243,7 +243,7 @@ const Data = () => {
         },
         body: JSON.stringify(body)
       };
-      const response = await fetch('http://192.168.219.23:8090/user/register', options);
+      const response = await fetch('http://192.168.174.23:8090/user/register', options);
 
       if (response.ok) {
         console.log('user registered');

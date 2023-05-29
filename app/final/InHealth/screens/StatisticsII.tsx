@@ -6,9 +6,32 @@ import ChangeIntervalQuery from "../components/ChangeIntervalQuery";
 import ChangeSpecialization from "../components/ChangeSpecialization";
 import { Border, Color, FontFamily, FontSize } from "../GlobalStyles";
 import Menu from "../components/Menu";
+import { useEffect, useState } from "react";
+import Constants from 'expo-constants';
+import dayjs from 'dayjs';
 
 const StatisticsII = () => {
   const navigation = useNavigation();
+
+  const [steps, setSteps] = useState(0);
+
+  const today = dayjs().format('YYYY-MM-DD');
+  const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
+  useEffect(() => {
+    // Fetch the number of steps from the REST endpoint
+    fetch('http://192.168.174.23:8090/analytics/steps/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+      .then(response => response.json())
+      .then(data => {
+        console.log(Constants.installationId)
+        const stepsCount = parseFloat(data); // Assuming the response contains a "steps" property
+        setSteps(stepsCount);
+      })
+      .catch(error => {
+        console.error('Error fetching steps:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once on component mount
+
 
   return (
     <View style={styles.statisticsIi}>
@@ -23,9 +46,9 @@ const StatisticsII = () => {
               <View style={[styles.topicfashion, styles.topicfashionLayout]}>
                 <View style={[styles.rectangle, styles.rectanglePosition]} />
                 <Text style={[styles.fashion, styles.fashionTypo]}>
-                  Avg steps
+                  Total Steps
                 </Text>
-                <Text style={[styles.articles, styles.articlesTypo]}>2088</Text>
+                <Text style={[styles.articles, styles.articlesTypo]}>{steps}</Text>
                 <Image
                   style={styles.ovalIcon}
                   contentFit="cover"
