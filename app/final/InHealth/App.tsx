@@ -64,8 +64,8 @@ const App = () => {
 
 
   useEffect(() => {
-    Accelerometer.setUpdateInterval(10000);
-    Gyroscope.setUpdateInterval(10000);
+    Accelerometer.setUpdateInterval(100000);
+    Gyroscope.setUpdateInterval(100000);
 
     const subscriptionAccelerometer = Accelerometer.addListener(
       (accelerometerData) => {
@@ -130,7 +130,7 @@ const App = () => {
         },
         body: formData
       };
-      const response = await fetch('http://192.168.0.22:8090/', options);
+      const response = await fetch('http://192.168.219.23:8090/', options);
 
       if (response.ok) {
         console.log('File sent to server');

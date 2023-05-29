@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, TouchableOpacity, Pressable, View, TextInput } from "react-native";
+import {ScrollView,   KeyboardAvoidingView,
+  Text, StyleSheet, TouchableOpacity, Pressable, View, TextInput, Platform } from "react-native";
 import { Image } from "expo-image";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, FontFamily } from "../GlobalStyles";
 import { Alert } from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 const Data = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
@@ -241,7 +243,7 @@ const Data = () => {
         },
         body: JSON.stringify(body)
       };
-      const response = await fetch('http://192.168.0.22:8090/user/register', options);
+      const response = await fetch('http://192.168.219.23:8090/user/register', options);
 
       if (response.ok) {
         console.log('user registered');
@@ -261,8 +263,10 @@ const Data = () => {
   const navigation = useNavigation();
 
   return (
+    <ScrollView contentContainerStyle={styles.containerfinal}>
     <View style={styles.data}>
       <View style={styles.frameParent}>
+      
         <View style={styles.giveUsSomeBasicInformationParent}>
           <Text style={styles.giveUsSome}>Give us some basic information</Text>
           <View style={styles.frameGroup}>
@@ -360,6 +364,7 @@ const Data = () => {
               onChangeText={(e)=>setdiseaseValue(e)}
             />
           </View>
+          
         </View>
         <Pressable
           style={styles.container}
@@ -372,11 +377,20 @@ const Data = () => {
           />
         </Pressable>
       </View>
-    </View>
+     
+      </View>
+
+      </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  containerfinal: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 80,
+  },
   rectangleDropdowndropDownContainer: {
     backgroundColor: "#d9d9d9",
   },

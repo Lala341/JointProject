@@ -41,15 +41,15 @@ const Survey = () => {
   ]);
   const [rectangleSliderValue, setRectangleSliderValue] = useState(10);
   const [rectangleCheckboxchecked, setRectangleCheckboxchecked] =
-    useState(undefined);
+    useState(false);
   const [rectangleCheckbox1checked, setRectangleCheckbox1checked] =
-    useState(undefined);
+    useState(false);
   const [rectangleCheckbox2checked, setRectangleCheckbox2checked] =
-    useState(undefined);
+    useState(false);
   const [rectangleCheckbox3checked, setRectangleCheckbox3checked] =
-    useState(undefined);
+    useState(false);
   const [rectangleCheckbox4checked, setRectangleCheckbox4checked] =
-    useState(undefined);
+    useState(false);
   const navigation = useNavigation();
 const [schema, setSchema]= useState(undefined);
 
@@ -73,7 +73,7 @@ useEffect(() => {
           'Content-Type': 'application/json',
         }
       };
-      const response = await fetch('http://192.168.0.22:8090/survey/daily', options);
+      const response = await fetch('http://192.168.219.23:8090/survey/daily', options);
 
       if (response.ok) {
         console.log('File sent to server');
@@ -89,43 +89,43 @@ useEffect(() => {
   const getStructureSurvey=()=>{
     
     var data=[{
-      "id": "6b7c4d15-a207-46a2-bc15-7cc9dcd5c3de",
-      "text": "Mood",
+     "id": "97b37294-5a29-47c1-81c5-1a7b46fe65af",
+       "text": "Mood",
       "answer": rectangleDropdownValue
   },
   {
-      "id": "3ded6f30-27b5-4ab5-a89b-0eacffc2d055",
-      "text": "Weight",
+    "id": "4ff71448-0e1b-4e93-a9e8-a93497a3d94b",
+    "text": "Weight",
       "answer": "10"
   },
   {
-      "id": "42ceb623-cef1-4527-98a4-57eeac627225",
-      "text": "How would you rate your stress level today?",
+    "id": "1ea52717-28a8-4f24-8eec-fb3540fcd241",
+    "text": "How would you rate your stress level today?",
       "answer": "10"
   },
   {
-      "id": "9e5c65fb-7eac-4ce8-8fa1-d4a5cd82921a",
-      "text": "Did you have trouble sleeping last night?",
+    "id": "7daf2bae-9640-4b62-bf9f-2968a1a80baf",
+    "text": "Did you have trouble sleeping last night?",
       "answer": rectangleCheckboxchecked +""
   },
   {
-      "id": "3ca23594-924a-4ed0-aaf3-eeaddd653fa5",
-      "text": "Did you consume any sugary or high-fat foods or drinks?",
+    "id": "fa90cf43-3cc0-404c-a0e9-24122b99bce8",
+    "text": "Did you consume any sugary or high-fat foods or drinks?",
       "answer": rectangleCheckbox1checked +""
   },
   {
-      "id": "a3be4ef4-8b59-4ba6-b5bb-9bfd97806f54",
-      "text": "Did you consume enough fruits and vegetables?",
+    "id": "a5c4251f-dff6-4876-a1d7-573d90ba01b8",
+    "text": "Did you consume enough fruits and vegetables?",
       "answer": rectangleCheckbox2checked +""
   },
   {
-      "id": "e1031218-7a3d-4319-b5e0-9cc7e0a40f3f",
-      "text": "Did you engage in any activities that helped you relax or reduce stress?",
+    "id": "a8e6e7e7-6190-4a95-9987-050d89c7d841",
+    "text": "Did you engage in any activities that helped you relax or reduce stress?",
       "answer": rectangleCheckbox3checked +""
   },
   {
-      "id": "c1a6132a-8469-4af4-b037-6af1ed3f5bef",
-      "text": "Have you noticed any changes in your appetite or dietary habits recently?",
+    "id": "a8e6e7e7-6190-4a95-9987-050d89c7d841",
+    "text": "Have you noticed any changes in your appetite or dietary habits recently?",
       "answer": rectangleCheckbox4checked+"" 
   }];
 
@@ -140,7 +140,7 @@ useEffect(() => {
     data[i]["id"]=id;
   }
 }
-    return {"surveyId": "64720ba2674ea050a7ef5596","userId": "64720d3c674ea050a7ef559d", "answers":data};
+    return {"surveyId": "6473cbb0ea3d2a731c87ed1b","userId": "64720d3c674ea050a7ef559d", "answers":data};
   }
   const sendSurvey = async () => {
     
@@ -153,7 +153,7 @@ useEffect(() => {
         },
         body: JSON.stringify(body)
       };
-      const response = await fetch('http://192.168.0.22:8090/survey/response', options);
+      const response = await fetch('http://192.168.219.23:8090/survey/response', options);
 
       if (response.ok) {
         console.log('File sent to server');
