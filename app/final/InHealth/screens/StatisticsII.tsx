@@ -14,6 +14,7 @@ const StatisticsII = () => {
   const navigation = useNavigation();
 
   const [steps, setSteps] = useState(0);
+  const [distance, setDistance] = useState(0);
 
   const today = dayjs().format('YYYY-MM-DD');
   const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
@@ -29,6 +30,20 @@ const StatisticsII = () => {
       })
       .catch(error => {
         console.error('Error fetching steps:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once on component mount
+
+  useEffect(() => {
+    // Fetch the number of steps from the REST endpoint
+    fetch('http://192.168.174.23:8090/analytics/distance/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+      .then(response => response.json())
+      .then(data => {
+        console.log(Constants.installationId)
+        const totalDistance = parseFloat(data); // Assuming the response contains a "steps" property
+        setDistance(totalDistance);
+      })
+      .catch(error => {
+        console.error('Error fetching distance:', error);
       });
   }, []); // Empty dependency array to run the effect only once on component mount
 
@@ -69,13 +84,13 @@ const StatisticsII = () => {
                 <Text style={[styles.fashion1, styles.fashionTypo]}>
                   Distance
                 </Text>
-                <Text style={[styles.articles1, styles.articlesTypo]}>20</Text>
+                <Text style={[styles.articles1, styles.articlesTypo]}>{distance.toFixed()}</Text>
                 <Image
                   style={styles.ovalIcon}
                   contentFit="cover"
                   source={require("../assets/oval.png")}
                 />
-                <Text style={[styles.km, styles.kmTypo]}>Km</Text>
+                <Text style={[styles.km, styles.kmTypo]}>m</Text>
                 <Image
                   style={[styles.distance1Icon, styles.iconLayout1]}
                   contentFit="cover"
