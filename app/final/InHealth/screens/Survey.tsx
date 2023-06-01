@@ -73,7 +73,7 @@ useEffect(() => {
           'Content-Type': 'application/json',
         }
       };
-      const response = await fetch('http://192.168.219.23:8090/survey/daily', options);
+      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/survey/daily', options);
 
       if (response.ok) {
         console.log('File sent to server');
@@ -153,7 +153,7 @@ useEffect(() => {
         },
         body: JSON.stringify(body)
       };
-      const response = await fetch('http://192.168.219.23:8090/survey/response', options);
+      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/survey/response', options);
 
       if (response.ok) {
         console.log('File sent to server');

@@ -1,0 +1,6 @@
+CREATE (:Habit)<-[:HAS_HABIT]-(n0:Person)-[:HAS_CONDITION]->(n1:HealthCondition)-[:RELATED_TO_SYMPTOM]->(n11:Symptom),
+(:MovementActivity)<-[:HAS_MOVEMENT_ACTIVITY]-(n0)-[:HAS_PHYSICAL_ACTIVITY]->(:PhysicalActivity)-[:HAS_RECOMENDATION_ACTIVITY]->(n22:Recomendation)<-[:HAS_RECOMENDATION_DIET]-(:DietBehavior)<-[:HAS_DIET_BEHAVIOR]-(n0)-[:HAS_DEMOGRAPHICS]->(:Demographics),
+(n11)<-[:EXPERIENCES_SYMPTOM]-(n0)-[:HAS_BODY_MEASURES]->(:BodyMeasures),
+(n20:Question)-[:ANSWERED]->(:Answer)<-[:HAS_ANSWER]-(n25:Response)<-[:HAS_RESPONSE]-(n0)-[:HAS_PREEXISTING_CONDITION]->(n1),
+(n25)<-[:HAS_RESPONSE]-(:DailySurvey)-[:HAS_QUESTION]->(n20)-[:HAS_OPTION]->(:Option),
+(n0)-[:HAS_FACTOR_RISK]->(:FactorRisk)-[:HAS_RECOMENDATION_FACTOR_RISK]->(n22)

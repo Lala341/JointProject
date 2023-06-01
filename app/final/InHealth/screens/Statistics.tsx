@@ -7,9 +7,66 @@ import GraphStatistics from "../components/GraphStatistics";
 import { useNavigation } from "@react-navigation/native";
 import { Border, FontSize, FontFamily, Color } from "../GlobalStyles";
 import Menu from "../components/Menu";
+import { useEffect, useState } from "react";
+import Constants from 'expo-constants';
+import dayjs from 'dayjs';
 
 const Statistics = () => {
   const navigation = useNavigation();
+  const [steps, setSteps] = useState(0);
+  const [activities, setActivities] = useState();
+  const today = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+  const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
+
+  useEffect(() => {
+    // Fetch the number of steps from the REST endpoint
+    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+      .then(response => response.json())
+      .then(data => {
+
+        console.log(Constants.installationId);
+        console.log(data);
+
+        if(data!=null&& data.length>0){
+
+          var acts= {
+            "WALKING": 0,
+            "WALKING_UPSTAIRS": 0,
+            "WALKING_DOWNSTAIRS": 0,
+            "SITTING": 0,
+            "STANDING": 0,
+            "LAYING": 0
+          };
+
+            for(var i =0;i<data.length;i++){
+              acts[data[i]["activity"]]=  data[i]["count"];
+             
+            }
+
+        }
+        setActivities(acts);
+        console.log(acts);
+
+      })
+      .catch(error => {
+        console.error('Error fetching activities:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once on component mount
+
+  useEffect(() => {
+    // Fetch the number of steps from the REST endpoint
+    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/steps/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+      .then(response => response.json())
+      .then(data => {
+        console.log(Constants.installationId)
+        const stepsCount = parseFloat(data); // Assuming the response contains a "steps" property
+        setSteps(stepsCount);
+      })
+      .catch(error => {
+        console.error('Error fetching steps:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once on component mount
 
   return (
     <View style={styles.statistics}>
@@ -35,7 +92,7 @@ const Statistics = () => {
                 </Text>
               </View>
               <View style={styles.parent}>
-                <Text style={[styles.text, styles.textTypo]}>78</Text>
+                <Text style={[styles.text, styles.textTypo]}>{activities?activities["WALKING"]:0}</Text>
                 <Text style={[styles.min, styles.minPosition]}> min</Text>
               </View>
             </View>
@@ -52,13 +109,13 @@ const Statistics = () => {
                 </Text>
               </View>
               <View style={styles.parent}>
-                <Text style={[styles.text1, styles.min1Clr]}>24</Text>
+                <Text style={[styles.text1, styles.min1Clr]}>{activities?activities["LAYING"]:0}</Text>
                 <Text style={[styles.min1, styles.min1Clr]}> min</Text>
               </View>
             </View>
           </View>
         </View>
-        <ValueSteps />
+        <ValueSteps steps={steps}/>
         <GraphStatistics />
         <Pressable
           style={[styles.saturday, styles.saturdayLayout]}

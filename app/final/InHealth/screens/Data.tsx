@@ -243,7 +243,7 @@ const Data = () => {
         },
         body: JSON.stringify(body)
       };
-      const response = await fetch('http://192.168.174.23:8090/user/register', options);
+      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/user/register', options);
 
       if (response.ok) {
         console.log('user registered');
@@ -261,9 +261,9 @@ const Data = () => {
     setSelectedOption(option);
   };
   const navigation = useNavigation();
-
+//<ScrollView contentContainerStyle={styles.containerfinal}>
+    
   return (
-    <ScrollView contentContainerStyle={styles.containerfinal}>
     <View style={styles.data}>
       <View style={styles.frameParent}>
       
@@ -380,7 +380,6 @@ const Data = () => {
      
       </View>
 
-      </ScrollView>
   );
 };
 

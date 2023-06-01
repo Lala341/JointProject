@@ -7,6 +7,8 @@ import Menu from "../components/Menu";
 import { Alert } from "react-native";
 import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
+import { useEffect, useState } from "react";
+import dayjs from 'dayjs';
 
 export type RootStackParamList = {
   Home: { fileUri: string , data: string};
@@ -19,6 +21,46 @@ const Home  = (  ) => {
   const navigation = useNavigation();
   const route = useRoute<RootRouteProps<'Home'>>();
   const [isWriting, setIsWriting] = React.useState(false);
+  const [activities, setActivities] = useState();
+  const today = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+  const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
+
+  useEffect(() => {
+    // Fetch the number of steps from the REST endpoint
+    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+      .then(response => response.json())
+      .then(data => {
+
+        console.log(Constants.installationId);
+        console.log(data);
+
+        if(data!=null&& data.length>0){
+
+          var acts= {
+            "WALKING": 0,
+            "WALKING_UPSTAIRS": 0,
+            "WALKING_DOWNSTAIRS": 0,
+            "SITTING": 0,
+            "STANDING": 0,
+            "LAYING": 0
+          };
+
+            for(var i =0;i<data.length;i++){
+              acts[data[i]["activity"]]=  data[i]["count"];
+             
+            }
+
+        }
+        setActivities(acts);
+        console.log(acts);
+
+      })
+      .catch(error => {
+        console.error('Error fetching activities:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once on component mount
+
 
   const createTwoButtonAlert = () =>
   Alert.alert('Success', 'File sent successfully.', [
@@ -64,7 +106,7 @@ const Home  = (  ) => {
         },
         body: formData
       };
-      const response = await fetch('http://192.168.174.23:8090/', options);
+      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/', options);
 
       if (response.ok) {
         console.log('File sent to server');
@@ -106,7 +148,7 @@ const Home  = (  ) => {
                   </Text>
                 </View>
                 <View style={[styles.parent, styles.parentPosition]}>
-                  <Text style={[styles.text, styles.textTypo]}>78</Text>
+                  <Text style={[styles.text, styles.textTypo]}>{activities?activities["WALKING"]+activities["WALKING_UPSTAIRS"]+activities["WALKING_DOWNSTAIRS"]:0}</Text>
                   <Text style={[styles.min, styles.minPosition]}>  min</Text>
                 </View>
               </View>
@@ -125,7 +167,7 @@ const Home  = (  ) => {
                   <Text style={[styles.walking, styles.kmClr]}>Walking</Text>
                 </View>
                 <View style={[styles.group, styles.parentPosition]}>
-                  <Text style={[styles.text1, styles.kmClr]}>10</Text>
+                  <Text style={[styles.text1, styles.kmClr]}>{activities?activities["WALKING"]:0}</Text>
                   <Text style={[styles.km, styles.kmClr]}>  km</Text>
                 </View>
               </View>
@@ -146,7 +188,7 @@ const Home  = (  ) => {
                   </Text>
                 </View>
                 <View style={[styles.parent, styles.parentPosition]}>
-                  <Text style={[styles.text2, styles.min1Clr]}>24</Text>
+                  <Text style={[styles.text2, styles.min1Clr]}>{activities?activities["LAYING"]+activities["STANDING"]+activities["SITTING"]:0}</Text>
                   <Text style={[styles.min1, styles.min1Clr]}>  min</Text>
                 </View>
               </View>
@@ -165,7 +207,7 @@ const Home  = (  ) => {
                   <Text style={[styles.sleep, styles.hrsClr]}>Sleep</Text>
                 </View>
                 <View style={[styles.parent1, styles.parentPosition]}>
-                  <Text style={[styles.text3, styles.hrsClr]}>8</Text>
+                  <Text style={[styles.text3, styles.hrsClr]}>{activities?activities["LAYING"]:0}</Text>
                   <Text style={[styles.hrs, styles.hrsClr]}> hrs</Text>
                 </View>
               </View>

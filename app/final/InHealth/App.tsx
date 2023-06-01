@@ -130,7 +130,7 @@ const App = () => {
         },
         body: formData
       };
-      const response = await fetch('http://192.168.219.23:8090/', options);
+      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/', options);
 
       if (response.ok) {
         console.log('File sent to server');

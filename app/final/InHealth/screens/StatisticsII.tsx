@@ -15,13 +15,49 @@ const StatisticsII = () => {
 
   const [steps, setSteps] = useState(0);
   const [distance, setDistance] = useState(0);
-
-  const today = dayjs().format('YYYY-MM-DD');
+  const [activities, setActivities] = useState();
+  const today = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
   const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
 
   useEffect(() => {
     // Fetch the number of steps from the REST endpoint
-    fetch('http://192.168.174.23:8090/analytics/steps/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+      .then(response => response.json())
+      .then(data => {
+
+        console.log(Constants.installationId);
+        console.log(data);
+
+        if(data!=null&& data.length>0){
+
+          var acts= {
+            "WALKING": 0,
+            "WALKING_UPSTAIRS": 0,
+            "WALKING_DOWNSTAIRS": 0,
+            "SITTING": 0,
+            "STANDING": 0,
+            "LAYING": 0
+          };
+
+            for(var i =0;i<data.length;i++){
+              acts[data[i]["activity"]]=  data[i]["count"];
+             
+            }
+
+        }
+        setActivities(acts);
+        console.log(acts);
+
+      })
+      .catch(error => {
+        console.error('Error fetching activities:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once on component mount
+
+  useEffect(() => {
+    // Fetch the number of steps from the REST endpoint
+    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/steps/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
       .then(response => response.json())
       .then(data => {
         console.log(Constants.installationId)
@@ -35,7 +71,7 @@ const StatisticsII = () => {
 
   useEffect(() => {
     // Fetch the number of steps from the REST endpoint
-    fetch('http://192.168.174.23:8090/analytics/distance/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/distance/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
       .then(response => response.json())
       .then(data => {
         console.log(Constants.installationId)
@@ -116,7 +152,7 @@ const StatisticsII = () => {
                   </Text>
                 </View>
                 <View style={[styles.parent, styles.parentPosition]}>
-                  <Text style={[styles.text, styles.textTypo]}>78</Text>
+                  <Text style={[styles.text, styles.textTypo]}>{activities?activities["WALKING"]+activities["WALKING_UPSTAIRS"]+activities["WALKING_DOWNSTAIRS"]:0}</Text>
                   <Text style={[styles.min, styles.minPosition]}> min</Text>
                 </View>
               </View>
@@ -135,8 +171,8 @@ const StatisticsII = () => {
                   <Text style={[styles.walking, styles.km1Clr]}>Walking</Text>
                 </View>
                 <View style={[styles.group, styles.parentPosition]}>
-                  <Text style={[styles.text1, styles.km1Clr]}>10</Text>
-                  <Text style={[styles.km1, styles.km1Clr]}> km</Text>
+                  <Text style={[styles.text1, styles.km1Clr]}>{activities?activities["WALKING"]:0}</Text>
+                  <Text style={[styles.km1, styles.km1Clr]}> min</Text>
                 </View>
               </View>
               <View style={[styles.frameParent3, styles.frameParentPosition]}>
@@ -156,7 +192,7 @@ const StatisticsII = () => {
                   </Text>
                 </View>
                 <View style={[styles.parent, styles.parentPosition]}>
-                  <Text style={[styles.text2, styles.min1Clr]}>24</Text>
+                  <Text style={[styles.text2, styles.min1Clr]}>{activities?activities["LAYING"]+activities["STANDING"]+activities["SITTING"]:0}</Text>
                   <Text style={[styles.min1, styles.min1Clr]}> min</Text>
                 </View>
               </View>
@@ -175,8 +211,8 @@ const StatisticsII = () => {
                   <Text style={[styles.sleep, styles.hrsClr]}>Sleep</Text>
                 </View>
                 <View style={[styles.parent1, styles.parentPosition]}>
-                  <Text style={[styles.text3, styles.hrsClr]}>8</Text>
-                  <Text style={[styles.hrs, styles.hrsClr]}>hrs</Text>
+                  <Text style={[styles.text3, styles.hrsClr]}>{activities?activities["LAYING"]:0}</Text>
+                  <Text style={[styles.hrs, styles.hrsClr]}>min</Text>
                 </View>
               </View>
             </View>

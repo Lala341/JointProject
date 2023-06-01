@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { FontSize, Border, Color, FontFamily } from "../GlobalStyles";
 
-const ValueSteps = () => {
+const ValueSteps = ({steps}) => {
   return (
     <View style={styles.rectangleParent}>
       <LinearGradient
@@ -13,8 +13,8 @@ const ValueSteps = () => {
         colors={["#673ab7", "#512da8"]}
       />
       <Text style={[styles.fashion, styles.kTypo]}>Total steps</Text>
-      <Text style={[styles.articles, styles.textFlexBox]}>10088</Text>
-      <Text style={[styles.k, styles.kTypo]}>(10K)</Text>
+      <Text style={[styles.articles, styles.textFlexBox]}>{steps}</Text>
+      <Text style={[styles.k, styles.kTypo]}>({steps?steps:0/1000}K)</Text>
       <Image
         style={styles.groupChild}
         contentFit="cover"
