@@ -1,12 +1,11 @@
 package com.inHealth.server.controller;
 
+import com.inHealth.server.service.KafkaProd;
 import com.inHealth.server.service.BiometricService;
 import com.inHealth.server.service.DownloadService;
-import com.inHealth.server.service.PredictiveActivityModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +18,8 @@ public class BiometricController {
     @Autowired
     private DownloadService downloadService;
 
-    private PredictiveActivityModelService modelService;
+    @Autowired
+    private KafkaProd prodk;
 
 
     @CrossOrigin
@@ -28,7 +28,7 @@ public class BiometricController {
 
         try {
             String content = new String(file.getBytes());
-            biometricService.uploadToHdfs(content, name);
+            prodk.produceFileRequestToKafka(content, name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

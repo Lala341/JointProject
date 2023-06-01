@@ -654,6 +654,64 @@ public class PredictiveActivityModelService {
 
 
     }
+
+
+    static public  String predictmodel_decisiontree(SparkSession spark, double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+
+        String modelPath = "hdfs://34.237.242.179:9000/models-datasets/tree";
+
+
+        DecisionTreeModel loadedModel = DecisionTreeModel.load( spark.sparkContext(),modelPath);
+
+        StructType schema = new StructType()
+                .add("1 tBodyAcc-mean()-X", DoubleType, false)
+                .add("2 tBodyAcc-mean()-Y", DoubleType, false)
+                .add("3 tBodyAcc-mean()-Z", DoubleType, false)
+                .add("121 tBodyGyro-mean()-X", DoubleType, false)
+                .add("122 tBodyGyro-mean()-Y", DoubleType, false)
+                .add("123 tBodyGyro-mean()-Z", DoubleType, false);
+
+// Create the Row object with values
+        Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
+
+
+// Predict the label for the row
+        double predictedLabel = predictLabel(rowToPredict, loadedModel);
+
+        return getLabel(predictedLabel);
+
+    }
+
+
+
+
+
+
+    static public  String predictmodel_randomforest(SparkSession spark, double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+
+        String modelPath = "hdfs://34.237.242.179:9000/models-datasets/random";
+
+
+        RandomForestModel loadedModel = RandomForestModel.load(spark.sparkContext(),modelPath);
+
+        StructType schema = new StructType()
+                .add("1 tBodyAcc-mean()-X", DoubleType, false)
+                .add("2 tBodyAcc-mean()-Y", DoubleType, false)
+                .add("3 tBodyAcc-mean()-Z", DoubleType, false)
+                .add("121 tBodyGyro-mean()-X", DoubleType, false)
+                .add("122 tBodyGyro-mean()-Y", DoubleType, false)
+                .add("123 tBodyGyro-mean()-Z", DoubleType, false);
+
+// Create the Row object with values
+        Row rowToPredict = RowFactory.create( meanax, meanay,  meanaz,  meangx,  meangy,  meangz); // Replace with your own values
+
+// Predict the label for the row
+        double predictedLabel = predictLabelRandom(rowToPredict, loadedModel);
+
+        return getLabel(predictedLabel);
+
+
+    }
     //   .setMaster("spark://ec2-54-84-181-116.compute-1.amazonaws.com:7077");
     //  conf.set("spark.driver.log.level", "ERROR");
     // conf.set("spark.executor.log.level", "ERROR");
@@ -712,19 +770,19 @@ public class PredictiveActivityModelService {
         //createfolderhdfs("hdfs://34.237.242.179:9000/models-datasets/datasets/test");
         //preprocessSaveDataModels();
         //createmodelsandtrain();
-        //calculatemetrics_test("1.0.0");
+        calculatemetrics_test("1.0.0");
 
-        String predictedLabel=testmodel_decisiontree(0.25717778,-0.02328523,-0.014653762,0.89847935,0.0,0.95018164);
-        String predictedLabel1=testmodel_decisiontree(0.11453319731152992,0.7540551762857872,0.17677547053059106,-0.36085168527211237,-0.18468181612511084,-0.21062950750740914);
-        String predictedLabel3=testmodel_decisiontree(0.11453319731152992,-0.7540551762857872,-0.17677547053059106,-0.36085168527211237,-0.18468181612511084,-0.21062950750740914);
-        String predictedLabel2=testmodel_decisiontree(1,2,3,4,5,6);
+      //  String predictedLabel=testmodel_decisiontree(0.25717778,-0.02328523,-0.014653762,0.89847935,0.0,0.95018164);
+      //  String predictedLabel1=testmodel_decisiontree(0.11453319731152992,0.7540551762857872,0.17677547053059106,-0.36085168527211237,-0.18468181612511084,-0.21062950750740914);
+      //  String predictedLabel3=testmodel_decisiontree(0.11453319731152992,-0.7540551762857872,-0.17677547053059106,-0.36085168527211237,-0.18468181612511084,-0.21062950750740914);
+      //  String predictedLabel2=testmodel_decisiontree(1,2,3,4,5,6);
 
-        System.out.println("Predicted label Tree: " + predictedLabel);
-        System.out.println("Predicted label Random: " + predictedLabel1);
-        System.out.println("Predicted label Random: " + predictedLabel2);
+     //   System.out.println("Predicted label Tree: " + predictedLabel);
+    //    System.out.println("Predicted label Random: " + predictedLabel1);
+    //    System.out.println("Predicted label Random: " + predictedLabel2);
 
-        System.out.println("Predicted label Random: " + predictedLabel3);
-        System.out.println("Predicted label Random: " + predictedLabel3);
+    //    System.out.println("Predicted label Random: " + predictedLabel3);
+    //    System.out.println("Predicted label Random: " + predictedLabel3);
 
     }
 }

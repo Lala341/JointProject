@@ -14,12 +14,18 @@ import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.shaded.org.apache.avro.SchemaBuilder;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StructType;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.net.URI;
 
-import static java.lang.Math.min;
+import static org.apache.spark.sql.types.DataTypes.DoubleType;
+
 
 @Repository
         public class BiometricRepository {
@@ -53,6 +59,8 @@ import static java.lang.Math.min;
                 FSDataOutputStream outputStream = fs.create(hdfswritepath);
                 outputStream.writeBytes(content);
                 outputStream.close();
+
+                writeParquetToHdfs(content,  user,  fileName,  hdfsDir,  conf);
                 System.out.println("Final file");
 
             }
@@ -87,6 +95,36 @@ import static java.lang.Math.min;
 
         admin.close();
         conn.close();
+    }
+    public void writeParquetToHdfs(String content, String user, String fileName, String hdfsDir, Configuration conf) throws IOException {
+
+          String namef= fileName.replace(".txt","");
+        SparkSession spark = SparkSession.builder()
+                .appName("create-parquet")
+                .master("local[*]")
+                .getOrCreate();
+
+        StructType schema = new StructType()
+                .add("deviceId", DataTypes.StringType)
+                .add("timestamp", DataTypes.StringType)
+                .add("xAccelerometer", DoubleType)
+                .add("yAccelerometer", DoubleType)
+                .add("zAccelerometer", DoubleType)
+                .add("xGyroscope", DoubleType)
+                .add("yGyroscope", DoubleType)
+                .add("zGyroscope", DoubleType);
+
+        String url="hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+fileName;
+        Dataset<Row> data = spark.read()
+                .option("header", "false")
+                .option("delimiter", ",")
+                .schema(schema)
+                .csv(url);
+
+        System.out.println("nameFile");
+        System.out.println("hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+namef + ".parquet");
+
+        data.write().parquet("hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+namef + ".parquet");
     }
 
         }

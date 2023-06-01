@@ -45,19 +45,23 @@ public class BiometricService {
         String fileName = name+".txt";
         // Calculate total distance
         biometricRepository.uploadToHdfs(content, user, fileName);
+        LocalDateTime date=LocalDateTime.now();
+        // Calculate statistics
+        List<Statistics> statisticsList = statisticsService.calculateStatistics(user, fileName);
+        // Store statistics in MongoDB
+        for(Statistics statistic: statisticsList ) {
+            statisticsRepository.save(statistic);
+            date=statistic.getDate();
+        }
+
         double totalDistance = descriptiveAnalysisService.calculateDistance(user, fileName);
         // Store the calculated KPI in MongoDB
-        DistanceKPI distanceKPI = new DistanceKPI(null, user, LocalDateTime.now(), totalDistance);
+        DistanceKPI distanceKPI = new DistanceKPI(null, user, date, totalDistance);
         distanceKPIRepository.save(distanceKPI);
         // Calculate total steps
         int totalSteps = descriptiveAnalysisService.calculateTotalSteps(user, fileName, 1.5, 50, 25);
         // Store the calculated KPI in MongoDB
-        StepsKPI stepsKPI = new StepsKPI(null, user, LocalDateTime.now(), totalSteps);
+        StepsKPI stepsKPI = new StepsKPI(null, user, date, totalSteps);
         stepsKPIRepository.save(stepsKPI);
-        // Calculate statistics
-        List<Statistics> statisticsList = statisticsService.calculateStatistics(user, fileName);
-        // Store statistics in MongoDB
-        for(Statistics statistic: statisticsList )
-        statisticsRepository.save(statistic);
     }
 }

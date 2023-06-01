@@ -120,8 +120,8 @@ public class StatisticsService {
 
             // Create a new Statistics object and add it to the list
             PredictiveActivityModelService service=new PredictiveActivityModelService();
-            String predictActivityM1=service.testmodel_decisiontree(value._1(), value._2(), value._3(), value._4(), value._5(), value._6());
-            String predictActivityM2=service.testmodel_randomforest(value._1(), value._2(), value._3(), value._4(), value._5(), value._6());
+            String predictActivityM1=service.predictmodel_decisiontree(  spark , value._1(), value._2(), value._3(), value._4(), value._5(), value._6());
+            String predictActivityM2=service.predictmodel_randomforest( spark ,value._1(), value._2(), value._3(), value._4(), value._5(), value._6());
 
             Statistics statistics = new Statistics(null, key._1(), key._2(), value._1(), value._2(), value._3(), value._4(), value._5(), value._6(), value._7(), value._8(), value._9(), value._10(), value._11(), value._12(),predictActivityM1,predictActivityM2);
 

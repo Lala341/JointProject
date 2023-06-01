@@ -21,6 +21,15 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
 			<version>3.0.16</version>
@@ -71,25 +80,20 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.12</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
 
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.3.2</version>
-				<configuration>
-						<warName>server-0.0.1-SNAPSHOT</warName>
-						<outputDirectory>dockerjava</outputDirectory>
-					<webResources>
-						<resource>
-							<!-- Relative path to the pom.xml directory -->
-							<directory>dockerjava</directory>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+
 </project>
