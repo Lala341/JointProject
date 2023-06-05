@@ -17,7 +17,7 @@ public class HealthQuestion implements Serializable {
     private HealthCondition healthCondition;
 
 
-    @Relationship(type = "HAS_ANSWER", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "ANSWERED_HE", direction = Relationship.Direction.OUTGOING)
     private List<Answer> healthQuestions;
 
 

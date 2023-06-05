@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.stream.Collectors;
 
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.lit;
@@ -113,7 +114,19 @@ public class GraphPipelineService implements Serializable{
             System.out.println("Before save questions");
             System.out.println(questions_habit);
             habitRepository.saveAll(questions_habit);
+
             System.out.println("After save questions");
+
+// Retrieve the saved HabitQuestion objects with their generated IDs
+            List<HabitQuestion> savedQuestions = habitRepository.findAllById(
+                    questions_habit.stream().map(HabitQuestion::getId).collect(Collectors.toList())
+            );
+
+// Update the original questions_habit list with the saved objects
+            questions_habit.clear();
+            questions_habit.addAll(savedQuestions);
+
+
             List<HealthQuestion> questions_health = new ArrayList<>();
 
 
@@ -202,18 +215,21 @@ public class GraphPipelineService implements Serializable{
                         bs.add(new BodyMeasures(height,weight1,date1));
 
 
-                        List<Answer> answers= new ArrayList<>();
 
                         for (var i=0;i<questions_habit.size();i++){
                             String idt=questions_habit.get(i).getId();
                             Double tempr=row.getAs(idt);
 
                             String text = (tempr!=null)?Double.toString( tempr):null;
-                            HabitQuestion habitQuestion = questions_habit.get(i);
+                            HabitQuestion habitQuestion =questions_habit.get(i);
+                            Answer answer = new Answer();
+                            answer.setId(idt+person.getId());
+                            answer.setAnswer(text);
+                            answer.setDate(date);
+                            answer.setHabitQuestion(habitQuestion);
+                            person.addAnswer(answer);
 
-                            answers.add(new Answer(null,text,date,habitQuestion ));
                         }
-                        person.setAnswers(answers);
 
                         return person;
                     })

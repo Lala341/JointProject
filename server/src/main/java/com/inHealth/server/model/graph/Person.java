@@ -2,6 +2,7 @@ package com.inHealth.server.model.graph;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Node("Person")
@@ -31,12 +32,18 @@ public class Person   implements Serializable {
     @Relationship(type = "HAS_RECOMENDATION")
     private  List<Recomendation> recomendation;
 
-    @Relationship(type = "ANSWERED", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "HAS_ANSWER", direction = Relationship.Direction.OUTGOING)
     private List<Answer> answers;
 
 
     // Getters and setters
-
+    public void addAnswer(Answer answer) {
+        if (answers == null) {
+            answers = new ArrayList<>();
+        }
+        answers.add(answer);
+        answer.setPerson(this); // Set the reference to the parent entity
+    }
 
     public String getId() {
         return id;

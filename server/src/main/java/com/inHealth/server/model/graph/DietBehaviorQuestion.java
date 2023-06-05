@@ -12,7 +12,7 @@ public class DietBehaviorQuestion implements Serializable {
     private String options;
 
 
-    @Relationship(type = "HAS_ANSWER", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "ANSWERED_D", direction = Relationship.Direction.OUTGOING)
     private List<Answer> dietanswers;
     // Getters and setters
 

@@ -10,12 +10,13 @@ import java.util.List;
 @Node("HabitQuestion")
 public class HabitQuestion implements Serializable {
     @Id
+
     private String id;
     private String text;
     private String options;
 
 
-    @Relationship(type = "HAS_ANSWER", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "ANSWERED_HA", direction = Relationship.Direction.OUTGOING)
     private List<Answer> habitQuestions;
 
 
@@ -68,5 +69,9 @@ public class HabitQuestion implements Serializable {
         this.id = id;
         this.text = text;
         this.options = options;
+    }
+
+    public HabitQuestion(String id) {
+        this.id = id;
     }
 }

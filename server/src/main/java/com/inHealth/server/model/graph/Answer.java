@@ -11,16 +11,17 @@ public class Answer implements Serializable {
     private String answer;
     private String date;
 
-    @Relationship(type = "ANSWERED", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "ANSWERED_HE", direction = Relationship.Direction.INCOMING)
     private HealthQuestion healthQuestion;
 
-    @Relationship(type = "ANSWERED", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "ANSWERED_D", direction = Relationship.Direction.INCOMING)
     private DietBehaviorQuestion dietQuestion;
 
-    @Relationship(type = "ANSWERED", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "ANSWERED_HA", direction = Relationship.Direction.INCOMING)
     private HabitQuestion habitQuestion;
 
-
+    @Relationship(type = "HAS_ANSWER", direction = Relationship.Direction.INCOMING)
+    private Person person;
 
     // Getters and setters
 
@@ -73,6 +74,13 @@ public class Answer implements Serializable {
         this.habitQuestion = habitQuestion;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     public Answer() {
     }
