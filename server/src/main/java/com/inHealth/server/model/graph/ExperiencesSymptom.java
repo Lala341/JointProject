@@ -15,6 +15,7 @@ public class ExperiencesSymptom implements Serializable {
 
     private String date;
 
+
     public ExperiencesSymptom() {
     }
 
@@ -23,5 +24,28 @@ public class ExperiencesSymptom implements Serializable {
         this.date = date;
     }
 
-    // Getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Symptom getSymptom() {
+        return symptom;
+    }
+
+    public void setSymptom(Symptom symptom) {
+        this.symptom = symptom;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+// Getters and setters
 }

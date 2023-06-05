@@ -80,6 +80,14 @@ public class HealthQuestion implements Serializable {
         this.type = type;
     }
 
+    public HealthQuestion(String id, String text, String options,  HealthCondition healthCondition) {
+        this.id = id;
+        this.text = text;
+        this.options = options;
+        this.type = healthCondition.getCondition();
+        this.healthCondition = healthCondition;
+    }
+
     public HealthQuestion() {
     }
 }

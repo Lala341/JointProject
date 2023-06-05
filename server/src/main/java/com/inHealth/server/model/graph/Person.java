@@ -15,7 +15,7 @@ public class Person   implements Serializable {
     private Demographics demographics;
 
     @Relationship(type = "HAS_CONDITION")
-    private  List<HealthCondition> healthCondition;
+    private  List<HealthCondition> healthConditions;
 
     @Relationship(type = "EXPERIENCES_SYMPTOM")
     private List<ExperiencesSymptom> experiencesSymptoms;
@@ -27,7 +27,7 @@ public class Person   implements Serializable {
     private  List<PhysicalActivity> physicalActivity;
 
     @Relationship(type = "HAS_PREEXISTING_CONDITION")
-    private  List<HealthCondition> preexistingCondition;
+    private  List<HealthCondition> preexistingConditions;
 
     @Relationship(type = "HAS_RECOMENDATION")
     private  List<Recomendation> recomendation;
@@ -43,6 +43,24 @@ public class Person   implements Serializable {
         }
         answers.add(answer);
         answer.setPerson(this); // Set the reference to the parent entity
+    }
+    public void addSymptom(ExperiencesSymptom s) {
+        if (experiencesSymptoms == null) {
+            experiencesSymptoms = new ArrayList<>();
+        }
+        experiencesSymptoms.add(s);
+    }
+    public void addhealthCondition(HealthCondition s) {
+        if (healthConditions == null) {
+            healthConditions = new ArrayList<>();
+        }
+        healthConditions.add(s);
+    }
+    public void addprehealthCondition(HealthCondition s) {
+        if (preexistingConditions == null) {
+            preexistingConditions = new ArrayList<>();
+        }
+        preexistingConditions.add(s);
     }
 
     public String getId() {
@@ -70,11 +88,11 @@ public class Person   implements Serializable {
     }
 
     public List<HealthCondition> getHealthCondition() {
-        return healthCondition;
+        return healthConditions;
     }
 
     public void setHealthCondition(List<HealthCondition> healthCondition) {
-        this.healthCondition = healthCondition;
+        this.healthConditions = healthCondition;
     }
 
     public List<ExperiencesSymptom> getExperiencesSymptoms() {
@@ -102,11 +120,11 @@ public class Person   implements Serializable {
     }
 
     public List<HealthCondition> getPreexistingCondition() {
-        return preexistingCondition;
+        return preexistingConditions;
     }
 
     public void setPreexistingCondition(List<HealthCondition> preexistingCondition) {
-        this.preexistingCondition = preexistingCondition;
+        this.preexistingConditions = preexistingCondition;
     }
 
     public List<Recomendation> getRecomendation() {
