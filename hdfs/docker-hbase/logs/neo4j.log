@@ -1,0 +1,15 @@
+2023-06-05 19:06:15.162+0000 WARN  Use of deprecated setting 'dbms.memory.pagecache.size'. It is replaced by 'server.memory.pagecache.size'.
+2023-06-05 19:06:15.168+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2023-06-05 19:06:15.172+0000 INFO  Starting...
+2023-06-05 19:06:15.650+0000 INFO  This instance is ServerId{16304800} (16304800-82dd-4bc2-9ef7-5a720e368e10)
+2023-06-05 19:06:16.457+0000 INFO  ======== Neo4j 5.5.0 ========
+2023-06-05 19:06:16.921+0000 INFO  GDS compatibility: for Neo4j Settings 4.4 -- not available, for Neo4j Settings 5.1 -- not available, for Neo4j Settings 5.2.0 -- not available, for Neo4j Settings 5.3 -- not available, for Neo4j Settings 5.4 -- not available, for Neo4j Settings 5.5 -- available, selected: Neo4j Settings 5.5
+2023-06-05 19:06:16.922+0000 INFO  GDS compatibility: for Neo4j 4.4 -- not available, for Neo4j 5.1 -- not available, for Neo4j 5.2.0 -- not available, for Neo4j 5.3 -- not available, for Neo4j 5.4 -- not available, for Neo4j 5.5 -- available, selected: Neo4j 5.5
+2023-06-05 19:06:46.837+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2023-06-05 19:06:47.433+0000 INFO  Remote interface available at http://localhost:7474/
+2023-06-05 19:06:47.437+0000 INFO  id: E50A64F5AE4406A2DD9A90F22EA6E03B4794765E102C5A987DBFFFF5DBB031AA
+2023-06-05 19:06:47.438+0000 INFO  name: system
+2023-06-05 19:06:47.439+0000 INFO  creationDate: 2023-06-05T19:06:17.661Z
+2023-06-05 19:06:47.440+0000 INFO  Started.
+2023-06-05 19:07:06.907+0000 WARN  The client is unauthorized due to authentication failure.
+2023-06-05 19:07:07.173+0000 WARN  The client is unauthorized due to authentication failure.
