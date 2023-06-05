@@ -13,3 +13,384 @@
 2023-06-05 19:06:47.440+0000 INFO  Started.
 2023-06-05 19:07:06.907+0000 WARN  The client is unauthorized due to authentication failure.
 2023-06-05 19:07:07.173+0000 WARN  The client is unauthorized due to authentication failure.
+2023-06-05 19:19:55.065+0000 WARN  Use of deprecated setting 'dbms.memory.pagecache.size'. It is replaced by 'server.memory.pagecache.size'.
+2023-06-05 19:19:55.071+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2023-06-05 19:19:55.075+0000 INFO  Starting...
+2023-06-05 19:19:55.548+0000 INFO  This instance is ServerId{16304800} (16304800-82dd-4bc2-9ef7-5a720e368e10)
+2023-06-05 19:19:56.247+0000 INFO  ======== Neo4j 5.5.0 ========
+2023-06-05 19:19:56.671+0000 INFO  GDS compatibility: for Neo4j Settings 4.4 -- not available, for Neo4j Settings 5.1 -- not available, for Neo4j Settings 5.2.0 -- not available, for Neo4j Settings 5.3 -- not available, for Neo4j Settings 5.4 -- not available, for Neo4j Settings 5.5 -- available, selected: Neo4j Settings 5.5
+2023-06-05 19:19:56.673+0000 INFO  GDS compatibility: for Neo4j 4.4 -- not available, for Neo4j 5.1 -- not available, for Neo4j 5.2.0 -- not available, for Neo4j 5.3 -- not available, for Neo4j 5.4 -- not available, for Neo4j 5.5 -- available, selected: Neo4j 5.5
+2023-06-05 19:20:27.025+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2023-06-05 19:20:27.580+0000 INFO  Remote interface available at http://localhost:7474/
+2023-06-05 19:20:27.585+0000 INFO  id: E50A64F5AE4406A2DD9A90F22EA6E03B4794765E102C5A987DBFFFF5DBB031AA
+2023-06-05 19:20:27.586+0000 INFO  name: system
+2023-06-05 19:20:27.587+0000 INFO  creationDate: 2023-06-05T19:06:17.661Z
+2023-06-05 19:20:27.587+0000 INFO  Started.
+2023-06-05 19:31:45.805+0000 INFO  Neo4j Server shutdown initiated by request
+2023-06-05 19:31:45.807+0000 INFO  Stopping...
+2023-06-05 19:31:50.931+0000 INFO  Stopped.
+2023-06-05 19:32:57.772+0000 WARN  Use of deprecated setting 'dbms.memory.pagecache.size'. It is replaced by 'server.memory.pagecache.size'.
+2023-06-05 19:32:57.777+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2023-06-05 19:32:57.780+0000 INFO  Starting...
+2023-06-05 19:32:58.200+0000 INFO  This instance is ServerId{16304800} (16304800-82dd-4bc2-9ef7-5a720e368e10)
+2023-06-05 19:32:58.920+0000 INFO  ======== Neo4j 5.5.0 ========
+2023-06-05 19:32:59.258+0000 INFO  GDS compatibility: for Neo4j Settings 4.4 -- not available, for Neo4j Settings 5.1 -- not available, for Neo4j Settings 5.2.0 -- not available, for Neo4j Settings 5.3 -- not available, for Neo4j Settings 5.4 -- not available, for Neo4j Settings 5.5 -- available, selected: Neo4j Settings 5.5
+2023-06-05 19:32:59.259+0000 INFO  GDS compatibility: for Neo4j 4.4 -- not available, for Neo4j 5.1 -- not available, for Neo4j 5.2.0 -- not available, for Neo4j 5.3 -- not available, for Neo4j 5.4 -- not available, for Neo4j 5.5 -- available, selected: Neo4j 5.5
+2023-06-05 19:33:28.126+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2023-06-05 19:33:28.675+0000 INFO  Remote interface available at http://localhost:7474/
+2023-06-05 19:33:28.678+0000 INFO  id: E50A64F5AE4406A2DD9A90F22EA6E03B4794765E102C5A987DBFFFF5DBB031AA
+2023-06-05 19:33:28.679+0000 INFO  name: system
+2023-06-05 19:33:28.680+0000 INFO  creationDate: 2023-06-05T19:06:17.661Z
+2023-06-05 19:33:28.681+0000 INFO  Started.
+2023-06-05 19:34:10.642+0000 INFO  Neo4j Server shutdown initiated by request
+2023-06-05 19:34:10.643+0000 INFO  Stopping...
+2023-06-05 19:34:15.699+0000 INFO  Stopped.
+2023-06-05 19:35:00.633+0000 WARN  Use of deprecated setting 'dbms.memory.pagecache.size'. It is replaced by 'server.memory.pagecache.size'.
+2023-06-05 19:35:00.638+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2023-06-05 19:35:00.661+0000 INFO  Starting...
+2023-06-05 19:35:01.110+0000 INFO  This instance is ServerId{16304800} (16304800-82dd-4bc2-9ef7-5a720e368e10)
+2023-06-05 19:35:01.784+0000 INFO  ======== Neo4j 5.5.0 ========
+2023-06-05 19:35:02.121+0000 INFO  GDS compatibility: for Neo4j Settings 4.4 -- not available, for Neo4j Settings 5.1 -- not available, for Neo4j Settings 5.2.0 -- not available, for Neo4j Settings 5.3 -- not available, for Neo4j Settings 5.4 -- not available, for Neo4j Settings 5.5 -- available, selected: Neo4j Settings 5.5
+2023-06-05 19:35:02.122+0000 INFO  GDS compatibility: for Neo4j 4.4 -- not available, for Neo4j 5.1 -- not available, for Neo4j 5.2.0 -- not available, for Neo4j 5.3 -- not available, for Neo4j 5.4 -- not available, for Neo4j 5.5 -- available, selected: Neo4j 5.5
+2023-06-05 19:35:29.709+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2023-06-05 19:35:30.211+0000 INFO  Remote interface available at http://localhost:7474/
+2023-06-05 19:35:30.216+0000 INFO  id: E50A64F5AE4406A2DD9A90F22EA6E03B4794765E102C5A987DBFFFF5DBB031AA
+2023-06-05 19:35:30.217+0000 INFO  name: system
+2023-06-05 19:35:30.218+0000 INFO  creationDate: 2023-06-05T19:06:17.661Z
+2023-06-05 19:35:30.219+0000 INFO  Started.
+2023-06-05 19:36:37.063+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Start
+2023-06-05 19:36:37.068+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Nodes :: Start
+2023-06-05 19:36:37.070+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Nodes :: Store Scan :: Start
+2023-06-05 19:36:37.081+0000 INFO  [node-store-scan-1] Loading :: Nodes :: Store Scan 100%
+2023-06-05 19:36:37.084+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Nodes :: Store Scan :: Finished
+2023-06-05 19:36:37.091+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Nodes :: Finished
+2023-06-05 19:36:37.092+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Relationships :: Start
+2023-06-05 19:36:37.093+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Relationships :: Store Scan :: Start
+2023-06-05 19:36:37.113+0000 INFO  [relationship-store-scan-3] Loading :: Relationships :: Store Scan 50%
+2023-06-05 19:36:37.118+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Relationships :: Store Scan 100%
+2023-06-05 19:36:37.119+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Relationships :: Store Scan :: Finished
+2023-06-05 19:36:37.122+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Relationships :: Finished
+2023-06-05 19:36:38.595+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Actual memory usage of the loaded graph: 558 KiB
+2023-06-05 19:36:38.597+0000 INFO  [neo4j.BoltWorker-3 [bolt-10 - /172.18.0.1:54720]] Loading :: Finished
+2023-06-05 19:36:38.675+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: Start
+2023-06-05 19:36:38.677+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare :: Start
+2023-06-05 19:36:38.682+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 1%
+2023-06-05 19:36:38.685+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 2%
+2023-06-05 19:36:38.687+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 3%
+2023-06-05 19:36:38.689+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 4%
+2023-06-05 19:36:38.691+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 5%
+2023-06-05 19:36:38.692+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 6%
+2023-06-05 19:36:38.693+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 7%
+2023-06-05 19:36:38.694+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 8%
+2023-06-05 19:36:38.696+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 9%
+2023-06-05 19:36:38.697+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 10%
+2023-06-05 19:36:38.698+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 11%
+2023-06-05 19:36:38.699+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 12%
+2023-06-05 19:36:38.700+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 13%
+2023-06-05 19:36:38.702+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 14%
+2023-06-05 19:36:38.703+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 15%
+2023-06-05 19:36:38.704+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 16%
+2023-06-05 19:36:38.705+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 17%
+2023-06-05 19:36:38.706+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 18%
+2023-06-05 19:36:38.707+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 19%
+2023-06-05 19:36:38.708+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 24%
+2023-06-05 19:36:38.709+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 29%
+2023-06-05 19:36:38.710+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 34%
+2023-06-05 19:36:38.711+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 39%
+2023-06-05 19:36:38.712+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 44%
+2023-06-05 19:36:38.714+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 49%
+2023-06-05 19:36:38.715+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 54%
+2023-06-05 19:36:38.716+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 59%
+2023-06-05 19:36:38.718+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 64%
+2023-06-05 19:36:38.719+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 69%
+2023-06-05 19:36:38.720+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 70%
+2023-06-05 19:36:38.721+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 71%
+2023-06-05 19:36:38.723+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 72%
+2023-06-05 19:36:38.724+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 73%
+2023-06-05 19:36:38.725+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 74%
+2023-06-05 19:36:38.727+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 75%
+2023-06-05 19:36:38.729+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 76%
+2023-06-05 19:36:38.730+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 77%
+2023-06-05 19:36:38.732+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 78%
+2023-06-05 19:36:38.733+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 79%
+2023-06-05 19:36:38.735+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 80%
+2023-06-05 19:36:38.737+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 81%
+2023-06-05 19:36:38.739+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 82%
+2023-06-05 19:36:38.740+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 83%
+2023-06-05 19:36:38.741+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 84%
+2023-06-05 19:36:38.742+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 85%
+2023-06-05 19:36:38.743+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 86%
+2023-06-05 19:36:38.745+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 87%
+2023-06-05 19:36:38.747+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 88%
+2023-06-05 19:36:38.748+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 89%
+2023-06-05 19:36:38.749+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 90%
+2023-06-05 19:36:38.751+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 91%
+2023-06-05 19:36:38.752+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 92%
+2023-06-05 19:36:38.753+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 93%
+2023-06-05 19:36:38.754+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 94%
+2023-06-05 19:36:38.755+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 95%
+2023-06-05 19:36:38.757+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 96%
+2023-06-05 19:36:38.758+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 97%
+2023-06-05 19:36:38.759+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 98%
+2023-06-05 19:36:38.761+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 99%
+2023-06-05 19:36:38.761+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare 100%
+2023-06-05 19:36:38.762+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: prepare :: Finished
+2023-06-05 19:36:38.764+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: compare node pairs :: Start
+2023-06-05 19:36:38.782+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 1%
+2023-06-05 19:36:38.786+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 3%
+2023-06-05 19:36:38.789+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 5%
+2023-06-05 19:36:38.791+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 6%
+2023-06-05 19:36:38.793+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 7%
+2023-06-05 19:36:38.795+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 8%
+2023-06-05 19:36:38.796+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 9%
+2023-06-05 19:36:38.799+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 11%
+2023-06-05 19:36:38.802+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 12%
+2023-06-05 19:36:38.803+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 13%
+2023-06-05 19:36:38.806+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 15%
+2023-06-05 19:36:38.809+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 17%
+2023-06-05 19:36:38.813+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 18%
+2023-06-05 19:36:38.816+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 19%
+2023-06-05 19:36:38.818+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 21%
+2023-06-05 19:36:38.821+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 22%
+2023-06-05 19:36:38.823+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 23%
+2023-06-05 19:36:38.826+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 25%
+2023-06-05 19:36:38.828+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 26%
+2023-06-05 19:36:38.830+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 27%
+2023-06-05 19:36:38.834+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 29%
+2023-06-05 19:36:38.837+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 31%
+2023-06-05 19:36:38.840+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 32%
+2023-06-05 19:36:38.840+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 33%
+2023-06-05 19:36:38.842+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 34%
+2023-06-05 19:36:38.843+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 35%
+2023-06-05 19:36:38.844+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 36%
+2023-06-05 19:36:38.845+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 37%
+2023-06-05 19:36:38.846+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 38%
+2023-06-05 19:36:38.847+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 39%
+2023-06-05 19:36:38.848+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 40%
+2023-06-05 19:36:38.849+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 41%
+2023-06-05 19:36:38.850+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 42%
+2023-06-05 19:36:38.852+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 44%
+2023-06-05 19:36:38.854+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 45%
+2023-06-05 19:36:38.855+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 46%
+2023-06-05 19:36:38.856+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 47%
+2023-06-05 19:36:38.857+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 48%
+2023-06-05 19:36:38.858+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 49%
+2023-06-05 19:36:38.859+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 50%
+2023-06-05 19:36:38.860+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 51%
+2023-06-05 19:36:38.862+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 52%
+2023-06-05 19:36:38.863+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 53%
+2023-06-05 19:36:38.864+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 54%
+2023-06-05 19:36:38.865+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 55%
+2023-06-05 19:36:38.868+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 56%
+2023-06-05 19:36:38.870+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 57%
+2023-06-05 19:36:38.871+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 58%
+2023-06-05 19:36:38.872+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 59%
+2023-06-05 19:36:38.873+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 60%
+2023-06-05 19:36:38.876+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 61%
+2023-06-05 19:36:38.877+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 62%
+2023-06-05 19:36:38.879+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 63%
+2023-06-05 19:36:38.882+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 64%
+2023-06-05 19:36:38.885+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 65%
+2023-06-05 19:36:38.886+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 66%
+2023-06-05 19:36:38.887+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 67%
+2023-06-05 19:36:38.888+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 68%
+2023-06-05 19:36:38.888+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 69%
+2023-06-05 19:36:38.889+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 70%
+2023-06-05 19:36:38.890+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 71%
+2023-06-05 19:36:38.891+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 72%
+2023-06-05 19:36:38.892+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 73%
+2023-06-05 19:36:38.893+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 74%
+2023-06-05 19:36:38.894+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 75%
+2023-06-05 19:36:38.894+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 76%
+2023-06-05 19:36:38.895+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 77%
+2023-06-05 19:36:38.896+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 78%
+2023-06-05 19:36:38.897+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 79%
+2023-06-05 19:36:38.899+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 80%
+2023-06-05 19:36:38.901+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 81%
+2023-06-05 19:36:38.902+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 82%
+2023-06-05 19:36:38.903+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 83%
+2023-06-05 19:36:38.905+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 84%
+2023-06-05 19:36:38.906+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 85%
+2023-06-05 19:36:38.906+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 86%
+2023-06-05 19:36:38.907+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 87%
+2023-06-05 19:36:38.908+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 88%
+2023-06-05 19:36:38.909+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 89%
+2023-06-05 19:36:38.910+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 90%
+2023-06-05 19:36:38.911+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 91%
+2023-06-05 19:36:38.912+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 92%
+2023-06-05 19:36:38.912+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 93%
+2023-06-05 19:36:38.913+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 94%
+2023-06-05 19:36:38.914+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 95%
+2023-06-05 19:36:38.914+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 96%
+2023-06-05 19:36:38.917+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 97%
+2023-06-05 19:36:38.918+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 98%
+2023-06-05 19:36:38.918+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 99%
+2023-06-05 19:36:38.919+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: compare node pairs 100%
+2023-06-05 19:36:38.920+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: compare node pairs :: Finished
+2023-06-05 19:36:38.922+0000 INFO  [neo4j.BoltWorker-3 [bolt-11 - /172.18.0.1:54726]] NodeSimilarity :: Finished
+2023-06-05 19:37:20.461+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: Start
+2023-06-05 19:37:20.463+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare :: Start
+2023-06-05 19:37:20.465+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 1%
+2023-06-05 19:37:20.466+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 2%
+2023-06-05 19:37:20.467+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 3%
+2023-06-05 19:37:20.467+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 4%
+2023-06-05 19:37:20.468+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 5%
+2023-06-05 19:37:20.469+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 6%
+2023-06-05 19:37:20.470+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 7%
+2023-06-05 19:37:20.470+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 8%
+2023-06-05 19:37:20.471+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 9%
+2023-06-05 19:37:20.472+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 10%
+2023-06-05 19:37:20.473+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 11%
+2023-06-05 19:37:20.474+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 12%
+2023-06-05 19:37:20.475+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 13%
+2023-06-05 19:37:20.476+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 14%
+2023-06-05 19:37:20.477+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 15%
+2023-06-05 19:37:20.477+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 16%
+2023-06-05 19:37:20.478+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 17%
+2023-06-05 19:37:20.479+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 18%
+2023-06-05 19:37:20.480+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 19%
+2023-06-05 19:37:20.480+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 24%
+2023-06-05 19:37:20.481+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 29%
+2023-06-05 19:37:20.482+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 34%
+2023-06-05 19:37:20.483+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 39%
+2023-06-05 19:37:20.483+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 44%
+2023-06-05 19:37:20.484+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 49%
+2023-06-05 19:37:20.485+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 54%
+2023-06-05 19:37:20.487+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 59%
+2023-06-05 19:37:20.488+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 64%
+2023-06-05 19:37:20.489+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 69%
+2023-06-05 19:37:20.490+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 70%
+2023-06-05 19:37:20.491+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 71%
+2023-06-05 19:37:20.492+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 72%
+2023-06-05 19:37:20.492+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 73%
+2023-06-05 19:37:20.493+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 74%
+2023-06-05 19:37:20.493+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 75%
+2023-06-05 19:37:20.494+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 76%
+2023-06-05 19:37:20.495+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 77%
+2023-06-05 19:37:20.496+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 78%
+2023-06-05 19:37:20.497+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 79%
+2023-06-05 19:37:20.498+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 80%
+2023-06-05 19:37:20.499+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 81%
+2023-06-05 19:37:20.499+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 82%
+2023-06-05 19:37:20.500+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 83%
+2023-06-05 19:37:20.501+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 84%
+2023-06-05 19:37:20.502+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 85%
+2023-06-05 19:37:20.503+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 86%
+2023-06-05 19:37:20.504+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 87%
+2023-06-05 19:37:20.505+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 88%
+2023-06-05 19:37:20.507+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 89%
+2023-06-05 19:37:20.508+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 90%
+2023-06-05 19:37:20.510+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 91%
+2023-06-05 19:37:20.511+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 92%
+2023-06-05 19:37:20.513+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 93%
+2023-06-05 19:37:20.517+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 94%
+2023-06-05 19:37:20.521+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 95%
+2023-06-05 19:37:20.525+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 96%
+2023-06-05 19:37:20.528+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 97%
+2023-06-05 19:37:20.529+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 98%
+2023-06-05 19:37:20.531+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 99%
+2023-06-05 19:37:20.532+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare 100%
+2023-06-05 19:37:20.533+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: prepare :: Finished
+2023-06-05 19:37:20.535+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: compare node pairs :: Start
+2023-06-05 19:37:20.540+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 1%
+2023-06-05 19:37:20.542+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 2%
+2023-06-05 19:37:20.543+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 3%
+2023-06-05 19:37:20.545+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 4%
+2023-06-05 19:37:20.548+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 5%
+2023-06-05 19:37:20.549+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 6%
+2023-06-05 19:37:20.550+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 7%
+2023-06-05 19:37:20.552+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 8%
+2023-06-05 19:37:20.554+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 9%
+2023-06-05 19:37:20.555+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 10%
+2023-06-05 19:37:20.556+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 11%
+2023-06-05 19:37:20.558+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 12%
+2023-06-05 19:37:20.559+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 13%
+2023-06-05 19:37:20.559+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 14%
+2023-06-05 19:37:20.560+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 15%
+2023-06-05 19:37:20.561+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 16%
+2023-06-05 19:37:20.563+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 17%
+2023-06-05 19:37:20.564+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 18%
+2023-06-05 19:37:20.566+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 19%
+2023-06-05 19:37:20.567+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 20%
+2023-06-05 19:37:20.568+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 21%
+2023-06-05 19:37:20.569+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 22%
+2023-06-05 19:37:20.569+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 23%
+2023-06-05 19:37:20.570+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 24%
+2023-06-05 19:37:20.571+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 25%
+2023-06-05 19:37:20.573+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 26%
+2023-06-05 19:37:20.574+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 27%
+2023-06-05 19:37:20.575+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 28%
+2023-06-05 19:37:20.576+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 29%
+2023-06-05 19:37:20.577+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 30%
+2023-06-05 19:37:20.578+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 31%
+2023-06-05 19:37:20.579+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 32%
+2023-06-05 19:37:20.580+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 33%
+2023-06-05 19:37:20.582+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 34%
+2023-06-05 19:37:20.583+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 35%
+2023-06-05 19:37:20.584+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 36%
+2023-06-05 19:37:20.585+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 37%
+2023-06-05 19:37:20.586+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 38%
+2023-06-05 19:37:20.587+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 39%
+2023-06-05 19:37:20.589+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 40%
+2023-06-05 19:37:20.590+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 41%
+2023-06-05 19:37:20.591+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 42%
+2023-06-05 19:37:20.593+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 43%
+2023-06-05 19:37:20.593+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 44%
+2023-06-05 19:37:20.594+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 45%
+2023-06-05 19:37:20.595+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 46%
+2023-06-05 19:37:20.596+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 47%
+2023-06-05 19:37:20.597+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 48%
+2023-06-05 19:37:20.598+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 49%
+2023-06-05 19:37:20.599+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 50%
+2023-06-05 19:37:20.601+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 51%
+2023-06-05 19:37:20.603+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 52%
+2023-06-05 19:37:20.606+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 53%
+2023-06-05 19:37:20.608+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 54%
+2023-06-05 19:37:20.609+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 55%
+2023-06-05 19:37:20.610+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 56%
+2023-06-05 19:37:20.611+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 57%
+2023-06-05 19:37:20.612+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 58%
+2023-06-05 19:37:20.613+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 59%
+2023-06-05 19:37:20.614+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 60%
+2023-06-05 19:37:20.615+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 61%
+2023-06-05 19:37:20.616+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 62%
+2023-06-05 19:37:20.617+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 63%
+2023-06-05 19:37:20.618+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 64%
+2023-06-05 19:37:20.619+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 65%
+2023-06-05 19:37:20.620+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 66%
+2023-06-05 19:37:20.621+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 67%
+2023-06-05 19:37:20.622+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 68%
+2023-06-05 19:37:20.623+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 69%
+2023-06-05 19:37:20.625+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 70%
+2023-06-05 19:37:20.626+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 71%
+2023-06-05 19:37:20.627+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 72%
+2023-06-05 19:37:20.628+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 73%
+2023-06-05 19:37:20.629+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 74%
+2023-06-05 19:37:20.630+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 75%
+2023-06-05 19:37:20.631+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 76%
+2023-06-05 19:37:20.631+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 77%
+2023-06-05 19:37:20.632+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 78%
+2023-06-05 19:37:20.634+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 79%
+2023-06-05 19:37:20.635+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 80%
+2023-06-05 19:37:20.635+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 81%
+2023-06-05 19:37:20.636+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 82%
+2023-06-05 19:37:20.637+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 83%
+2023-06-05 19:37:20.638+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 84%
+2023-06-05 19:37:20.639+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 85%
+2023-06-05 19:37:20.640+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 86%
+2023-06-05 19:37:20.641+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 87%
+2023-06-05 19:37:20.642+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 88%
+2023-06-05 19:37:20.642+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 89%
+2023-06-05 19:37:20.643+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 90%
+2023-06-05 19:37:20.644+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 91%
+2023-06-05 19:37:20.644+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 92%
+2023-06-05 19:37:20.645+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 93%
+2023-06-05 19:37:20.646+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 94%
+2023-06-05 19:37:20.647+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 95%
+2023-06-05 19:37:20.648+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 96%
+2023-06-05 19:37:20.649+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 97%
+2023-06-05 19:37:20.650+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 98%
+2023-06-05 19:37:20.651+0000 INFO  [gds-forkjoin-0] NodeSimilarity :: compare node pairs 99%
+2023-06-05 19:37:20.652+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: compare node pairs 100%
+2023-06-05 19:37:20.652+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: compare node pairs :: Finished
+2023-06-05 19:37:20.653+0000 INFO  [neo4j.BoltWorker-4 [bolt-10 - /172.18.0.1:54720]] NodeSimilarity :: Finished
