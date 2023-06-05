@@ -402,7 +402,7 @@ public class GraphPipelineService implements Serializable{
 
                             String text = (tempr!=null)?Double.toString( tempr):null;
                             HabitQuestion habitQuestion =questions_habit.get(i);
-                            Answer answer = new Answer(idt+person.getId(), text, date, habitQuestion);
+                            Answer answer = new Answer(idt+text, text, date, habitQuestion);
                             person.addAnswer(answer);
 
                         }
@@ -413,7 +413,7 @@ public class GraphPipelineService implements Serializable{
 
                             String text = (tempr!=null)?Double.toString( tempr):null;
                             DietBehaviorQuestion dietQuestion =questions_diet.get(i);
-                            Answer answer = new Answer(idt+person.getId(), text, date, dietQuestion);
+                            Answer answer = new Answer(idt+text, text, date, dietQuestion);
                             person.addAnswer(answer);
 
                         }
@@ -424,7 +424,7 @@ public class GraphPipelineService implements Serializable{
 
                             String text = (tempr!=null)?Double.toString( tempr):null;
                             HealthQuestion healthQuestion =questions_health.get(i);
-                            Answer answer = new Answer(idt+person.getId(), text, date, healthQuestion);
+                            Answer answer = new Answer(idt+text, text, date, healthQuestion);
                             person.addAnswer(answer);
 
                         }
