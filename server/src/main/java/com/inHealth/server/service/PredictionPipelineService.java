@@ -12,6 +12,13 @@ import java.util.Scanner;
 
 public class PredictionPipelineService {
     public static void main(String[] args) {
+        // To train model
+        executeQueries("queries/query1.cypher");
+        // To drop everything
+        //executeQueries("queries/query2.cypher");
+    }
+
+    private static void executeQueries(String filePath) {
         // Set up the Neo4j Java Driver
         String uri = "bolt://localhost:7687";
         String username = "neo4j";
@@ -20,7 +27,7 @@ public class PredictionPipelineService {
         Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(username, password));
 
         // Read the query from the file
-        String queries = readQueryFromFile("queries/query1.cypher");
+        String queries = readQueryFromFile(filePath);
 
         // Split the queries into separate statements
         String[] statements = queries.split(";");
