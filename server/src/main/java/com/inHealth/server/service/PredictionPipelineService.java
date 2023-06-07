@@ -1,6 +1,7 @@
 package com.inHealth.server.service;
 
 import org.neo4j.driver.*;
+import org.neo4j.driver.Record;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,7 @@ public class PredictionPipelineService {
         // To train model
         executeQueries("queries/query1.cypher");
         // To drop everything
-        //executeQueries("queries/query2.cypher");
+        executeQueries("queries/query2.cypher");
     }
 
     private static void executeQueries(String filePath) {

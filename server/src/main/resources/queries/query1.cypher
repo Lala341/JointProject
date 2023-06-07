@@ -1,71 +1,60 @@
-// Prediction graph
+MATCH (h:HealthCondition)
+WITH COLLECT(DISTINCT h.condition) AS uniqueValues
+MATCH (h:HealthCondition)
+SET h.oneHotEncoding = gds.alpha.ml.oneHotEncoding(uniqueValues, [h.condition]);
 CALL gds.graph.project(
-'predictionGraph',
-['Person', 'Answer', 'HealthQuestion', 'HealthCondition'],
-{
-  HAS_ANSWER: {
-                orientation: 'UNDIRECTED'
-              },
-  ANSWERED_HE: {
-                orientation: 'UNDIRECTED'
-              },
-  HAS_CONDITION: {
-                orientation: 'UNDIRECTED'
-              },
-  RELATED_TO: {
-                orientation: 'UNDIRECTED'
-              }
-}
+  'fullGraph22',
+  ['Person', 'HealthCondition'],
+  {
+    HAS_CONDITION:{
+    orientation: 'UNDIRECTED'
+  }
+  },
+  { nodeProperties: {
+      oneHotEncoding: {defaultValue: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
+    }
+  }
 );
-
-// Configure pipeline
-CALL gds.beta.pipeline.linkPrediction.create('lp-pipeline');
-
-CALL gds.beta.pipeline.linkPrediction.addNodeProperty('lp-pipeline',
-'fastRP', {
-  mutateProperty: 'embedding',
-  embeddingDimension: 56,
-  randomSeed: 42
-}) YIELD nodePropertySteps;
-
-CALL gds.beta.pipeline.linkPrediction.addFeature('lp-pipeline',
-'HADAMARD', {
-  nodeProperties: ['embedding']
-}) YIELD featureSteps;
-
-CALL gds.beta.pipeline.linkPrediction.configureSplit('lp-pipeline', {
-  testFraction: 0.1,
-  trainFraction: 0.1,
+CALL gds.beta.pipeline.linkPrediction.create('pipe14');
+CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
+  'pipe14',
+  'beta.hashgnn',
+   {
+     mutateProperty:'embedding',
+    heterogeneous: true,
+    iterations: 2,
+    embeddingDensity: 4,
+    binarizeFeatures: {dimension: 6, threshold: 0.2},
+    featureProperties: ['oneHotEncoding'],
+    randomSeed: 42
+  }
+);
+CALL gds.beta.pipeline.linkPrediction.configureSplit('pipe14', {
+   testFraction: 0.25,
+  trainFraction: 0.6,
   validationFolds: 3
-}) YIELD splitConfig;
-
-CALL gds.beta.pipeline.linkPrediction.addLogisticRegression('lp-pipeline')
+});
+CALL gds.alpha.pipeline.linkPrediction.configureAutoTuning('pipe14', {
+  maxTrials: 2
+}) YIELD autoTuningConfig;
+CALL gds.alpha.pipeline.linkPrediction.addRandomForest('pipe14', {numberOfDecisionTrees: 10})
 YIELD parameterSpace;
-
-CALL gds.beta.pipeline.linkPrediction.train.estimate('predictionGraph', {
-  pipeline: 'lp-pipeline',
-  modelName: 'lp-pipeline-model',
-  targetRelationshipType: 'HAS_CONDITION' // Specify the appropriate relationship type
-}) YIELD requiredMemory;
-
-CALL gds.beta.pipeline.linkPrediction.train('predictionGraph', {
-  pipeline: 'lp-pipeline',
-  modelName: 'lp-pipeline-model',
-  metrics: ['AUCPR'],
-  randomSeed: 42,
-  targetRelationshipType: 'HAS_CONDITION' // Specify the appropriate relationship type
+CALL gds.beta.pipeline.linkPrediction.addFeature('pipe14', 'hadamard', {
+  nodeProperties: ['embedding', 'oneHotEncoding']
+});
+CALL gds.beta.pipeline.linkPrediction.train('fullGraph22', {
+  pipeline: 'pipe14',
+  modelName: 'lp-pipeline-model-filtered4',
+  metrics: ['AUCPR', 'OUT_OF_BAG_ERROR'],
+  sourceNodeLabel: 'Person',
+  targetNodeLabel: 'HealthCondition',
+  targetRelationshipType: 'HAS_CONDITION',
+  randomSeed: 12
 }) YIELD modelInfo, modelSelectionStats
 RETURN
   modelInfo.bestParameters AS winningModel,
   modelInfo.metrics.AUCPR.train.avg AS avgTrainScore,
   modelInfo.metrics.AUCPR.outerTrain AS outerTrainScore,
   modelInfo.metrics.AUCPR.test AS testScore,
-  [candidate IN modelSelectionStats.modelCandidates | candidate.metrics.AUCPR.validation.avg] AS validationScores;
+  [cand IN modelSelectionStats.modelCandidates | cand.metrics.AUCPR.validation.avg] AS validationScores;
 
-// Predict
-CALL gds.beta.pipeline.linkPrediction.predict.mutate('predictionGraph', {
-  modelName: 'lp-pipeline-model',
-  mutateRelationshipType: 'PREDICTED_CONDITION',
-  topN: 10,
-  threshold: 0.5
-}) YIELD relationshipsWritten, samplingStats;
