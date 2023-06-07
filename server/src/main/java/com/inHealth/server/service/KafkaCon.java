@@ -34,13 +34,5 @@ public class KafkaCon {
         // Manually acknowledge the message to mark it as processed
         acknowledgment.acknowledge();
     }
-    @KafkaListener(topics = KAFKA_TOPIC_UPDATE, groupId = "${spring.kafka.consumer.group-id}")
-    public void consumeUpdateRequest(ConsumerRecord<String, String> record, Acknowledgment acknowledgment) {
-        String name = record.key();
-        String content = record.value();
 
-
-        // Manually acknowledge the message to mark it as processed
-        acknowledgment.acknowledge();
-    }
 }

@@ -21,7 +21,7 @@ import static java.lang.Math.min;
 @Repository
         public class DownloadRepository {
 
-    private final String uri = "hdfs://namenode:9000";
+    private final String uri = "hdfs://34.237.242.179:9000";
     private final String hdfsDir = "/sensors-data";
 
     public void uploadToHdfs(String zipUrl, String hdfsPath) throws IOException {

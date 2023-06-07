@@ -26,6 +26,7 @@ import org.apache.spark.sql.types.StructType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Service;
 import scala.Tuple2;
 
 import javax.annotation.PostConstruct;
@@ -36,22 +37,16 @@ import static java.lang.Math.min;
 import static org.apache.spark.sql.functions.monotonically_increasing_id;
 import static org.apache.spark.sql.types.DataTypes.DoubleType;
 
-@SpringBootApplication(scanBasePackages={
-        "com.inHealth", "com.inHealth.serve"})
+@Service
 public class PredictiveActivityModelService {
 
-    private static final int NUM_SAMPLES = 1;
+    private  final int NUM_SAMPLES = 1;
 
-    private static ModelMetricsService modelService;
     @Autowired
-    private ModelMetricsService tmodelMetricsService;
+    private ModelMetricsService modelService;
 
-    @PostConstruct
-    public void init() {
-        PredictiveActivityModelService.modelService = tmodelMetricsService;
-    }
 
-    static public  void preprocessDataBiometrics() {
+     public  void preprocessDataBiometrics() {
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -86,7 +81,7 @@ public class PredictiveActivityModelService {
 
     }
 
-    static public  JavaRDD<LabeledPoint>  preprocessDataSets(SparkSession spark, String urlx, String urly) {
+     public  JavaRDD<LabeledPoint>  preprocessDataSets(SparkSession spark, String urlx, String urly) {
 
         Dataset<String> columnsRDD = spark.read().textFile("hdfs://34.237.242.179:9000/models-datasets/human_sensorsUCI HAR Dataset/features.txt");
         String[] columnsList = (String[]) columnsRDD.collect();
@@ -177,7 +172,7 @@ public class PredictiveActivityModelService {
         return labeledPoints;
     }
 
-    public static double predictLabel(Row row, DecisionTreeModel model) {
+    public  double predictLabel(Row row, DecisionTreeModel model) {
         // Extract features
         double[] featuresArray = new double[row.size()];
         for (int i = 0; i < row.size(); i++) {
@@ -200,7 +195,7 @@ public class PredictiveActivityModelService {
     }
 
 
-    public static double predictLabelRandom(Row row, RandomForestModel model) {
+    public  double predictLabelRandom(Row row, RandomForestModel model) {
         // Extract features
         double[] featuresArray = new double[row.size()];
         for (int i = 0; i < row.size(); i++) {
@@ -222,7 +217,7 @@ public class PredictiveActivityModelService {
         return prediction;
     }
 
-    public static  String getLabel(double prediction){
+    public   String getLabel(double prediction){
         String label;
         switch ((int) prediction) {
             case 1:
@@ -250,7 +245,7 @@ public class PredictiveActivityModelService {
         return label;
     }
 
-    public static void createfolderhdfs(String hdfsDir)  {
+    public  void createfolderhdfs(String hdfsDir)  {
         String uri = "hdfs://34.237.242.179:9000";
 
         Configuration conf = new Configuration();
@@ -278,7 +273,7 @@ public class PredictiveActivityModelService {
         System.out.println("Final file");
 
     }
-    public static void preHdfs(String hdfsDir)  {
+    public  void preHdfs(String hdfsDir)  {
         String uri = "hdfs://34.237.242.179:9000";
 
         Configuration conf = new Configuration();
@@ -313,7 +308,7 @@ public class PredictiveActivityModelService {
         System.out.println("Final file");
 
     }
-    static public  void preprocessSaveDataModels(){
+     public  void preprocessSaveDataModels(){
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -350,7 +345,7 @@ public class PredictiveActivityModelService {
         spark.stop();
 
     }
-    static public  void createmodelsandtrain() {
+     public  void createmodelsandtrain() {
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -383,7 +378,7 @@ public class PredictiveActivityModelService {
 
     }
 
-    static public  void calculatemetrics_testdecisiontree(SparkSession spark, String version, String type, JavaRDD<LabeledPoint> testData ,
+     public  void calculatemetrics_testdecisiontree(SparkSession spark, String version, String type, JavaRDD<LabeledPoint> testData ,
                                                           ModelMetricsService modelService, LocalDate date) {
 
         String modelPath = "hdfs://34.237.242.179:9000/models-datasets/tree";
@@ -429,7 +424,7 @@ public class PredictiveActivityModelService {
 
     }
 
-    static public  void calculatemetrics_testrandom(SparkSession spark, String version, String type, JavaRDD<LabeledPoint> testData ,
+     public  void calculatemetrics_testrandom(SparkSession spark, String version, String type, JavaRDD<LabeledPoint> testData ,
                                                           ModelMetricsService modelService, LocalDate date) {
 
         String modelPath = "hdfs://34.237.242.179:9000/models-datasets/random";
@@ -472,7 +467,7 @@ public class PredictiveActivityModelService {
 
     }
 
-    static public  void calculatemetrics_test(String version) {
+     public  void calculatemetrics_test(String version) {
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -505,7 +500,7 @@ public class PredictiveActivityModelService {
     }
 
 
-    static public  void createmodelandtrain_decisiontree(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData )  {
+     public  void createmodelandtrain_decisiontree(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData )  {
 
         Map<Integer, Integer> categoricalFeaturesInfo = new HashMap<>();
         int numClasses = 7;
@@ -543,7 +538,7 @@ public class PredictiveActivityModelService {
 
 
     }
-    static public  void createmodelandtrain_randomforest(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData)  {
+     public  void createmodelandtrain_randomforest(SparkSession spark,JavaRDD<LabeledPoint> trainData,JavaRDD<LabeledPoint> testData)  {
         Map<Integer, Integer> categoricalFeaturesInfo = new HashMap<>();
         int numClasses = 7;
         int numTrees = 100;
@@ -580,7 +575,7 @@ public class PredictiveActivityModelService {
     }
 
 
-    static public  String testmodel_decisiontree( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+     public  String testmodel_decisiontree( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
         System.setProperty("HADOOP_CONF_DIR",  "/models-datasets");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -620,7 +615,7 @@ public class PredictiveActivityModelService {
 
 
 
-    static public  String testmodel_randomforest( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+     public  String testmodel_randomforest( double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
         System.setProperty("HADOOP_CONF_DIR",  "/sensors-data");
         System.setProperty("HADOOP_USER_NAME", "root");
 
@@ -656,7 +651,7 @@ public class PredictiveActivityModelService {
     }
 
 
-    static public  String predictmodel_decisiontree(SparkSession spark, double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+     public  String predictmodel_decisiontree(SparkSession spark, double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
 
         String modelPath = "hdfs://34.237.242.179:9000/models-datasets/tree";
 
@@ -687,7 +682,7 @@ public class PredictiveActivityModelService {
 
 
 
-    static public  String predictmodel_randomforest(SparkSession spark, double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
+     public  String predictmodel_randomforest(SparkSession spark, double meanax,double meanay, double meanaz, double meangx, double meangy, double meangz) {
 
         String modelPath = "hdfs://34.237.242.179:9000/models-datasets/random";
 
@@ -761,28 +756,5 @@ public class PredictiveActivityModelService {
 
 
     }
-    public static void main(String[] args) {
-        SpringApplication.run(PredictiveActivityModelService.class, args);
 
-        System.out.println("start");
-        //createfolderhdfs("hdfs://34.237.242.179:9000/models-datasets/datasets");
-        //createfolderhdfs("hdfs://34.237.242.179:9000/models-datasets/datasets/train");
-        //createfolderhdfs("hdfs://34.237.242.179:9000/models-datasets/datasets/test");
-        //preprocessSaveDataModels();
-        //createmodelsandtrain();
-        calculatemetrics_test("1.0.0");
-
-      //  String predictedLabel=testmodel_decisiontree(0.25717778,-0.02328523,-0.014653762,0.89847935,0.0,0.95018164);
-      //  String predictedLabel1=testmodel_decisiontree(0.11453319731152992,0.7540551762857872,0.17677547053059106,-0.36085168527211237,-0.18468181612511084,-0.21062950750740914);
-      //  String predictedLabel3=testmodel_decisiontree(0.11453319731152992,-0.7540551762857872,-0.17677547053059106,-0.36085168527211237,-0.18468181612511084,-0.21062950750740914);
-      //  String predictedLabel2=testmodel_decisiontree(1,2,3,4,5,6);
-
-     //   System.out.println("Predicted label Tree: " + predictedLabel);
-    //    System.out.println("Predicted label Random: " + predictedLabel1);
-    //    System.out.println("Predicted label Random: " + predictedLabel2);
-
-    //    System.out.println("Predicted label Random: " + predictedLabel3);
-    //    System.out.println("Predicted label Random: " + predictedLabel3);
-
-    }
 }
