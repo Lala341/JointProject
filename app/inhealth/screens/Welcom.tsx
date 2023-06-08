@@ -19,7 +19,7 @@ const Welcom = () => {
 your personal health tracker`}</Text>
         <Pressable
           style={styles.wrapper}
-          onPress={() => navigation.navigate("Data")}
+          onPress={() => navigation.navigate("Survey")}
         >
           <Image
             style={styles.icon}
