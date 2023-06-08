@@ -11,6 +11,8 @@ public class Answer implements Serializable {
     private String answer;
     private String date;
 
+    private String text;
+
     @Relationship(type = "ANSWERED_HE", direction = Relationship.Direction.INCOMING)
     private HealthQuestion healthQuestion;
 
@@ -82,27 +84,38 @@ public class Answer implements Serializable {
         this.person = person;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public Answer() {
     }
 
-    public Answer(String id, String answer, String date, HabitQuestion habitQuestion) {
+    public Answer(String id, String answer, String date, String text, HabitQuestion habitQuestion) {
         this.id = id;
         this.answer = answer;
         this.date = date;
+        this.text = text;
         this.habitQuestion = habitQuestion;
     }
 
-    public Answer(String id, String answer, String date, HealthQuestion healthQuestion) {
+    public Answer(String id, String answer, String date,  String text, HealthQuestion healthQuestion) {
         this.id = id;
         this.answer = answer;
         this.date = date;
+        this.text = text;
         this.healthQuestion = healthQuestion;
     }
 
-    public Answer(String id, String answer, String date, DietBehaviorQuestion dietQuestion) {
+    public Answer(String id, String answer, String date,  String text, DietBehaviorQuestion dietQuestion) {
         this.id = id;
         this.answer = answer;
         this.date = date;
+        this.text = text;
         this.dietQuestion = dietQuestion;
     }
 
