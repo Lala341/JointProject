@@ -12,4 +12,6 @@ public interface AnswerRepository extends Neo4jRepository<Answer, String> {
     @Query("MATCH (a:Answer)<-[:ANSWERED_HE]-(h:HealthQuestion{id:$questionId}) RETURN a")
     List<Answer> findByHealthQuestion(@Param("questionId") String questionId);
 
+    @Query("MATCH (a:Answer)<-[:ANSWERED_HA]-(h:HabitQuestion{id:$questionId}) RETURN a")
+    List<Answer> findByHabitQuestion(@Param("questionId") String questionId);
 }
