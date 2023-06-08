@@ -20,9 +20,6 @@ public class Answer implements Serializable {
     @Relationship(type = "ANSWERED_HA", direction = Relationship.Direction.INCOMING)
     private HabitQuestion habitQuestion;
 
-    @Relationship(type = "HAS_ANSWER", direction = Relationship.Direction.INCOMING)
-    private Person person;
-
     // Getters and setters
 
 
@@ -72,14 +69,6 @@ public class Answer implements Serializable {
 
     public void setHabitQuestion(HabitQuestion habitQuestion) {
         this.habitQuestion = habitQuestion;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public Answer() {

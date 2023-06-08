@@ -42,7 +42,7 @@ public class Person   implements Serializable {
             answers = new ArrayList<>();
         }
         answers.add(answer);
-        answer.setPerson(this); // Set the reference to the parent entity
+        //answer.setPerson(this); // Set the reference to the parent entity
     }
     public void addSymptom(ExperiencesSymptom s) {
         if (experiencesSymptoms == null) {

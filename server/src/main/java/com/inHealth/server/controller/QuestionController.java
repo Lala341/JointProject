@@ -3,11 +3,9 @@ package com.inHealth.server.controller;
 import com.inHealth.server.dto.DietBehaviorQuestionDTO;
 import com.inHealth.server.dto.HabitQuestionDTO;
 import com.inHealth.server.dto.HealthQuestionDTO;
-import com.inHealth.server.model.graph.Answer;
-import com.inHealth.server.model.graph.DietBehaviorQuestion;
-import com.inHealth.server.model.graph.HabitQuestion;
-import com.inHealth.server.model.graph.HealthQuestion;
+import com.inHealth.server.model.graph.*;
 import com.inHealth.server.service.AnswerService;
+import com.inHealth.server.service.PersonService;
 import com.inHealth.server.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +24,9 @@ public class QuestionController {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private PersonService personService;
 
     @GetMapping("/health")
     public ResponseEntity<List<HealthQuestionDTO>> getAllHealthQuestions() {
@@ -61,8 +62,16 @@ public class QuestionController {
     }
 
     @PostMapping("/answers")
-    public ResponseEntity<List<Answer>> saveAnswers(@RequestBody List<Answer> answers) {
-        List<Answer>savedAnswers = answerService.saveAll(answers);
-        return new ResponseEntity<>(savedAnswers, HttpStatus.OK);
+    public ResponseEntity<Void> saveAnswers(@RequestBody List<Answer> answers, @RequestParam("person") String personId) {
+        Person person = personService.findById(personId);
+        if (person == null) {
+            person = new Person();
+            person.setId(personId);
+        }
+        for(Answer answer : answers) {
+            person.addAnswer(answer);
+        }
+        personService.save(person);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
