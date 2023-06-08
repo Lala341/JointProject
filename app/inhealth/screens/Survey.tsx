@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import Constants from 'expo-constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,15 +22,15 @@ const QuestionScreen: React.FC = () => {
     }
   };
 
-  const handleAnswerSelection = (answerId: string, answer: string) => {
+  const handleAnswerSelection = (answerId: string, answer: string, text: string) => {
     const updatedAnswers = selectedAnswers.filter((answer) => answer.id !== answerId);
-    updatedAnswers.push({ id: answerId, answer: answer, date: new Date().toISOString() });
+    updatedAnswers.push({ id: answerId, answer: answer, date: new Date().toISOString(), text: text });
     setSelectedAnswers(updatedAnswers);
   };
 
   const handleSaveAnswers = async () => {
     try {
-      const response = await fetch('http://192.168.174.23:8090/question/answers?person=person', {
+      const response = await fetch('http://192.168.174.23:8090/question/answers?person=' + Constants.installationId, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,6 +38,7 @@ const QuestionScreen: React.FC = () => {
         body: JSON.stringify(selectedAnswers),
       });
 
+      console.log(Constants.installationId)
       console.log('Request Body:', JSON.stringify(selectedAnswers));
 
       // Handle response as needed
@@ -54,7 +56,7 @@ const QuestionScreen: React.FC = () => {
           {question.answers.map((answer: any) => (
             <TouchableOpacity
               key={answer.id}
-              onPress={() => handleAnswerSelection(answer.id, answer.answer)}
+              onPress={() => handleAnswerSelection(answer.id, answer.answer, answer.text)}
               style={[
                 styles.answerButton,
                 selectedAnswers.find((selected) => selected.id === answer.id)
@@ -62,7 +64,7 @@ const QuestionScreen: React.FC = () => {
                   : null,
               ]}
             >
-              <Text style={styles.answerButtonText}>{answer.answer}</Text>
+              <Text style={styles.answerButtonText}>{answer.text}</Text>
             </TouchableOpacity>
           ))}
         </View>
