@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
 import Constants from 'expo-constants';
 
 const { width, height } = Dimensions.get('window');
@@ -36,6 +36,12 @@ const QuestionScreen: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(selectedAnswers),
+      })
+      .then(() => {
+        // Alert success message
+        Alert.alert("Survey Sent", "Your survey has been successfully sent!");
+        // Clear selected answers
+        setSelectedAnswers([]);
       });
 
       console.log(Constants.installationId)
@@ -43,6 +49,7 @@ const QuestionScreen: React.FC = () => {
 
       // Handle response as needed
     } catch (error) {
+      Alert.alert("Error", "Failed to send the survey. Please try again.");
       console.log('Error saving answers:', error);
     }
   };
