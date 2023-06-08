@@ -14,12 +14,6 @@ public class HabitQuestion implements Serializable {
     private String id;
     private String text;
     private String options;
-
-
-    @Relationship(type = "ANSWERED_HA", direction = Relationship.Direction.OUTGOING)
-    private List<Answer> habitQuestions;
-
-
     // Getters and setters
 
 
@@ -45,21 +39,6 @@ public class HabitQuestion implements Serializable {
 
     public void setOptions(String options) {
         this.options = options;
-    }
-
-    public List<Answer> getHabitQuestions() {
-        return habitQuestions;
-    }
-
-    public void setHabitQuestions(List<Answer> habitQuestions) {
-        this.habitQuestions = habitQuestions;
-    }
-
-    public HabitQuestion(String id, String text, String options, List<Answer> habitQuestions) {
-        this.id = id;
-        this.text = text;
-        this.options = options;
-        this.habitQuestions = habitQuestions;
     }
 
     public HabitQuestion() {
