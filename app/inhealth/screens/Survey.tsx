@@ -21,9 +21,9 @@ const QuestionScreen: React.FC = () => {
     }
   };
 
-  const handleAnswerSelection = (questionId: string, answerId: string) => {
-    const updatedAnswers = selectedAnswers.filter((answer) => answer.id !== questionId);
-    updatedAnswers.push({ id: questionId, answer: answerId, date: new Date().toISOString() });
+  const handleAnswerSelection = (answerId: string, answer: string) => {
+    const updatedAnswers = selectedAnswers.filter((answer) => answer.id !== answerId);
+    updatedAnswers.push({ id: answerId, answer: answer, date: new Date().toISOString() });
     setSelectedAnswers(updatedAnswers);
   };
 
@@ -37,6 +37,8 @@ const QuestionScreen: React.FC = () => {
         body: JSON.stringify(selectedAnswers),
       });
 
+      console.log('Request Body:', JSON.stringify(selectedAnswers));
+
       // Handle response as needed
     } catch (error) {
       console.log('Error saving answers:', error);
@@ -45,16 +47,17 @@ const QuestionScreen: React.FC = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Health Survey</Text>
       {questions.map((question: any) => (
         <View key={question.healthQuestion.id} style={styles.questionContainer}>
           <Text style={styles.questionText}>{question.healthQuestion.text}</Text>
           {question.answers.map((answer: any) => (
             <TouchableOpacity
               key={answer.id}
-              onPress={() => handleAnswerSelection(question.healthQuestion.id, answer.answer)}
+              onPress={() => handleAnswerSelection(answer.id, answer.answer)}
               style={[
                 styles.answerButton,
-                selectedAnswers.find((selected) => selected.id === question.healthQuestion.id && selected.answer === answer.answer)
+                selectedAnswers.find((selected) => selected.id === answer.id)
                   ? styles.selectedAnswerButton
                   : null,
               ]}
@@ -76,6 +79,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 16,
     minHeight: height,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
   questionContainer: {
     marginBottom: 16,
