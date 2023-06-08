@@ -1,7 +1,9 @@
 package com.inHealth.server.controller;
 
+import com.inHealth.server.dto.DietBehaviorQuestionDTO;
 import com.inHealth.server.dto.HabitQuestionDTO;
 import com.inHealth.server.dto.HealthQuestionDTO;
+import com.inHealth.server.model.graph.DietBehaviorQuestion;
 import com.inHealth.server.model.graph.HabitQuestion;
 import com.inHealth.server.model.graph.HealthQuestion;
 import com.inHealth.server.service.AnswerService;
@@ -43,6 +45,17 @@ public class QuestionController {
         List<HabitQuestionDTO> dtos = new ArrayList<>();
         for (HabitQuestion question : questions) {
             HabitQuestionDTO dto = new HabitQuestionDTO(question, answerService.findByHabitQuestion(question));
+            dtos.add(dto);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/diet")
+    public ResponseEntity<List<DietBehaviorQuestionDTO>> getAllDietBehaviorQuestions() {
+        List<DietBehaviorQuestion> questions = questionService.getAllDietBehaviorQuestions();
+        List<DietBehaviorQuestionDTO> dtos = new ArrayList<>();
+        for (DietBehaviorQuestion question : questions) {
+            DietBehaviorQuestionDTO dto = new DietBehaviorQuestionDTO(question, answerService.findByDietBehaviorQuestion(question));
             dtos.add(dto);
         }
         return new ResponseEntity<>(dtos, HttpStatus.OK);

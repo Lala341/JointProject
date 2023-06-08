@@ -1,6 +1,7 @@
 package com.inHealth.server.service;
 
 import com.inHealth.server.model.graph.Answer;
+import com.inHealth.server.model.graph.DietBehaviorQuestion;
 import com.inHealth.server.model.graph.HabitQuestion;
 import com.inHealth.server.model.graph.HealthQuestion;
 import com.inHealth.server.repository.graph.AnswerRepository;
@@ -20,5 +21,9 @@ public class AnswerService {
 
     public List<Answer> findByHabitQuestion(HabitQuestion question) {
         return answerRepository.findByHabitQuestion(question.getId());
+    }
+
+    public List<Answer> findByDietBehaviorQuestion(DietBehaviorQuestion question) {
+        return answerRepository.findByDietBehaviorQuestion(question.getId());
     }
 }
