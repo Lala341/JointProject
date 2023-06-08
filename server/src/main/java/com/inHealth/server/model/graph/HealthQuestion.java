@@ -16,12 +16,6 @@ public class HealthQuestion implements Serializable {
     @Relationship(type = "RELATED_TO", direction = Relationship.Direction.INCOMING)
     private HealthCondition healthCondition;
 
-
-    @Relationship(type = "ANSWERED_HE", direction = Relationship.Direction.OUTGOING)
-    private List<Answer> healthQuestions;
-
-
-
     // Getters and setters
 
 
@@ -64,15 +58,6 @@ public class HealthQuestion implements Serializable {
     public void setHealthCondition(HealthCondition healthCondition) {
         this.healthCondition = healthCondition;
     }
-
-    public List<Answer> getHealthQuestions() {
-        return healthQuestions;
-    }
-
-    public void setHealthQuestions(List<Answer> healthQuestions) {
-        this.healthQuestions = healthQuestions;
-    }
-
     public HealthQuestion(String id, String text, String options, String type) {
         this.id = id;
         this.text = text;

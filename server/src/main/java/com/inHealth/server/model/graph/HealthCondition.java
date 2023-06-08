@@ -11,15 +11,6 @@ public class HealthCondition implements Serializable {
     private String id;
     private String condition;
 
-    @Relationship(type = "RELATED_TO_SYMPTOM", direction = Relationship.Direction.OUTGOING)
-    private Symptom symptom;
-
-    @Relationship(type = "RELATED_TO", direction = Relationship.Direction.OUTGOING)
-    private List<HealthQuestion> healthQuestions;
-
-    @Relationship(type = "HAS_PREEXISTING_CONDITION", direction = Relationship.Direction.INCOMING)
-    private List<Person> persons;
-
     // Getters and setters
 
 
@@ -47,30 +38,5 @@ public class HealthCondition implements Serializable {
         this.condition = condition;
     }
 
-    public Symptom getSymptom() {
-        return symptom;
-    }
-
-    public void setSymptom(Symptom symptom) {
-        this.symptom = symptom;
-    }
-
-
-
-    public List<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
-
-    public List<HealthQuestion> getHealthQuestions() {
-        return healthQuestions;
-    }
-
-    public void setHealthQuestions(List<HealthQuestion> healthQuestions) {
-        this.healthQuestions = healthQuestions;
-    }
 }
 

@@ -10,10 +10,6 @@ public class DietBehaviorQuestion implements Serializable {
     private String id;
     private String text;
     private String options;
-
-
-    @Relationship(type = "ANSWERED_D", direction = Relationship.Direction.OUTGOING)
-    private List<Answer> dietanswers;
     // Getters and setters
 
     public String getId() {
@@ -39,8 +35,6 @@ public class DietBehaviorQuestion implements Serializable {
     public void setOptions(String options) {
         this.options = options;
     }
-
-    
 
     public DietBehaviorQuestion() {
     }
