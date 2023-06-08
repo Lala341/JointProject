@@ -270,8 +270,105 @@ public class Decoder {
             } else if (answerEncoded.equals(".")) {
                 return "Missing";
             }
-            else {
-                return "!None of the above!";
+        } else if (questionId.equals("DBD895") || questionId.equals("DBD900")) {
+            if(answerEncoded.equals("1.0") || answerEncoded.equals("2.0") || answerEncoded.equals("3.0") ||
+                    answerEncoded.equals("4.0") || answerEncoded.equals("5.0") || answerEncoded.equals("6.0") ||
+                    answerEncoded.equals("7.0") || answerEncoded.equals("8.0") || answerEncoded.equals("9.0") ||
+                    answerEncoded.equals("10.0") || answerEncoded.equals("11.0") || answerEncoded.equals("12.0") ||
+                    answerEncoded.equals("13.0") || answerEncoded.equals("14.0") || answerEncoded.equals("15.0") ||
+                    answerEncoded.equals("16.0") || answerEncoded.equals("17.0") || answerEncoded.equals("18.0") ||
+                    answerEncoded.equals("19.0") || answerEncoded.equals("20.0") || answerEncoded.equals("21.0")
+            ) {
+                String[] parts = answerEncoded.split("\\.");
+                return parts[0];
+            } else if (answerEncoded.equals("0.0")) {
+                return "None";
+            } else if (answerEncoded.equals("5555.0")) {
+                return "More than 21 meals per week";
+            } else if (answerEncoded.equals("7777.0")) {
+                return "Refused";
+            } else if (answerEncoded.equals("9999.0")) {
+                return "Don't know";
+            } else if (answerEncoded.equals(".")) {
+                return "Missing";
+            }
+        } else if (questionId.equals("DBD905") || questionId.equals("DBD910"))  {
+            double doubleValue = Double.parseDouble(answerEncoded);
+            int intValue = (int) doubleValue;
+
+            if (intValue >= 1 && intValue <= 90) {
+                return String.valueOf(intValue);
+            } else if (intValue == 0) {
+                return "Never";
+            } else if (intValue == 6666) {
+                return "More than 90 times in 30 days";
+            } else if (intValue == 7777) {
+                return "Refused";
+            } else if (intValue == 9999) {
+                return "Don't know";
+            } else if (answerEncoded.equals(".")) {
+                return "Missing";
+            }
+        } else if (questionId.equals("BPD035")) {
+            double doubleValue = Double.parseDouble(answerEncoded);
+            int intValue = (int) doubleValue;
+
+            if (intValue >= 13 && intValue <= 79) {
+                return String.valueOf(intValue);
+            } else if (intValue == 12) {
+                return "12 years or younger";
+            } else if (intValue == 80) {
+                return "80 years or older";
+            } else if (intValue == 777) {
+                return "Refused";
+            } else if (intValue == 999) {
+                return "Don't know";
+            } else if (answerEncoded.equals(".")) {
+                return "Missing";
+            }
+        } else if (questionId.equals("DID040")) {
+            double doubleValue = Double.parseDouble(answerEncoded);
+            int intValue = (int) doubleValue;
+
+            if (intValue >= 1 && intValue <= 79) {
+                return String.valueOf(intValue);
+            } else if (intValue == 80) {
+                return "80 years or older";
+            } else if (intValue == 666) {
+                return "Less than 1 year";
+            } else if (intValue == 777) {
+                return "Refused";
+            } else if (intValue == 999) {
+                return "Don't know";
+            } else if (answerEncoded.equals(".")) {
+                return "Missing";
+            }
+        } else if (questionId.equals("DID250")) {
+            double doubleValue = Double.parseDouble(answerEncoded);
+            int intValue = (int) doubleValue;
+
+            if (intValue >= 1 && intValue <= 40) {
+                return String.valueOf(intValue);
+            } else if (intValue == 0) {
+                return "None";
+            } else if (intValue == 7777) {
+                return "Refused";
+            } else if (intValue == 9999) {
+                return "Don't know";
+            } else if (answerEncoded.equals(".")) {
+                return "Missing";
+            }
+        } else if (questionId.equals("SLD012")) {
+            double doubleValue = Double.parseDouble(answerEncoded);
+
+            if (doubleValue >= 3 && doubleValue <= 13.5) {
+                return String.valueOf(doubleValue);
+            } else if (doubleValue == 2) {
+                return "Less than 3 hours";
+            } else if (doubleValue == 14) {
+                return "14 hours or more";
+            } else if (answerEncoded.equals(".")) {
+                return "Missing";
             }
         }
         return "!None of the above!";

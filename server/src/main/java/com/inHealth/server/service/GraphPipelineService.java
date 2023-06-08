@@ -105,10 +105,10 @@ public class GraphPipelineService implements Serializable{
             questions_diet.add(new DietBehaviorQuestion("DBQ700","How healthy is the diet",""));
             questions_diet.add(new DietBehaviorQuestion("DBQ197","Past 30 day milk product consumption",""));
             questions_diet.add(new DietBehaviorQuestion("DBQ223A","You drink whole or regular milk",""));
-            //questions_diet.add(new DietBehaviorQuestion("DBD895","# of meals not home prepared",""));
-            //questions_diet.add(new DietBehaviorQuestion("DBD900","# of meals from fast food or pizza place",""));
-            //questions_diet.add(new DietBehaviorQuestion("DBD905","# of ready-to-eat foods in past 30 days",""));
-            //questions_diet.add(new DietBehaviorQuestion("DBD910","# of frozen meals/pizza in past 30 days",""));
+            questions_diet.add(new DietBehaviorQuestion("DBD895","# of meals not home prepared",""));
+            questions_diet.add(new DietBehaviorQuestion("DBD900","# of meals from fast food or pizza place",""));
+            questions_diet.add(new DietBehaviorQuestion("DBD905","# of ready-to-eat foods in past 30 days",""));
+            questions_diet.add(new DietBehaviorQuestion("DBD910","# of frozen meals/pizza in past 30 days",""));
             questions_diet.add(new DietBehaviorQuestion("DBQ930","{Are you/Is SP} the person who does most of the planning or preparing of meals in {your/SPs} family?",""));
             questions_diet.add(new DietBehaviorQuestion("DBQ935","{Do you/Does SP} share in the planning or preparing of meals with someone else?",""));
             questions_diet.add(new DietBehaviorQuestion("WHD080P","Started to smoke or began to smoke again",""));
@@ -151,9 +151,9 @@ public class GraphPipelineService implements Serializable{
 
             List<HealthQuestion> questions_health = new ArrayList<>();
             questions_health.add(new HealthQuestion("AUQ054","These next questions are about {your/SP's} hearing. Which statement best describes {your/SP's} hearing (without a hearing aid, personal sound amplifier, or other listening devices)? Would you say {your/his/her} hearing is excellent, good, that {you have/s/he has} a little trouble, moderate trouble, a lot of trouble, or {are you/is s/he} deaf?","",conditions_health.get(0)));
-            //questions_health.add(new HealthQuestion("BPD035","How old {were you/was SP} when {you were/he/she was} first told that {you/he/she} had hypertension or high blood pressure?","",conditions_health.get(1)));
-            //questions_health.add(new HealthQuestion("DID040","Age when first told you had diabetes","",conditions_health.get(3)));
-            //questions_health.add(new HealthQuestion("DID250","How many times {have you/has SP} seen this doctor or other health professional in the past 12 months?","",conditions_health.get(3)));
+            questions_health.add(new HealthQuestion("BPD035","How old {were you/was SP} when {you were/he/she was} first told that {you/he/she} had hypertension or high blood pressure?","",conditions_health.get(1)));
+            questions_health.add(new HealthQuestion("DID040","Age when first told you had diabetes","",conditions_health.get(3)));
+            questions_health.add(new HealthQuestion("DID250","How many times {have you/has SP} seen this doctor or other health professional in the past 12 months?","",conditions_health.get(3)));
             questions_health.add(new HealthQuestion("KIQ005","How often have urinary leakage?","",conditions_health.get(6)));
             questions_health.add(new HealthQuestion("KIQ480","How many times urinate in night?","",conditions_health.get(6)));
             questions_health.add(new HealthQuestion("DPQ010","Have little interest in doing things","",conditions_health.get(7)));
@@ -164,7 +164,7 @@ public class GraphPipelineService implements Serializable{
             questions_health.add(new HealthQuestion("DPQ060","Feeling bad about yourself","",conditions_health.get(7)));
             questions_health.add(new HealthQuestion("DPQ090","Thoughts you would be better off deadEnglish Text:","",conditions_health.get(7)));
             questions_health.add(new HealthQuestion("OSQ150","Parents ever told had osteoporosis?","",conditions_health.get(8)));
-            //questions_health.add(new HealthQuestion("SLD012","Number of hours usually sleep on weekdays or workdays.","",conditions_health.get(9)));
+            questions_health.add(new HealthQuestion("SLD012","Number of hours usually sleep on weekdays or workdays.","",conditions_health.get(9)));
             questions_health.add(new HealthQuestion("SLQ120","How often feel overly sleepy during day?","",conditions_health.get(9)));
             questions_health.add(new HealthQuestion("MCQ230a","1st cancer - what kind was it?","",conditions_health.get(25)));
 
@@ -260,10 +260,10 @@ public class GraphPipelineService implements Serializable{
                     col("DBQ700"),
                     col("DBQ197"),
                     col("DBQ223A"),
-                    //col("DBD895"),
-                    //col("DBD900"),
-                    //col("DBD905"),
-                    //col("DBD910"),
+                    col("DBD895"),
+                    col("DBD900"),
+                    col("DBD905"),
+                    col("DBD910"),
                     col("DBQ930"),
                     col("DBQ935"),
                     col("WHD080P"),
@@ -271,9 +271,9 @@ public class GraphPipelineService implements Serializable{
                     //col("WHD140"),
 
                     col("AUQ054"),
-                    //col("BPD035"),
-                    //col("DID040"),
-                    //col("DID250"),
+                    col("BPD035"),
+                    col("DID040"),
+                    col("DID250"),
                     col("KIQ005"),
                     col("KIQ480"),
                     col("DPQ010"),
@@ -284,7 +284,7 @@ public class GraphPipelineService implements Serializable{
                     col("DPQ060"),
                     col("DPQ090"),
                     col("OSQ150"),
-                    //col("SLD012"),
+                    col("SLD012"),
                     col("SLQ120"),
                     col("MCQ230a"),
 
