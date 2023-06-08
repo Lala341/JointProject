@@ -56,6 +56,12 @@ public class Person   implements Serializable {
         }
         healthConditions.add(s);
     }
+    public void addBodyMeasures(BodyMeasures s) {
+        if (bodyMeasures == null) {
+            bodyMeasures = new ArrayList<>();
+        }
+        bodyMeasures.add(s);
+    }
     public void addprehealthCondition(HealthCondition s) {
         if (preexistingConditions == null) {
             preexistingConditions = new ArrayList<>();

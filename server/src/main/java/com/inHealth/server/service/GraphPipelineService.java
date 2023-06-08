@@ -55,7 +55,8 @@ public class GraphPipelineService implements Serializable{
     @Autowired
     private SymptomRepository symptomRepository;
 
-
+    @Autowired
+    private BodyMeasuresRepository bodyRepository;
     private final String uri = "hdfs://34.237.242.179:9000";
 
 
@@ -331,6 +332,7 @@ public class GraphPipelineService implements Serializable{
 
 
                     );
+
             String date = (LocalDate.now()).toString();
             String date1 = (LocalDate.now().minusYears(1)).toString();
             select_demo.show(1);
@@ -390,9 +392,8 @@ public class GraphPipelineService implements Serializable{
                         Double weight1 = row.getAs("weight1");
 
 
-                        List<BodyMeasures> bs= new ArrayList<>();
-                        bs.add(new BodyMeasures(height,weight,date));
-                        bs.add(new BodyMeasures(height,weight1,date1));
+                        person.addBodyMeasures(new BodyMeasures(id+date.toString(),height,weight,date));
+                        person.addBodyMeasures(new BodyMeasures(id+date1.toString(),height,weight1,date1));
 
 
 
@@ -450,10 +451,12 @@ public class GraphPipelineService implements Serializable{
 
                         }
 
+
+
+
                         return person;
                     })
                     .collect();
-
 
 
             System.out.println("Before save");

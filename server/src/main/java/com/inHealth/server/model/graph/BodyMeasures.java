@@ -65,7 +65,7 @@ public class BodyMeasures implements Serializable {
         this.person = person;
     }
 
-    public BodyMeasures(Double height, Double weight, String date) {
+    public BodyMeasures(String id, Double height, Double weight, String date) {
         this.height = height;
         this.weight = weight;
         this.date = date;
