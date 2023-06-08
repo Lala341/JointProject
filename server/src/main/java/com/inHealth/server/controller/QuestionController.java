@@ -3,6 +3,7 @@ package com.inHealth.server.controller;
 import com.inHealth.server.dto.DietBehaviorQuestionDTO;
 import com.inHealth.server.dto.HabitQuestionDTO;
 import com.inHealth.server.dto.HealthQuestionDTO;
+import com.inHealth.server.model.graph.Answer;
 import com.inHealth.server.model.graph.DietBehaviorQuestion;
 import com.inHealth.server.model.graph.HabitQuestion;
 import com.inHealth.server.model.graph.HealthQuestion;
@@ -11,9 +12,7 @@ import com.inHealth.server.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,5 +58,11 @@ public class QuestionController {
             dtos.add(dto);
         }
         return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/answers")
+    public ResponseEntity<List<Answer>> saveAnswers(@RequestBody List<Answer> answers) {
+        List<Answer>savedAnswers = answerService.saveAll(answers);
+        return new ResponseEntity<>(savedAnswers, HttpStatus.OK);
     }
 }

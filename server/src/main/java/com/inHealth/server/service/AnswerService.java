@@ -26,4 +26,8 @@ public class AnswerService {
     public List<Answer> findByDietBehaviorQuestion(DietBehaviorQuestion question) {
         return answerRepository.findByDietBehaviorQuestion(question.getId());
     }
+
+    public List<Answer> saveAll(List<Answer> answers) {
+        return answerRepository.saveAll(answers);
+    }
 }
