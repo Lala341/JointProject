@@ -32,9 +32,9 @@ WITH COLLECT(DISTINCT h.id) AS uniqueValues
 MATCH (h:HealthQuestion)
 SET h.OHEHealthQuestion = gds.alpha.ml.oneHotEncoding(uniqueValues, [h.id]);
 MATCH (h:Answer)
-WITH COLLECT(DISTINCT h.answer) AS uniqueValues
+WITH COLLECT(DISTINCT h.answer) AS uniqueValuesA
 MATCH (h:Answer)
-SET h.OHEAnswer = gds.alpha.ml.oneHotEncoding(uniqueValues, [h.answer]);
+SET h.OHEAnswer = gds.alpha.ml.oneHotEncoding(uniqueValuesA, [h.answer]);
 
 CALL gds.graph.project(
   'fullGraph22',
@@ -80,7 +80,7 @@ CALL gds.graph.project(
       age: {defaultValue: 0},
       OHEGender : {defaultValue: [0,0]},
       OHECountry : {defaultValue: [0,0]},
-      OHEdatebody : {defaultValue: [0,0]},
+      OHEdatebody : {defaultValue: [0,0,0]},
       OHEdatephy : {defaultValue: [0]},
       height: {defaultValue: 0.0},
       weight: {defaultValue: 0.0},
@@ -89,10 +89,10 @@ CALL gds.graph.project(
       vigorousMinutes: {defaultValue: 0},
 
 
-      OHEDietQuestion: {defaultValue: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      OHEDietQuestion: {defaultValue: [i IN range(0, 10) | 0]},
       OHEHabitQuestion: {defaultValue: [0,0]},
       OHEHealthQuestion : {defaultValue: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      OHEAnswer: {defaultValue: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+      OHEAnswer: {defaultValue: [i IN range(0,90) | 0]  }
 
 
     }
@@ -108,9 +108,16 @@ CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
 );
 CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
   'pipe14',
-  'gds.betweenness',
+  'beta.closeness',
    {
-    mutateProperty: 'betweenness'
+    mutateProperty: 'closeness'
+  }
+);
+CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
+  'pipe14',
+  'gds.pageRank',
+   {
+    mutateProperty: 'pageRank'
   }
 );
 CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
@@ -122,7 +129,7 @@ CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
     iterations: 2,
     embeddingDensity: 4,
     binarizeFeatures: {dimension: 4, threshold: 32},
-    featureProperties: ['age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEdatephy','OHEdatebody','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer', 'degree','betweenness'],
+    featureProperties: ['age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEdatephy','OHEdatebody','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer'],
     randomSeed: 42
   }
 );
@@ -143,7 +150,7 @@ CALL gds.beta.pipeline.linkPrediction.addLogisticRegression('pipe14', {maxEpochs
 YIELD parameterSpace
 RETURN parameterSpace.RandomForest AS randomForestSpace, parameterSpace.LogisticRegression AS logisticRegressionSpace, parameterSpace.MultilayerPerceptron AS MultilayerPerceptronSpace;
 CALL gds.beta.pipeline.linkPrediction.addFeature('pipe14', 'hadamard', {
-  nodeProperties: ['embedding','age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEdatephy','OHEdatebody','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer', 'degree','betweenness']
+  nodeProperties: ['embedding','age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEdatephy','OHEdatebody','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer', 'degree','closeness','pageRank']
 });
 
 
@@ -153,7 +160,7 @@ CALL gds.beta.pipeline.linkPrediction.train('fullGraph22', {
   metrics: ['AUCPR', 'OUT_OF_BAG_ERROR'],
   sourceNodeLabel: 'Person',
   targetRelationshipType: 'HAS_CONDITION',
-  randomSeed: 12
+  randomSeed: 1
 }) YIELD modelInfo, modelSelectionStats
 RETURN
   modelInfo.bestParameters AS winningModel,

@@ -35,16 +35,11 @@ public class DescriptiveAnalysisService {
                 .getOrCreate();
     }
 
-    public double calculateDistance(String user, String fileName) {
+    public double calculateDistance(String user,JavaRDD<String> dataRDD) {
         SparkSession spark = SparkSession.builder()
                 .appName("Distance Calculation")
                 .master("local[*]")
                 .getOrCreate();
-
-        // Load the data into an RDD
-        JavaRDD<String> dataRDD = spark.read()
-                .textFile("hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+fileName)
-                .toJavaRDD();
 
         // Calculate the distance using map transformation
         JavaRDD<Double> distancesRDD = dataRDD.mapPartitions(lines -> {
@@ -77,16 +72,13 @@ public class DescriptiveAnalysisService {
         return totalDistance;
     }
 
-    public int calculateTotalSteps(String user, String fileName, double threshold, int windowSize, int stepSize) {
+    public int calculateTotalSteps(String user,  JavaRDD<String> dataRDD, double threshold, int windowSize, int stepSize) {
         SparkSession spark = SparkSession.builder()
                 .appName("Step Counting")
                 .master("local[*]")
                 .getOrCreate();
 
-        // Load the data into an RDD
-        JavaRDD<String> dataRDD = spark.read()
-                .textFile("hdfs://34.237.242.179:9000/sensors-data/"+user+"/"+fileName)
-                .toJavaRDD();
+
 
         // Calculate the total steps using map transformation with windowing and averaging
         JavaRDD<Integer> stepsRDD = dataRDD.mapPartitions(lines -> {

@@ -7,6 +7,7 @@ import com.inHealth.server.repository.BiometricRepository;
 import com.inHealth.server.repository.DistanceKPIRepository;
 import com.inHealth.server.repository.StatisticsRepository;
 import com.inHealth.server.repository.StepsKPIRepository;
+import org.apache.spark.api.java.JavaRDD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,22 +45,25 @@ public class BiometricService {
         String user = name.split("_")[min(1,name.split("_").length)];
         String fileName = name+".txt";
         // Calculate total distance
-        biometricRepository.uploadToHdfs(content, user, fileName);
+        // Load the data into an RDD
+
+        JavaRDD<String> dataRDD = biometricRepository.uploadToHdfs(content, user, fileName);
         LocalDateTime date=LocalDateTime.now();
         // Calculate statistics
-        List<Statistics> statisticsList = statisticsService.calculateStatistics(user, fileName);
+        List<Statistics> statisticsList = statisticsService.calculateStatistics(user, dataRDD);
         // Store statistics in MongoDB
         for(Statistics statistic: statisticsList ) {
             statisticsRepository.save(statistic);
             date=statistic.getDate();
         }
 
-        double totalDistance = descriptiveAnalysisService.calculateDistance(user, fileName);
+
+        double totalDistance = descriptiveAnalysisService.calculateDistance(user, dataRDD);
         // Store the calculated KPI in MongoDB
         DistanceKPI distanceKPI = new DistanceKPI(null, user, date, totalDistance);
         distanceKPIRepository.save(distanceKPI);
         // Calculate total steps
-        int totalSteps = descriptiveAnalysisService.calculateTotalSteps(user, fileName, 1.5, 50, 25);
+        int totalSteps = descriptiveAnalysisService.calculateTotalSteps(user, dataRDD, 1.5, 50, 25);
         // Store the calculated KPI in MongoDB
         StepsKPI stepsKPI = new StepsKPI(null, user, date, totalSteps);
         stepsKPIRepository.save(stepsKPI);

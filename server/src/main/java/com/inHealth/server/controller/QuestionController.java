@@ -71,6 +71,11 @@ public class QuestionController {
         for(Answer answer : answers) {
             person.addAnswer(answer);
         }
+        System.out.println(personId);
+        System.out.println(person);
+        System.out.println(person.getId());
+        person.setDemographics(null);
+        person.setBodyMeasures(null);
         personService.save(person);
         return new ResponseEntity<>(HttpStatus.OK);
     }
