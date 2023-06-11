@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { Linking, Text, StyleSheet, View, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
@@ -8,7 +8,10 @@ import Menu from "../components/Menu";
 
 const DiseaseII = () => {
   const navigation = useNavigation();
-
+  const openLink = (url: String) => {
+    Linking.openURL(url)
+      .catch(error => console.log('Error opening link:', error));
+  };
   return (
     <View style={styles.diseaseIi}>
       <View style={styles.frameParent}>
@@ -39,7 +42,7 @@ const DiseaseII = () => {
                   styles.exercises40minsTypo,
                 ]}
               >
-                Diet recommendations basedon your profile.
+                Diet recommendations based on your profile.
               </Text>
             </View>
             <Image
@@ -47,12 +50,13 @@ const DiseaseII = () => {
               contentFit="cover"
               source={require("../assets/ellipse.png")}
             />
-            <Pressable style={[styles.buttonViewmore, styles.buttonLayout]}>
+            <Pressable style={[styles.buttonViewmore, styles.buttonLayout]}
+            onPress={()=>{openLink("https://www.nhs.uk/live-well/eat-well/how-to-eat-a-balanced-diet/eating-a-balanced-diet/");}}>
               <View style={[styles.buttonBg, styles.buttonLayout]}>
                 <View style={[styles.buttonBgChild, styles.buttonLayout]} />
               </View>
               <View style={styles.buttonText}>
-                <Text style={[styles.viewMore, styles.dietTypo]}>
+                <Text style={[styles.viewMore, styles.dietTypo]} >
                   View more
                 </Text>
               </View>
@@ -76,7 +80,7 @@ const DiseaseII = () => {
               <Text
                 style={[styles.exercises40mins, styles.exercises40minsTypo]}
               >
-                12 Exercises | 40mins
+                12 Exercises | 40 mins
               </Text>
             </View>
             <Image
@@ -84,7 +88,8 @@ const DiseaseII = () => {
               contentFit="cover"
               source={require("../assets/ellipse.png")}
             />
-            <Pressable style={[styles.buttonViewmore, styles.buttonLayout]}>
+            <Pressable style={[styles.buttonViewmore, styles.buttonLayout]}
+            onPress={()=>{openLink("https://steelsupplements.com/blogs/steel-blog/the-definitive-home-workout-plan-for-teenagers");}}>
               <View style={[styles.buttonBg, styles.buttonLayout]}>
                 <View style={[styles.buttonBgChild, styles.buttonLayout]} />
               </View>

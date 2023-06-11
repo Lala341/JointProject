@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
 import Constants from 'expo-constants';
+import Menu from '../components/Menu';
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const { width, height } = Dimensions.get('window');
 
 const QuestionScreen: React.FC = () => {
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const navigation = useNavigation();
+  const [idu, setIdU] = useState(false);  
+  const [id, setId] = useState(Constants.installationId);
+  useEffect(() => {
+    if(!idu){
+      setIdU(true);
+    AsyncStorage.getItem('ID')
+    .then(value => setId(value))
+    .catch(error => console.log('Error getting ID from local storage:', error));
+    }
+  }, []);
 
   useEffect(() => {
     fetchQuestions();
@@ -14,7 +29,7 @@ const QuestionScreen: React.FC = () => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await fetch('http://192.168.174.23:8090/question/health');
+      const response = await fetch('http://192.168.0.22:8090/question/health');
       const data = await response.json();
       setQuestions(data);
     } catch (error) {
@@ -23,14 +38,21 @@ const QuestionScreen: React.FC = () => {
   };
 
   const handleAnswerSelection = (answerId: string, answer: string, text: string) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('T')[0];
+    console.log(formattedDate);
+
     const updatedAnswers = selectedAnswers.filter((answer) => answer.id !== answerId);
-    updatedAnswers.push({ id: answerId, answer: answer, date: new Date().toISOString(), text: text });
+    updatedAnswers.push({ id: answerId, answer: answer, date: formattedDate, text: text });
     setSelectedAnswers(updatedAnswers);
   };
 
   const handleSaveAnswers = async () => {
     try {
-      const response = await fetch('http://192.168.174.23:8090/question/answers?person=' + Constants.installationId, {
+      console.log(id);
+      console.log('http://192.168.0.22:8090/question/answers?person=' + id);
+
+      const response = await fetch('http://192.168.0.22:8090/question/answers?person=' + id, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,6 +64,7 @@ const QuestionScreen: React.FC = () => {
         Alert.alert("Survey Sent", "Your survey has been successfully sent!");
         // Clear selected answers
         setSelectedAnswers([]);
+        navigation.navigate("Home");
       });
 
       console.log(Constants.installationId)
@@ -55,6 +78,8 @@ const QuestionScreen: React.FC = () => {
   };
 
   return (
+   
+ 
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Health Survey</Text>
       {questions.map((question: any) => (
@@ -80,16 +105,29 @@ const QuestionScreen: React.FC = () => {
         <Text style={styles.saveButtonText}>Save Answers</Text>
       </TouchableOpacity>
     </ScrollView>
+
+    
   );
 };
 
 const styles = StyleSheet.create({
+  profile: {
+    flex: 1,
+    height: 812,
+    width: "100%",
+  },
+  notification1Parent: {
+    top: 700,
+    position: "absolute",
+
+  },
   container: {
     flexGrow: 1,
     padding: 16,
     minHeight: height,
   },
   title: {
+    marginTop: 40,
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 16,

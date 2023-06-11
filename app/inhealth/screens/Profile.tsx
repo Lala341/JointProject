@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,11 +6,19 @@ import { Toggle as RNKToggle } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, FontFamily, FontSize } from "../GlobalStyles";
 import Menu from "../components/Menu";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Profile = () => {
   const [togglechecked, setTogglechecked] = useState(undefined);
-  const navigation = useNavigation();
+  const [name, setName] = useState("Laura");
 
+  const navigation = useNavigation();
+  useEffect(() => {
+    AsyncStorage.getItem('name')
+    .then(value => setName(value))
+    .catch(error => console.log('Error getting ID from local storage:', error));
+  }, []);
   return (
     <View style={styles.profile}>
     
@@ -49,7 +57,7 @@ const Profile = () => {
             </View>
           </View>
           <View style={[styles.name, styles.nameLayout]}>
-            <Text style={[styles.laura, styles.lauraPosition]}>Laura</Text>
+            <Text style={[styles.laura, styles.lauraPosition]}>{name}</Text>
           </View>
           <Image
             style={[styles.latestPicIcon, styles.frameParentPosition]}

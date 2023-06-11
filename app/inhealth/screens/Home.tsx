@@ -21,6 +21,8 @@ const Home  = (  ) => {
   const navigation = useNavigation();
   const route = useRoute<RootRouteProps<'Home'>>();
   const [isWriting, setIsWriting] = React.useState(false);
+  const [firstSend, setFirstSend] = React.useState(false);
+
   const [activities, setActivities] = useState();
   const today = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
   const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
@@ -28,7 +30,12 @@ const Home  = (  ) => {
 
   useEffect(() => {
     // Fetch the number of steps from the REST endpoint
-    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+    if(!firstSend){
+      sendFileToServer();
+      setFirstSend(true);
+
+    }
+    fetch('http://192.168.0.22:8090/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
       .then(response => response.json())
       .then(data => {
 
@@ -106,7 +113,7 @@ const Home  = (  ) => {
         },
         body: formData
       };
-      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/', options);
+      const response = await fetch('http://192.168.0.22:8090/', options);
 
       if (response.ok) {
         console.log('File sent to server');
