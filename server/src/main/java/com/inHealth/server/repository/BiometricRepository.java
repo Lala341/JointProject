@@ -15,6 +15,7 @@ import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.shaded.org.apache.avro.SchemaBuilder;
+import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -33,7 +34,7 @@ import static org.apache.spark.sql.types.DataTypes.DoubleType;
             private final String uri = "hdfs://34.237.242.179:9000";
             private final String hdfsDir = "/sensors-data";
 
-            public void uploadToHdfs(String content, String user, String fileName) throws IOException {
+            public JavaRDD<String>  uploadToHdfs(String content, String user, String fileName) throws IOException {
                 Configuration conf = new Configuration();
                 System.setProperty("HADOOP_USER_NAME", "root");
                 conf.set("fs.defaultFS", uri);
@@ -62,6 +63,17 @@ import static org.apache.spark.sql.types.DataTypes.DoubleType;
 
                 writeParquetToHdfs(content,  user,  fileName,  hdfsDir,  conf);
                 System.out.println("Final file");
+
+                SparkSession spark = SparkSession.builder()
+                        .appName("Distance Calculation")
+                        .master("local[*]")
+                        .getOrCreate();
+                // Load all files from the sensor-data directory into an RDD
+                JavaRDD<String> dataRDD = spark.read()
+                        .textFile("hdfs://34.237.242.179:9000/sensors-data/" + user + "/" + fileName)
+                        .toJavaRDD();
+
+                return dataRDD;
 
             }
 

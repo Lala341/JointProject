@@ -128,7 +128,7 @@ public class GraphPipelineService implements Serializable{
             conditions_health.add(new HealthCondition("HEQ010","Hepatitis B"));
             conditions_health.add(new HealthCondition("HEQ030","Hepatitis C"));
             conditions_health.add(new HealthCondition("KIQ022","Kidney Conditions - Urology Issue"));
-            conditions_health.add(new HealthCondition("DPQ020","Mental Health - Depression Screener Issue"));
+            conditions_health.add(new HealthCondition("DPQ090","Mental Health - Depression Screener Issue"));
             conditions_health.add(new HealthCondition("OSQ060","Osteoporosis"));
             conditions_health.add(new HealthCondition("SLQ050","Sleep Disorders"));
             conditions_health.add(new HealthCondition("MCQ010","Asthma"));
@@ -245,6 +245,9 @@ public class GraphPipelineService implements Serializable{
                     col("RIDAGEYR").as("age"),
                     col("RIDRETH3").as("race"),
                     col("DMDBORN4").as("country"),
+
+                    lit(0.0).as("NDM"),
+                    lit(0.0).as("NDA"),
 
                     col("PAD680").as("sedentaryMinutes"),
                     col("PAD675").as("moderateMinutes"),
@@ -439,7 +442,7 @@ public class GraphPipelineService implements Serializable{
                             String idt=symptoms.get(i).getId();
                             Double tempr=row.getAs(idt);
 
-                            if(tempr!=null && tempr>0){
+                            if(tempr!=null && tempr==1.0){
                                 ExperiencesSymptom sympto=new ExperiencesSymptom(symptoms.get(i),date);
                                 person.addSymptom(sympto);
                             }
@@ -450,7 +453,7 @@ public class GraphPipelineService implements Serializable{
                             String idt=conditions_health.get(i).getId();
                             Double tempr=row.getAs(idt);
 
-                            if(tempr!=null && tempr>0){
+                            if(tempr!=null && tempr==1.0){
                                  person.addhealthCondition(conditions_health.get(i));
                             }
 
@@ -465,7 +468,8 @@ public class GraphPipelineService implements Serializable{
 
 
             System.out.println("Before save");
-            personRepository.saveAll(persons.subList(0,10));
+            System.out.println(persons.size());
+            personRepository.saveAll(persons.subList(0,700));
             System.out.println("After save");
 
             spark.stop();
@@ -477,6 +481,11 @@ public class GraphPipelineService implements Serializable{
         }
     }
 
+    public static List<Person> pickNRandom(List<Person> lst, int n) {
+        List<Person> copy = new ArrayList<Person>(lst);
+        Collections.shuffle(copy);
+        return n > copy.size() ? copy.subList(0, copy.size()) : copy.subList(0, n);
+    }
 
 
     public void dowloadFilestoHdfs(){
