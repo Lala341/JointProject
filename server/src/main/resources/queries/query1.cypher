@@ -80,8 +80,6 @@ CALL gds.graph.project(
       age: {defaultValue: 0},
       OHEGender : {defaultValue: [0,0]},
       OHECountry : {defaultValue: [0,0]},
-      OHEdatebody : {defaultValue: [0,0,0]},
-      OHEdatephy : {defaultValue: [0]},
       height: {defaultValue: 0.0},
       weight: {defaultValue: 0.0},
       sedentaryMinutes: {defaultValue: 0},
@@ -129,7 +127,7 @@ CALL gds.beta.pipeline.linkPrediction.addNodeProperty(
     iterations: 2,
     embeddingDensity: 4,
     binarizeFeatures: {dimension: 4, threshold: 32},
-    featureProperties: ['age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEdatephy','OHEdatebody','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer'],
+    featureProperties: ['age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer'],
     randomSeed: 42
   }
 );
@@ -150,7 +148,7 @@ CALL gds.beta.pipeline.linkPrediction.addLogisticRegression('pipe14', {maxEpochs
 YIELD parameterSpace
 RETURN parameterSpace.RandomForest AS randomForestSpace, parameterSpace.LogisticRegression AS logisticRegressionSpace, parameterSpace.MultilayerPerceptron AS MultilayerPerceptronSpace;
 CALL gds.beta.pipeline.linkPrediction.addFeature('pipe14', 'hadamard', {
-  nodeProperties: ['embedding','age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEdatephy','OHEdatebody','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer', 'degree','closeness','pageRank']
+  nodeProperties: ['embedding','age','height', 'weight','sedentaryMinutes','moderateMinutes','vigorousMinutes','OHECondition','OHECountry','OHEGender','OHEDietQuestion','OHEHabitQuestion','OHEHealthQuestion','OHEAnswer', 'degree','closeness','pageRank']
 });
 
 

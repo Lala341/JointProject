@@ -1,0 +1,435 @@
+[
+  {
+    $addFields: {
+      age: {
+        $toInt: {
+          $divide: [
+            {
+              $subtract: [
+                ISODate(
+                  "2023-05-29T02:45:48.971Z"
+                ),
+                {
+                  $toDate: "$birthday",
+                },
+              ],
+            },
+            31536000000,
+          ],
+        },
+      },
+    },
+  },
+  {
+    $addFields: {
+      userId: {
+        $toString: "$_id",
+      },
+    },
+  },
+  {
+    $lookup: {
+      from: "statistics",
+      localField: "userId",
+      foreignField: "userId",
+      as: "result",
+    },
+  },
+  {
+    $unwind: {
+      path: "$result",
+      includeArrayIndex: "index",
+      preserveNullAndEmptyArrays: false,
+    },
+  },
+  {
+    $addFields:
+      /**
+       * newField: The new field name.
+       * expression: The new field expression.
+       */
+      {
+        result: {
+          $mergeObjects: [
+            "$result",
+            {
+              _id: "$_id",
+              gender: "$gender",
+              heightCm: "$heightCm",
+              weightKg: "$weightKg",
+              country: "$country",
+              birthday: "$birthday",
+              diseases: "$diseases",
+              name: "$name",
+              _class: "$_class",
+              age: "$age",
+              userId: "$userId",
+            },
+          ],
+        },
+      },
+  },
+  {
+    $replaceRoot: {
+      newRoot: "$result",
+    },
+  },
+  {
+    $lookup:
+      /**
+       * from: The target collection.
+       * localField: The local join field.
+       * foreignField: The target join field.
+       * as: The name for the results.
+       * pipeline: Optional pipeline to run on the foreign collection.
+       * let: Optional variables to use in the pipeline field stages.
+       */
+      {
+        from: "stepskpi",
+        let: {
+          userId: "$userId",
+          date: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$date",
+            },
+          },
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$$userId", "$user"],
+                  },
+                  {
+                    $eq: [
+                      "$$date",
+                      {
+                        $dateToString: {
+                          format: "%Y-%m-%d",
+                          date: "$date",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $group: {
+              _id: {
+                user: "$user",
+                date: {
+                  $dateToString: {
+                    format: "%Y-%m-%d",
+                    date: "$date",
+                  },
+                },
+              },
+              totalSteps: {
+                $sum: "$steps",
+              },
+            },
+          },
+        ],
+        as: "stepsKPI",
+      },
+  },
+  {
+    $lookup:
+      /**
+       * from: The target collection.
+       * localField: The local join field.
+       * foreignField: The target join field.
+       * as: The name for the results.
+       * pipeline: Optional pipeline to run on the foreign collection.
+       * let: Optional variables to use in the pipeline field stages.
+       */
+      {
+        from: "distancekpi",
+        let: {
+          userId: "$userId",
+          date: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$date",
+            },
+          },
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$$userId", "$user"],
+                  },
+                  {
+                    $eq: [
+                      "$$date",
+                      {
+                        $dateToString: {
+                          format: "%Y-%m-%d",
+                          date: "$date",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $group: {
+              _id: {
+                user: "$user",
+                date: {
+                  $dateToString: {
+                    format: "%Y-%m-%d",
+                    date: "$date",
+                  },
+                },
+              },
+              totalDistance: {
+                $sum: "$distance",
+              },
+            },
+          },
+        ],
+        as: "distanceKPI",
+      },
+  },
+  {
+    $unwind:
+      /**
+       * path: Path to the array field.
+       * includeArrayIndex: Optional name for index.
+       * preserveNullAndEmptyArrays: Optional
+       *   toggle to unwind null and empty values.
+       */
+      {
+        path: "$stepsKPI",
+        preserveNullAndEmptyArrays: true,
+      },
+  },
+  {
+    $unwind:
+      /**
+       * path: Path to the array field.
+       * includeArrayIndex: Optional name for index.
+       * preserveNullAndEmptyArrays: Optional
+       *   toggle to unwind null and empty values.
+       */
+      {
+        path: "$distanceKPI",
+        preserveNullAndEmptyArrays: true,
+      },
+  },
+  {
+    $group:
+      /**
+       * _id: The id of the group.
+       * fieldN: The first field name.
+       */
+      {
+        _id: {
+          user: "$userId",
+          date: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: "$date",
+            },
+          },
+        },
+        totalSteps: {
+          $sum: {
+            $add: ["$stepsKPI.totalSteps"],
+          },
+        },
+        avgDistance: {
+          $sum: {
+            $add: ["$distanceKPI.totalDistance"],
+          },
+        },
+        avgWalkingActivityTime: {
+          $sum: {
+            $cond: [
+              {
+                $eq: [
+                  "$predictActivityM2",
+                  "WALKING",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        avgWalkingUpstairsTime: {
+          $sum: {
+            $cond: [
+              {
+                $eq: [
+                  "$predictActivityM2",
+                  "WALKING_UPSTAIRS",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        avgWalkingDownstairsTime: {
+          $sum: {
+            $cond: [
+              {
+                $eq: [
+                  "$predictActivityM2",
+                  "WALKING_DOWNSTAIRS",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        avgSittingTime: {
+          $sum: {
+            $cond: [
+              {
+                $eq: [
+                  "$predictActivityM2",
+                  "SITTING",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        avgStandingTime: {
+          $sum: {
+            $cond: [
+              {
+                $eq: [
+                  "$predictActivityM2",
+                  "STANDING",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+        avgLayingTime: {
+          $sum: {
+            $cond: [
+              {
+                $eq: [
+                  "$predictActivityM2",
+                  "LAYING",
+                ],
+              },
+              1,
+              0,
+            ],
+          },
+        },
+      },
+  },
+  {
+    $project:
+      /**
+       * specifications: The fields to
+       *   include or exclude.
+       */
+      {
+        user: "$_id.user",
+        date: "$_id.date",
+        avgActivityTime: 1,
+        avgWalkingUpstairsTime: 1,
+        avgWalkingDownstairsTime: 1,
+        avgSittingTime: 1,
+        avgStandingTime: 1,
+        avgLayingTime: 1,
+        avgDistance: 1,
+        totalSteps: 1,
+        totalActiveMinutes: {
+          $sum: {
+            $add: [
+              "$avgWalkingActivityTime",
+              "$avgWalkingUpstairsTime",
+              "$avgWalkingDownstairsTime",
+            ],
+          },
+        },
+        totalInactiveMinutes: {
+          $sum: {
+            $add: [
+              "$avgSittingTime",
+              "$avgStandingTime",
+              "$avgLayingTime",
+            ],
+          },
+        },
+        totalMinutes: {
+          $sum: {
+            $add: [
+              "$avgWalkingActivityTime",
+              "$avgWalkingUpstairsTime",
+              "$avgWalkingDownstairsTime",
+              "$avgSittingTime",
+              "$avgStandingTime",
+              "$avgLayingTime",
+            ],
+          },
+        },
+      },
+  },
+  {
+    $group:
+      /**
+       * _id: The id of the group.
+       * fieldN: The first field name.
+       */
+      {
+        _id: "$date",
+        date: {
+          $first: "$date",
+        },
+        avgDailySteps: {
+          $avg: "$totalSteps",
+        },
+        avgDailyDistance: {
+          $avg: "$avgDistance",
+        },
+        avgWalkingUpstairsTimeMinutes: {
+          $avg: "$avgWalkingUpstairsTime",
+        },
+        avgWalkingDownstairsTimeMinutes: {
+          $avg: "$avgWalkingDownstairsTime",
+        },
+        avgSittingTimeMinutes: {
+          $avg: "$avgSittingTime",
+        },
+        avgStandingTimeMinutes: {
+          $avg: "$avgStandingTime",
+        },
+        avgLayingTimeMinutes: {
+          $avg: "$avgLayingTime",
+        },
+        avgDailyActiveMinutes: {
+          $avg: "$totalActiveMinutes",
+        },
+        avgDailyInactiveMinutes: {
+          $avg: "$totalInactiveMinutes",
+        },
+        avgDailySpentTimeApp: {
+          $avg: "$totalMinutes",
+        },
+      },
+  },
+]

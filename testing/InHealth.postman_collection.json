@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "0f99ad7f-2d45-4d8a-a9d8-c782a2d002ad",
+		"name": "InHealth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7427328"
+	},
+	"item": [
+		{
+			"name": "http://192.168.0.22:8090/survey",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Test\",\n    \"description\":\"test1\",\n    \"date\": \"2023-05-27\",\n    \"questions\":[\n        {\n            \"text\": \"Mood\",\n            \"type\": \"multiple-choice\",\n            \"options\":[]\n        },\n        {\n            \"text\": \"Weight\",\n            \"type\": \"multiple-choice\",\n            \"options\":[]\n        },\n        {\n            \"text\": \"How would you rate your stress level today?\",\n            \"type\": \"number\",\n            \"options\":[]\n        },\n        {\n            \"text\": \"Did you have trouble sleeping last night?\",\n            \"type\": \"boolean\",\n            \"options\": []\n        },\n        {\n            \"text\": \"Did you consume any sugary or high-fat foods or drinks?\",\n            \"type\": \"boolean\",\n            \"options\": []\n        },\n        {\n            \"text\": \"Did you consume enough fruits and vegetables?\",\n            \"type\": \"boolean\",\n            \"options\": []\n        },\n        {\n            \"text\": \"Did you engage in any activities that helped you relax or reduce stress?\",\n            \"type\": \"boolean\",\n            \"options\": []\n        },\n        {\n            \"text\": \"Have you noticed any changes in your appetite or dietary habits recently?\",\n            \"type\": \"boolean\",\n            \"options\": []\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.0.22:8090/survey",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"22"
+					],
+					"port": "8090",
+					"path": [
+						"survey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://192.168.0.22:8090/survey/daily",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.0.22:8090/survey/daily",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"22"
+					],
+					"port": "8090",
+					"path": [
+						"survey",
+						"daily"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
