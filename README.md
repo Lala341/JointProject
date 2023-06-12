@@ -2,33 +2,57 @@
 
 # InHealth
 
-## Architecture
+InHealth is a health and wellness app that utilizes activity tracking and sensor data from users' phones to predict diseases and identify health risks. This approach provides personalized insights into users' health without relying on costly wearable devices. The app offers tailored recommendations to enhance overall well-being, addressing lifestyle-related diseases like obesity, diabetes, and sleep disorders. InHealth empowers users to make informed lifestyle choices and prioritize their health and wellness.
 
-### Data Lake
+## Instructions of Execution
 
-- Use App (React Native) to recolect information of sensors, it create a file and send to the server.
-- Server API. This server receive the information of the users and sent to Apache Hadoop.
-- HDFS- Hadoop. Allow to storage the information.
+### Code Repository
 
+Code Repository: [https://github.com/Lala341/JointProject](https://github.com/Lala341/JointProject)
 
-## Repository Structure
+### Folder Structure
 
-app - Code of the app in React Native to recolect information of sensors, it create a file and send to the server.
+```
+app/                  # Contains the code of the application in react native
+dashboards/           # Contains the tableau project for the deployed dashboards
+hdfs/docker-hbase/    # Contains the docker compose for the execution of the architecture
+server/               # Contains the server in Java, in charge of all processes such as real-time analysis, prediction of diseases in graphs, among others, it also contains the producers and consumers of kafka, as well as the connection to mongodb and neo4j
+testing/              # Folder that contains some collections to test on the server endpoints
+```
 
-hdfs - Files of docker about the configuration and deploy of the architecture.
+### Execution of Architecture (Services)
 
-server - Code of the JAVA Server, have the data collectors of the external data sources and the 
+1. Install Docker Compose according to your operating system. Refer to [Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
+2. Open the console and navigate to the `hdfs/docker-hbase` folder.
+3. Run the following command:
+   ```
+   docker-compose -f docker-compose-standalone.yml up -d
+   ```
+4. Verify that all Docker Compose services are active.
 
+### Execution of Main Server (Java)
 
-## Use Instructions
+To execute and test the Java server:
 
-To run the application code, you can follow these steps: https://reactnative.dev/docs/environment-setup
-( npx install, npx start expo)
+1. Make sure you have Java JDK 11 installed. If you are using IntelliJ IDEA, you can download it directly into the application.
+2. Open the project located in the `server` folder.
+3. Install the dependencies specified in the `pom.xml` file.
+4. Compile and run the server normally. You can follow the configuration in the `ServerApplication` class, which is a Java project that uses Spring Boot.
+5. Test the service. (In the next module, although optional, there is a Postman collection for some methods and a notebook that generates files to simulate the load in real time)
 
-For the deployment and execution of the architecture, a version of docker compose was used for each container, it starts from the version of this repository https://github.com/big-data-europe/docker-hbase and the docker compose is edited for specific uses in the InHealth infrastructure. For its execution it is necessary to have docker installed, execute the following commands:
+### Execution of Tests (Optional)
 
-cd hdfs/docker-hbase
-docker-compose -f docker-compose-standalone.yml up -d
+The tests are located in the `testing` folder. There is a Postman collection that can be used to test some methods, or you can also use the `generateDataDB` notebook, which is used to create new users, polls, and upload files to the server.
+
+### Execution of Dashboards (Optional)
+
+To open the dashboards, follow these steps:
+
+1. Ensure you have Tableau Desktop installed on your computer.
+2. Install the driver for MongoDB Atlas. Refer to the [MongoDB documentation](https://www.mongodb.com/docs/atlas/data-federation/query/sql/tableau/connect/) for instructions. (You only need to follow the steps in the "Download the JDBC Driver and Tableau Connector component" section)
+3. Import the project from the Tableau file located in the `dashboards` folder.
+4. Enter the password for the data source:
+   Password: `pvZ6I6vLHORulZi5`
 
 
 # SDM
@@ -41,20 +65,6 @@ https://www.sciencedirect.com/science/article/abs/pii/S1386505622001484
 file:///Users/lauraforerocamacho/Downloads/healthcare-11-00710-v2.pdf
 https://paperswithcode.com/paper/unsupervised-pre-training-on-patient
 https://arxiv.org/pdf/2207.10603.pdf
-
-
-Important
-
-https://www.medrxiv.org/content/10.1101/2021.11.25.21266465v1.full.pdf
-https://sci-hub.se/10.1016/j.eswa.2019.05.048
-
-
-Data
-https://www.dhsprogram.com/publications/publication-DHSQ8-DHS-Questionnaires-and-Manuals.cfm
-https://ec.europa.eu/eurostat/web/microdata/european-health-interview-survey
-
-
-https://www.ohdsi.org/data-standardization/
 
 
 
