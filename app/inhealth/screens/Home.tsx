@@ -9,6 +9,7 @@ import Constants from 'expo-constants';
 import * as FileSystem from 'expo-file-system';
 import { useEffect, useState } from "react";
 import dayjs from 'dayjs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type RootStackParamList = {
   Home: { fileUri: string , data: string};
@@ -26,7 +27,13 @@ const Home  = (  ) => {
   const [activities, setActivities] = useState();
   const today = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
   const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
+  const [name, setName] = useState("Laura");
 
+  useEffect(() => {
+    AsyncStorage.getItem('name')
+    .then(value => setName(value))
+    .catch(error => console.log('Error getting ID from local storage:', error));
+  }, []);
 
   useEffect(() => {
     // Fetch the number of steps from the REST endpoint
