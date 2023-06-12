@@ -21,7 +21,7 @@ const Statistics = () => {
 
   useEffect(() => {
     // Fetch the number of steps from the REST endpoint
-    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+    fetch('http://192.168.0.22:8090/analytics/activity?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
       .then(response => response.json())
       .then(data => {
 
@@ -56,7 +56,7 @@ const Statistics = () => {
 
   useEffect(() => {
     // Fetch the number of steps from the REST endpoint
-    fetch('https://7de6-81-184-112-106.ngrok-free.app/analytics/steps/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
+    fetch('http://192.168.0.22:8090/analytics/steps/sum?user=' + Constants.installationId + '&startDate=' + today + '&endDate=' + tomorrow)
       .then(response => response.json())
       .then(data => {
         console.log(Constants.installationId)

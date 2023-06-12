@@ -1,14 +1,138 @@
-import * as React from "react";
+import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet, View, Pressable } from "react-native";
 import { Image } from "expo-image";
 import Banner from "../components/Banner";
 import Menu from "../components/Menu";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, FontFamily, FontSize } from "../GlobalStyles";
+import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Double } from 'react-native/Libraries/Types/CodegenTypes';
 
 const Disease = () => {
   const navigation = useNavigation();
+  const [idu, setIdU] = useState(false);  
+  const [id, setId] = useState(Constants.installationId);
+  const [predictions, setPredictions] = useState([]);
 
+
+  useEffect(() => {
+    if(!idu){
+      setIdU(true);
+    AsyncStorage.getItem('ID')
+    .then(value => setId(value))
+    .catch(error => console.log('Error getting ID from local storage:', error));
+    }
+  }, []);
+  useEffect(() => {
+    fetchPredictions();
+  }, []);
+
+  const fetchPredictions = async () => {
+    try {
+      const response = await fetch('http://192.168.0.22:8090/graph/getPrediction?person=' + id);
+      const data = await response.json();
+      setPredictions(data);
+    } catch (error) {
+      console.log('Error fetching predictions:', error);
+    }
+  };
+  const getModule = ( txtt: String, prob : Double)=>{
+    var txt= txtt.replaceAll("\"", "");
+    if(prob>0.7){
+
+      return (<Pressable key={txt}
+        style={[ styles.groupChildLayout,  styles.data1]}
+        onPress={() => navigation.navigate("DiseaseII")}
+      >
+        
+          <View>
+          <View
+          style={[styles.ic24Heart1Parent, styles.ic24ParentPosition]}
+        >
+          <Image
+            style={styles.ic24Bolt1Icon}
+            contentFit="cover"
+            source={require("../assets/ic24heart-1.png")}
+          /><Text style={[styles.text, styles.textTypo]}>{txt}</Text>
+              </View>
+          <Text style={[styles.text, styles.textTypo]}>HIGH</Text>
+          <Text style={[styles.text, styles.textTypo2]}>{prob.toFixed(3)}</Text>
+      
+        </View>
+      
+      </Pressable>);
+
+    }else if (prob>0.4){
+      return (<Pressable key={txt}
+        style={[ styles.groupChildLayout,  styles.data2]}
+        onPress={() => navigation.navigate("DiseaseII")}
+      >
+       <View>
+          <View
+          style={[styles.ic24Heart1Parent, styles.ic24ParentPosition]}
+        >
+          <Image
+            style={styles.ic24Bolt1Icon}
+            contentFit="cover"
+            source={require("../assets/ic24heart-1.png")}
+          /><Text style={[styles.text, styles.textTypo]}>{txt}</Text>
+              </View>
+          <Text style={[styles.text, styles.textTypo]}>MODERATE</Text>
+          <Text style={[styles.text, styles.textTypo2]}>{prob.toFixed(3)}</Text>
+      
+        </View>
+        
+      </Pressable>);
+
+    }
+    return (<Pressable key={txt}
+      style={[styles.groupChildLayout,  styles.data3]}
+      onPress={() => navigation.navigate("DiseaseII")}
+    >
+        <View>
+
+          <View
+          style={[styles.ic24Heart1Parent, styles.ic24ParentPosition]}
+        >
+          <Image
+            style={styles.ic24Bolt1Icon}
+            contentFit="cover"
+            source={require("../assets/ic24heart-1.png")}
+          /><Text style={[styles.text, styles.textTypo]}>{txt}</Text>
+              </View>
+          <Text style={[styles.text, styles.textTypo]}>LOW</Text>
+          <Text style={[styles.text, styles.textTypo2]}>{prob.toFixed(3)}</Text>
+      
+        </View>
+    </Pressable>);
+
+  }
+  const getModuleBase = ( )=>{
+    
+      return (<Pressable 
+        style={[ styles.groupChildLayout,  styles.data2]}
+        onPress={() => navigation.navigate("DiseaseII")}
+      >
+       <View>
+          <View
+          style={[styles.ic24Heart1Parent, styles.ic24ParentPosition]}
+        >
+          <Image
+            style={styles.ic24Bolt1Icon}
+            contentFit="cover"
+            source={require("../assets/ic24heart-1.png")}
+          /><Text style={[styles.text, styles.textTypo]}>No risk factors found</Text>
+              </View>
+          <Text style={[styles.text, styles.textTypo2]}>Remember to answer the daily surveys.</Text>
+      
+        </View>
+        
+      </Pressable>);
+
+    
+
+  }
   return (
     <View style={styles.disease}>
       <View style={styles.frameParent}>
@@ -22,73 +146,22 @@ const Disease = () => {
         <View style={styles.notification1Parent}>
          <Menu/>
         </View>
-          <Pressable
-            style={[styles.rectangleParent, styles.groupChildLayout]}
-            onPress={() => navigation.navigate("DiseaseII")}
-          >
-            <View style={[styles.groupChild, styles.groupLayout1]} />
-            <View style={styles.ic24Bolt1Parent}>
-              <Image
-                style={styles.ic24Bolt1Icon}
-                contentFit="cover"
-                source={require("../assets/ic24bolt-1.png")}
-              />
-              <Text style={[styles.inactivity, styles.walkingTypo]}>
-                Inactivity
-              </Text>
-            </View>
-            <View style={[styles.parent, styles.parentPosition]}>
-              <Text style={[styles.text, styles.textTypo]}>24</Text>
-              <Text style={[styles.min, styles.minPosition]}> min</Text>
-            </View>
-          </Pressable>
           <View style={styles.updatedTodayParent}>
-            <Text style={[styles.updatedToday, styles.textTypo]}>
+            <Text style={[styles.updatedToday, styles.textTypo1]}>
               Updated Today
             </Text>
             <View style={styles.groupParent}>
-              <Pressable
-                style={[styles.rectangleGroup, styles.groupLayout]}
-                onPress={() => navigation.navigate("DiseaseII")}
-              >
-                <View style={[styles.groupItem, styles.groupLayout]} />
-                <View
-                  style={[styles.ic24Heart1Parent, styles.ic24ParentPosition]}
-                >
-                  <Image
-                    style={styles.ic24Bolt1Icon}
-                    contentFit="cover"
-                    source={require("../assets/ic24heart-1.png")}
-                  />
-                  <Text
-                    style={[styles.factorOfRisk, styles.min1Typo]}
-                  >{`Factor of risk `}</Text>
-                </View>
-                <View style={[styles.typeIParent, styles.parentPosition]}>
-                  <Text style={[styles.typeI, styles.min1Typo]}>Type I</Text>
-                  <Text style={[styles.min1, styles.min1Typo]}> min</Text>
-                </View>
-              </Pressable>
-              <Pressable
-                style={[styles.rectangleContainer, styles.groupInnerLayout]}
-                onPress={() => navigation.navigate("DiseaseII")}
-              >
-                <View style={[styles.groupInner, styles.groupInnerLayout]} />
-                <View
-                  style={[styles.ic24Flag1Parent, styles.ic24ParentPosition]}
-                >
-                  <Image
-                    style={styles.ic24Bolt1Icon}
-                    contentFit="cover"
-                    source={require("../assets/ic24flag-1.png")}
-                  />
-                  <Text style={[styles.walking, styles.kmTypo]}>Walking</Text>
-                </View>
-                <View style={[styles.group, styles.parentPosition]}>
-                  <Text style={[styles.text1, styles.kmTypo]}>10</Text>
-                  <Text style={[styles.km, styles.kmTypo]}> km</Text>
-                </View>
-              </Pressable>
+              
+              {
+                 predictions&&predictions.length>0?predictions.slice(0, 3).map((prediction: any) => (
+                   getModule(prediction[0], prediction[1])
+                 )):""
+              }
+              {
+                predictions&&predictions.length==0?getModuleBase()
+                :""
+                
+              }
             </View>
           </View>
           <Image
@@ -126,12 +199,24 @@ const styles = StyleSheet.create({
   groupChildLayout: {
     height: 97,
     width: 302,
-    position: "absolute",
-  },
-  groupLayout1: {
-    opacity: 0.1,
     borderRadius: Border.br_xl,
+    marginBottom: 10,
+    padding: 10,
   },
+  data1:{
+    backgroundColor: Color.palevioletred_300,
+   
+
+  },
+  data2:{
+    backgroundColor: Color.mediumslateblue_300,
+
+  },
+  data3:{
+    backgroundColor: Color.cornflowerblue_300,
+
+  },
+  
   walkingTypo: {
     marginLeft: 7,
     fontFamily: FontFamily.dMSansMedium,
@@ -143,10 +228,19 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textTypo: {
+    fontFamily: FontFamily.dMSansRegular,
+    fontWeight: "700",
+    color: Color.whiteColor,
+  },
+  textTypo2: {
+    fontFamily: FontFamily.dMSansRegular,
+    fontWeight: "700",
+    color: Color.gray_200,
+  },
+  textTypo1: {
     fontFamily: FontFamily.dMSansBold,
     fontWeight: "700",
-    top: 0,
-    position: "absolute",
+    color: Color.blackColor,
   },
   minPosition: {
     width: 71,
@@ -158,15 +252,10 @@ const styles = StyleSheet.create({
   groupLayout: {
     height: 94,
     width: 305,
-    top: 0,
-    position: "absolute",
   },
   ic24ParentPosition: {
-    left: 36,
     flexDirection: "row",
-    top: 16,
     alignItems: "center",
-    position: "absolute",
   },
   min1Typo: {
     color: Color.palevioletred_100,
@@ -176,8 +265,6 @@ const styles = StyleSheet.create({
   groupInnerLayout: {
     height: 90,
     width: 305,
-    left: 0,
-    position: "absolute",
   },
   kmTypo: {
     color: Color.lightseagreen_100,
@@ -205,7 +292,7 @@ const styles = StyleSheet.create({
     opacity: 0.1,
     height: 97,
     width: 302,
-    position: "absolute",
+    padding: 10,
   },
   ic24Bolt1Icon: {
     width: 16,
@@ -220,20 +307,15 @@ const styles = StyleSheet.create({
   ic24Bolt1Parent: {
     left: 35,
     width: 207,
-    flexDirection: "row",
-    top: 16,
-    alignItems: "center",
-    position: "absolute",
+    flexDirection: "column",
   },
   text: {
-    width: 108,
     left: 1,
-    color: Color.mediumslateblue_100,
     fontSize: FontSize.size_base,
     textAlign: "left",
   },
   min: {
-    color: Color.mediumslateblue_100,
+    color: Color.cornflowerblue_100,
     fontSize: FontSize.size_base,
     textAlign: "left",
   },
@@ -241,22 +323,16 @@ const styles = StyleSheet.create({
     top: 44,
     width: 109,
   },
-  rectangleParent: {
-    top: 266,
-    left: 3,
-  },
   updatedToday: {
     fontSize: FontSize.size_lg,
     opacity: 0.7,
     left: 1,
     textAlign: "left",
-    color: Color.bl,
   },
   groupItem: {
     backgroundColor: Color.palevioletred_100,
     opacity: 0.1,
     borderRadius: Border.br_xl,
-    left: 0,
   },
   factorOfRisk: {
     marginLeft: 7,
@@ -285,14 +361,10 @@ const styles = StyleSheet.create({
     top: 42,
     width: 107,
   },
-  rectangleGroup: {
-    left: 1,
-  },
   groupInner: {
     backgroundColor: Color.lightseagreen_100,
     opacity: 0.1,
     borderRadius: Border.br_xl,
-    top: 0,
   },
   walking: {
     marginLeft: 7,
@@ -321,9 +393,6 @@ const styles = StyleSheet.create({
   group: {
     top: 39,
     width: 99,
-  },
-  rectangleContainer: {
-    top: 109,
   },
   groupParent: {
     top: 47,

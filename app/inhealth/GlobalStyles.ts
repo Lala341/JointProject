@@ -32,12 +32,16 @@ export const Color = {
   lightseagreen_200: "rgba(13, 177, 173, 0.1)",
   palevioletred_100: "#d2416e",
   palevioletred_200: "rgba(210, 65, 110, 0.1)",
+  palevioletred_300: "rgba(210, 65, 110, 0.4)",
+
   blackColor: "#1d1617",
   bl: "#061428",
   gray_100: "rgba(17, 0, 0, 0.5)",
   gray_200: "rgba(255, 255, 255, 0.5)",
   mediumslateblue_100: "#7042c9",
   mediumslateblue_200: "rgba(112, 66, 201, 0.1)",
+  mediumslateblue_300: "rgba(112, 66, 201, 0.4)",
+
   darkgray_100: "#96a7af",
   darkgray_200: "#9aa1a9",
   black: "#000",
@@ -46,6 +50,9 @@ export const Color = {
   textColor: "#454459",
   cornflowerblue_100: "#197bd2",
   cornflowerblue_200: "rgba(25, 123, 210, 0.1)",
+  cornflowerblue_300: "rgba(25, 123, 210, 0.4)",
+
+  
   gainsboro: "#d9d9d9",
 };
 /* Paddings */

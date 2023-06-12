@@ -8,6 +8,8 @@ import { useNavigation } from "@react-navigation/native";
 import { FontSize, Color, FontFamily } from "../GlobalStyles";
 import { Alert } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 const Data = () => {
   const [rectangleDropdownOpen, setRectangleDropdownOpen] = useState(false);
@@ -227,6 +229,7 @@ const Data = () => {
   
   const registerUser = async () => {
     var body={
+      id: Constants.installationId,
       name:nameValue,
       gender: selectedOption,
       heightCm: heightValue,
@@ -243,13 +246,19 @@ const Data = () => {
         },
         body: JSON.stringify(body)
       };
-      const response = await fetch('https://7de6-81-184-112-106.ngrok-free.app/user/register', options);
+      const response = await fetch('http://192.168.0.22:8090/user/register', options);
 
       if (response.ok) {
         console.log('user registered');
         const data = await response.json();
         console.log(data);
-        createTwoButtonAlert();
+        // Save ID in local storage
+await AsyncStorage.setItem('ID', data["id"]);
+
+await AsyncStorage.setItem('name', data["name"]);
+
+
+createTwoButtonAlert();
       } else {
 
         console.error('Failed to send file to server');
@@ -264,6 +273,7 @@ const Data = () => {
 //<ScrollView contentContainerStyle={styles.containerfinal}>
     
   return (
+    <ScrollView contentContainerStyle={styles.containerfinal} nestedScrollEnabled={true} >
     <View style={styles.data}>
       <View style={styles.frameParent}>
       
@@ -333,8 +343,9 @@ const Data = () => {
             <View style={[styles.countryWrapper, styles.wrapperLayout1]}>
               <Text style={[styles.name, styles.nameTypo]}>Country</Text>
             </View>
-            <View style={styles.wrapperLayout2}>
-              <DropDownPicker
+            <View  style={styles.wrapperLayout2}>
+            <DropDownPicker
+            listMode="SCROLLVIEW"
                 style={styles.dropdownpicker}
                 open={rectangleDropdownOpen}
                 setOpen={setRectangleDropdownOpen}
@@ -345,7 +356,8 @@ const Data = () => {
                   styles.rectangleDropdowndropDownContainer
                 }
               />
-            </View>
+    </View>
+            
             <Text style={[styles.birthday, styles.nameTypo]}>Birthday</Text>
             <RNKDatepicker
               style={styles.rectangleRnkdatepicker}
@@ -379,7 +391,7 @@ const Data = () => {
       </View>
      
       </View>
-
+     </ScrollView>
   );
 };
 
@@ -389,6 +401,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 80,
+    backgroundColor: "white",
   },
   rectangleDropdowndropDownContainer: {
     backgroundColor: "#d9d9d9",
@@ -427,7 +440,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xl,
     color: Color.bl,
     textAlign: "left",
-    paddingTop: 5,
+    paddingTop: 0,
   },
   wrapperLayout: {
     height: 40,
@@ -437,7 +450,6 @@ const styles = StyleSheet.create({
   wrapperLayout2: {
     width: 300,
     marginTop: 7,
-    position:"relative",
     zIndex: 1000,
   },
   giveUsSome: {
@@ -492,7 +504,7 @@ const styles = StyleSheet.create({
   },
   countryWrapper: {
     width: "100%",
-    marginTop: 7,
+    marginTop: 0,
   },
   dropdownpicker: {
     backgroundColor: Color.gainsboro,
